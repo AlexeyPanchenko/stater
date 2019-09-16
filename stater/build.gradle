@@ -1,0 +1,33 @@
+apply plugin: 'java-gradle-plugin'
+apply plugin: 'groovy'
+apply plugin: 'maven'
+apply plugin: 'maven-publish'
+
+dependencies {
+    implementation gradleApi()
+    implementation localGroovy()
+
+    implementation 'com.android.tools.build:gradle:3.5.0'
+    implementation 'com.android.tools.build:gradle-api:3.5.0'
+    implementation 'org.ow2.asm:asm:7.1'
+}
+
+sourceCompatibility = "8"
+targetCompatibility = "8"
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            groupId = 'ru.alexpanchenko.stater'
+            artifactId = 'stater'
+            version = '1.0'
+
+            from components.java
+        }
+    }
+    repositories {
+        maven {
+            url = "file:///$buildDir/m2repo"
+        }
+    }
+}

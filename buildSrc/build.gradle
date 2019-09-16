@@ -1,0 +1,22 @@
+apply plugin: 'java-gradle-plugin'
+apply plugin: 'groovy'
+
+dependencies {
+    implementation gradleApi()
+    implementation localGroovy()
+
+    implementation 'com.android.tools.build:gradle:3.5.0'
+    implementation 'com.android.tools.build:gradle-api:3.5.0'
+    implementation 'org.ow2.asm:asm:7.1'
+    implementation 'org.ow2.asm:asm-util:7.1'
+    implementation "org.javassist:javassist:3.25.0-GA"
+}
+
+sourceCompatibility = "8"
+targetCompatibility = "8"
+
+repositories {
+    google()
+    jcenter()
+
+}
