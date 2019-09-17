@@ -2,13 +2,15 @@ package com.example.stater
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.PersistableBundle
 import androidx.fragment.app.Fragment
+import com.example.stater.lib.StateSaver
+import com.example.stater.lib.StateType
+import com.example.stater.lib.Stater
 
 @StateSaver
 class MainActivity : AppCompatActivity() {
 
-    @Stater(Int::class)
+    @Stater(StateType.INT)
     var a: Int = 2
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -18,17 +20,3 @@ class MainActivity : AppCompatActivity() {
 
 }
 
-@StateSaver
-class F : Fragment() {
-
-    @Stater(Int::class)
-    var a: Int = 2
-
-    @Stater(Int::class)
-    var b: Int = 2
-
-    @Stater(Int::class)
-    var c: Int = 0
-
-
-}

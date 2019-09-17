@@ -19,6 +19,7 @@ public class Main3 extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         if (savedInstanceState != null) {
             b = savedInstanceState.getInt("QQQ");
+            savedInstanceState.getString("qq");
         }
     }
 

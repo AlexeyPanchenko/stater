@@ -1,4 +1,4 @@
-package com.example.stater;
+package com.example.stater.lib;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -8,5 +8,5 @@ import java.lang.annotation.Target;
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.CLASS)
 public @interface Stater {
-  Class value();
+  StateType value();
 }

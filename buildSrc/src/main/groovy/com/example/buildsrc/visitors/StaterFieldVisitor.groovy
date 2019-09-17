@@ -27,8 +27,8 @@ class StaterFieldVisitor extends FieldVisitor {
     println("INNER FIELD visitAnnotation: descriptor=$descriptor, visible=$visible")
     AnnotationVisitor av = super.visitAnnotation(descriptor, visible)
     if (descriptor == Descriptors.STATER) {
-      Store.instance.fields.add(new SaverField(this.name, this.descriptor, this.owner))
-      return new StaterAnnotationVisitor(av)
+      println("HAS STATER")
+      return new StaterAnnotationVisitor(av, this.name, this.descriptor, this.owner)
     }
     return av
   }

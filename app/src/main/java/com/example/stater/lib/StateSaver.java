@@ -1,4 +1,4 @@
-package com.example.stater;
+package com.example.stater.lib;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

@@ -3,6 +3,10 @@ package com.example.stater;
 import android.os.Bundle;
 import android.widget.TextView;
 
+import com.example.stater.lib.StateSaver;
+import com.example.stater.lib.StateType;
+import com.example.stater.lib.Stater;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -10,17 +14,17 @@ import androidx.appcompat.app.AppCompatActivity;
 @StateSaver
 public class MainActivity2 extends AppCompatActivity {
 
-    @Stater(int.class)
+    @Stater(StateType.INT)
     private int aParam = 0;
 
-    @Stater(int.class)
-    private int dParam = 5;
+    @Stater(StateType.LONG)
+    private long dParam = 5L;
 
-    @Stater(int.class)
-    private int eParam = 5;
+    @Stater(StateType.BOOLEAN)
+    private boolean eParam = false;
 
-    @Stater(int.class)
-    private int bqParam = 5;
+    @Stater(StateType.STRING)
+    private String bqParam = "asd";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -34,7 +38,7 @@ public class MainActivity2 extends AppCompatActivity {
         });
     }
 
-    @Stater(int.class)
+    @Stater(StateType.INT)
     private int bParam = 5;
 
     private int cParam = 15;
