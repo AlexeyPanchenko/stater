@@ -1,12 +1,14 @@
-package com.example.buildsrc
+package com.example.buildsrc.visitors
 
+import com.example.buildsrc.Const
+import com.example.buildsrc.Descriptors
+import com.example.buildsrc.Methods
 import groovy.transform.TypeChecked
-import org.objectweb.asm.AnnotationVisitor
 import org.objectweb.asm.ClassVisitor
 import org.objectweb.asm.FieldVisitor
 import org.objectweb.asm.Label
 import org.objectweb.asm.MethodVisitor
-import org.objectweb.asm.Opcodes
+import org.objectweb.asm.Opcodes;
 
 @TypeChecked
 class ActivityClassVisitor extends ClassVisitor implements Opcodes {
@@ -109,98 +111,5 @@ class ActivityClassVisitor extends ClassVisitor implements Opcodes {
       methodVisitor.visitEnd()
     }
     super.visitEnd()
-  }
-}
-
-@TypeChecked
-class StaterOnCreateVisitor extends MethodVisitor {
-
-
-  StaterOnCreateVisitor(MethodVisitor methodVisitor) {
-    super(Const.ASM_VERSION, methodVisitor)
-  }
-
-  @Override
-  void visitCode() {
-    mv.visitCode()
-
-    Label l1 = new Label()
-    mv.visitVarInsn(Opcodes.ALOAD, 1)
-    mv.visitJumpInsn(Opcodes.IFNULL, l1)
-
-    mv.visitVarInsn(Opcodes.ALOAD, 0)
-    mv.visitVarInsn(Opcodes.ALOAD, 1)
-    mv.visitLdcInsn("KEY")
-    mv.visitMethodInsn(
-        Opcodes.INVOKEVIRTUAL, Types.BUNDLE, Methods.GET_INT, "(${Descriptors.STRING})${Types.INT}", false
-    )
-    mv.visitFieldInsn(Opcodes.PUTFIELD, "com/example/stater/MainActivity2", "aParam", Types.INT)
-
-    mv.visitLabel(l1)
-  }
-
-}
-
-@TypeChecked
-class StaterOnSavedInstanceStateVisitor extends MethodVisitor {
-
-
-  StaterOnSavedInstanceStateVisitor(MethodVisitor methodVisitor) {
-    super(Const.ASM_VERSION, methodVisitor)
-  }
-
-  @Override
-  void visitCode() {
-    mv.visitCode()
-    mv.visitVarInsn(Opcodes.ALOAD, 1)
-    mv.visitLdcInsn("KEY")
-    mv.visitVarInsn(Opcodes.ALOAD, 0)
-    mv.visitFieldInsn(Opcodes.GETFIELD, "com/example/stater/MainActivity2", "aParam", Types.INT)
-    mv.visitMethodInsn(
-        Opcodes.INVOKEVIRTUAL,
-        Types.BUNDLE,
-        Methods.PUT_INT,
-        "(${Descriptors.STRING}${Types.INT})${Descriptors.VOID}",
-        false
-    )
-  }
-
-}
-
-@TypeChecked
-class StaterFieldVisitor extends FieldVisitor {
-
-  StaterFieldVisitor(FieldVisitor fieldVisitor) {
-    super(Const.ASM_VERSION, fieldVisitor)
-  }
-
-  @Override
-  AnnotationVisitor visitAnnotation(String descriptor, boolean visible) {
-    println("descriptor=$descriptor, visible=$visible")
-    AnnotationVisitor av = super.visitAnnotation(descriptor, visible)
-    if (descriptor == "Lcom/example/stater/Stater;") {
-      return new StaterAnnotationVisitor(av)
-    }
-    return av
-  }
-}
-
-@TypeChecked
-class StaterAnnotationVisitor extends AnnotationVisitor {
-
-  StaterAnnotationVisitor(AnnotationVisitor annotationVisitor) {
-    super(Const.ASM_VERSION, annotationVisitor)
-  }
-
-  @Override
-  void visit(String name, Object value) {
-    println("StaterAnnotationVisitor: name=$name, value=$value")
-    super.visit(name, value)
-  }
-
-  @Override
-  void visitEnum(String name, String descriptor, String value) {
-    println("StaterAnnotationVisitor: name=$name, descriptor=$descriptor, value=$value")
-    super.visitEnum(name, descriptor, value)
   }
 }

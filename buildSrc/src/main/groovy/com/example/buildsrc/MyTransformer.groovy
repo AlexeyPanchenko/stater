@@ -2,6 +2,7 @@ package com.example.buildsrc
 
 import com.android.build.api.transform.*
 import com.android.build.gradle.internal.pipeline.TransformManager
+import com.example.buildsrc.visitors.ActivityClassVisitor
 import groovy.transform.TypeChecked
 import org.apache.commons.io.FileUtils
 import org.objectweb.asm.ClassReader
@@ -85,8 +86,6 @@ class MyTransformer extends Transform {
       if (file.isDirectory()) {
         transformDir(file, destFile)
       } else if (file.isFile()) {
-        //FileUtils.touch(destFile)
-        //FileUtils.copyFile(file, destFile)
         if (file.name.endsWith(".class")
             && !file.name.endsWith("R.class")
             && !file.name.endsWith("BuildConfig.class")
