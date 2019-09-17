@@ -3,7 +3,9 @@ package com.example.buildsrc.visitors
 import com.example.buildsrc.Const
 import com.example.buildsrc.Descriptors
 import com.example.buildsrc.Methods
+import com.example.buildsrc.Store
 import groovy.transform.TypeChecked
+import org.objectweb.asm.AnnotationVisitor
 import org.objectweb.asm.ClassVisitor
 import org.objectweb.asm.FieldVisitor
 import org.objectweb.asm.Label
@@ -16,6 +18,8 @@ class ActivityClassVisitor extends ClassVisitor implements Opcodes {
   private boolean needTransform = false
   private boolean hasOnCreate = false
   private boolean hasSavedInstanceState = false
+  private String owner
+  private String superOwner
 
   ActivityClassVisitor(ClassVisitor classVisitor) {
     super(Const.ASM_VERSION, classVisitor)
@@ -23,12 +27,32 @@ class ActivityClassVisitor extends ClassVisitor implements Opcodes {
 
   @Override
   void visit(int version, int access, String name, String signature, String superName, String[] interfaces) {
-    needTransform = name == "com/example/stater/MainActivity2"
+    println("version=$version, access=$access, name=$name, signature=$signature, superName=$superName, interfaces=$interfaces")
+    this.owner = name
+    this.superOwner = superName
     super.visit(version, access, name, signature, superName, interfaces)
   }
 
   @Override
+  AnnotationVisitor visitAnnotation(String descriptor, boolean visible) {
+    println("visitAnnotation: descriptor=$descriptor, visible=$visible")
+    needTransform = descriptor == Descriptors.STATE_SAVER
+    return super.visitAnnotation(descriptor, visible)
+  }
+
+  @Override
+  FieldVisitor visitField(int access, String name, String descriptor, String signature, Object value) {
+    println("visitField: access=$access, name=$name, descriptor=$descriptor, signature=$signature, value=$value")
+    FieldVisitor fv = super.visitField(access, name, descriptor, signature, value)
+    if (needTransform) {
+      return new StaterFieldVisitor(fv, name, descriptor, owner)
+    }
+    return fv
+  }
+
+  @Override
   MethodVisitor visitMethod(int access, String name, String descriptor, String signature, String[] exceptions) {
+    println("visitMethod: access=$access, name=$name, descriptor=$descriptor, signature=$signature, exceptions=$exceptions")
     MethodVisitor mv = super.visitMethod(access, name, descriptor, signature, exceptions)
     if (needTransform && name == Methods.ON_CREATE) {
       hasOnCreate = true
@@ -41,24 +65,12 @@ class ActivityClassVisitor extends ClassVisitor implements Opcodes {
     return mv
   }
 
-  @Override
-  FieldVisitor visitField(int access, String name, String descriptor, String signature, Object value) {
-    FieldVisitor fv = super.visitField(access, name, descriptor, signature, value)
-    if (needTransform) {
-      return new StaterFieldVisitor(fv)
-    }
-    return fv
-  }
 
   @Override
   void visitEnd() {
     if (needTransform && !hasOnCreate) {
       MethodVisitor methodVisitor = cv.visitMethod(
-          Opcodes.ACC_PROTECTED,
-          Methods.ON_CREATE,
-          Descriptors.ON_CREATE,
-          null,
-          null
+          Opcodes.ACC_PROTECTED, Methods.ON_CREATE, Descriptors.ON_CREATE, null, null
       )
       methodVisitor.visitCode()
       Label l0 = new Label()
@@ -66,11 +78,7 @@ class ActivityClassVisitor extends ClassVisitor implements Opcodes {
       methodVisitor.visitVarInsn(Opcodes.ALOAD, 0)
       methodVisitor.visitVarInsn(Opcodes.ALOAD, 1)
       methodVisitor.visitMethodInsn(
-          Opcodes.INVOKESPECIAL,
-          "androidx/appcompat/app/AppCompatActivity",
-          Methods.ON_CREATE,
-          Descriptors.ON_CREATE,
-          false
+          Opcodes.INVOKESPECIAL, superOwner, Methods.ON_CREATE, Descriptors.ON_CREATE, false
       )
       Label l1 = new Label()
       methodVisitor.visitLabel(l1)
@@ -95,8 +103,7 @@ class ActivityClassVisitor extends ClassVisitor implements Opcodes {
       methodVisitor.visitVarInsn(Opcodes.ALOAD, 0)
       methodVisitor.visitVarInsn(Opcodes.ALOAD, 1)
       methodVisitor.visitMethodInsn(
-          Opcodes.INVOKESPECIAL,
-          "androidx/appcompat/app/AppCompatActivity",
+          Opcodes.INVOKESPECIAL, superOwner,
           Methods.ON_SAVED_INSTANCE_STATE,
           Descriptors.ON_SAVED_INSTANCE_STATE,
           false
@@ -111,5 +118,6 @@ class ActivityClassVisitor extends ClassVisitor implements Opcodes {
       methodVisitor.visitEnd()
     }
     super.visitEnd()
+    Store.instance.fields.clear()
   }
 }

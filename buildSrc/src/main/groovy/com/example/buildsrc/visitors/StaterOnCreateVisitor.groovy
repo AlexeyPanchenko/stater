@@ -3,6 +3,7 @@ package com.example.buildsrc.visitors
 import com.example.buildsrc.Const
 import com.example.buildsrc.Descriptors
 import com.example.buildsrc.Methods
+import com.example.buildsrc.Store
 import com.example.buildsrc.Types
 import groovy.transform.TypeChecked
 import org.objectweb.asm.Label
@@ -25,14 +26,18 @@ class StaterOnCreateVisitor extends MethodVisitor {
     mv.visitVarInsn(Opcodes.ALOAD, 1)
     mv.visitJumpInsn(Opcodes.IFNULL, l1)
 
-    mv.visitVarInsn(Opcodes.ALOAD, 0)
-    mv.visitVarInsn(Opcodes.ALOAD, 1)
-    mv.visitLdcInsn("KEY")
-    mv.visitMethodInsn(
-        Opcodes.INVOKEVIRTUAL, Types.BUNDLE, Methods.GET_INT, "(${Descriptors.STRING})${Types.INT}", false
-    )
-    mv.visitFieldInsn(Opcodes.PUTFIELD, "com/example/stater/MainActivity2", "aParam", Types.INT)
-
+    Store.instance.fields.each { field ->
+      Label label = new Label()
+      mv.visitLabel(label)
+      mv.visitVarInsn(Opcodes.ALOAD, 0)
+      mv.visitVarInsn(Opcodes.ALOAD, 1)
+      mv.visitLdcInsn(field.key)
+      //todo: FixType
+      mv.visitMethodInsn(
+          Opcodes.INVOKEVIRTUAL, Types.BUNDLE, Methods.GET_INT, "(${Descriptors.STRING})${Types.INT}", false
+      )
+      mv.visitFieldInsn(Opcodes.PUTFIELD, field.owner, field.name, field.descriptor)
+    }
     mv.visitLabel(l1)
   }
 

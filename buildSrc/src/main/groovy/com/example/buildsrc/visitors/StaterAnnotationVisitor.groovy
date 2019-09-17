@@ -13,13 +13,13 @@ class StaterAnnotationVisitor extends AnnotationVisitor {
 
   @Override
   void visit(String name, Object value) {
-    println("StaterAnnotationVisitor: name=$name, value=$value")
+    println("StaterAnnotationVisitor visit: name=$name, value=$value")
     super.visit(name, value)
   }
 
   @Override
   void visitEnum(String name, String descriptor, String value) {
-    println("StaterAnnotationVisitor: name=$name, descriptor=$descriptor, value=$value")
+    println("StaterAnnotationVisitor visitEnum: name=$name, descriptor=$descriptor, value=$value")
     super.visitEnum(name, descriptor, value)
   }
 }
