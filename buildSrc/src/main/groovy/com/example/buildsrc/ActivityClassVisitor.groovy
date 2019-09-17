@@ -12,6 +12,8 @@ import org.objectweb.asm.Opcodes
 class ActivityClassVisitor extends ClassVisitor implements Opcodes {
 
   private boolean needTransform = false
+  private boolean hasonCreate = false
+  private boolean hasSavedInstanceState = false
 
   ActivityClassVisitor(ClassVisitor classVisitor) {
     super(Const.ASM_VERSION, classVisitor)
@@ -19,7 +21,6 @@ class ActivityClassVisitor extends ClassVisitor implements Opcodes {
 
   @Override
   void visit(int version, int access, String name, String signature, String superName, String[] interfaces) {
-    println("Version=$version, Access=$access, Name=$name, Signature=$signature, Supername=$superName, Interfaces=$interfaces")
     needTransform = name == "com/example/stater/MainActivity2"
     super.visit(version, access, name, signature, superName, interfaces)
   }
@@ -27,11 +28,11 @@ class ActivityClassVisitor extends ClassVisitor implements Opcodes {
   @Override
   MethodVisitor visitMethod(int access, String name, String descriptor, String signature, String[] exceptions) {
     MethodVisitor mv = super.visitMethod(access, name, descriptor, signature, exceptions)
-    println("Access=$access, Name=$name, Descriptor=$descriptor, Signature=$signature, exceptions=$exceptions")
-    if (needTransform && name == "onCreate") {
+    if (needTransform && name == Methods.ON_CREATE) {
       return new StaterOnCreateVisitor(mv)
     }
-    if (needTransform && name == "onSaveInstanceState") {
+    if (needTransform && name == Methods.ON_SAVED_INSTANCE_STATE) {
+      hasSavedInstanceState = true
       return new StaterOnSavedInstanceStateVisitor(mv)
     }
     return mv
@@ -41,12 +42,73 @@ class ActivityClassVisitor extends ClassVisitor implements Opcodes {
   FieldVisitor visitField(int access, String name, String descriptor, String signature, Object value) {
     FieldVisitor fv = super.visitField(access, name, descriptor, signature, value)
     if (needTransform) {
-      println("Access=$access, Name=$name, Descriptor=$descriptor, Signature=$signature, value=$value")
       return new StaterFieldVisitor(fv)
     }
     return fv
   }
 
+  @Override
+  void visitEnd() {
+    if (needTransform && !hasonCreate) {
+      MethodVisitor methodVisitor = cv.visitMethod(
+          Opcodes.ACC_PROTECTED,
+          Methods.ON_CREATE,
+          Descriptors.ON_CREATE,
+          null,
+          null
+      )
+      methodVisitor.visitCode()
+      Label l0 = new Label()
+      methodVisitor.visitLabel(l0)
+      methodVisitor.visitVarInsn(Opcodes.ALOAD, 0)
+      methodVisitor.visitVarInsn(Opcodes.ALOAD, 1)
+      methodVisitor.visitMethodInsn(
+          Opcodes.INVOKESPECIAL,
+          "androidx/appcompat/app/AppCompatActivity",
+          Methods.ON_CREATE,
+          Descriptors.ON_CREATE,
+          false
+      )
+      Label l1 = new Label()
+      methodVisitor.visitLabel(l1)
+      new StaterOnCreateVisitor(methodVisitor).visitCode()
+      Label l2 = new Label()
+      methodVisitor.visitLabel(l2)
+      methodVisitor.visitInsn(Opcodes.RETURN)
+      methodVisitor.visitMaxs(2, 2)
+      methodVisitor.visitEnd()
+    }
+    if (needTransform && !hasSavedInstanceState) {
+      MethodVisitor methodVisitor = cv.visitMethod(
+          Opcodes.ACC_PROTECTED,
+          Methods.ON_SAVED_INSTANCE_STATE,
+          Descriptors.ON_SAVED_INSTANCE_STATE,
+          null,
+          null
+      )
+      methodVisitor.visitCode()
+      Label l0 = new Label()
+      methodVisitor.visitLabel(l0)
+      methodVisitor.visitVarInsn(Opcodes.ALOAD, 0)
+      methodVisitor.visitVarInsn(Opcodes.ALOAD, 1)
+      methodVisitor.visitMethodInsn(
+          Opcodes.INVOKESPECIAL,
+          "androidx/appcompat/app/AppCompatActivity",
+          Methods.ON_SAVED_INSTANCE_STATE,
+          Descriptors.ON_SAVED_INSTANCE_STATE,
+          false
+      )
+      Label l1 = new Label()
+      methodVisitor.visitLabel(l1)
+      new StaterOnSavedInstanceStateVisitor(methodVisitor).visitCode()
+      Label l2 = new Label()
+      methodVisitor.visitLabel(l2)
+      methodVisitor.visitInsn(Opcodes.RETURN)
+      methodVisitor.visitMaxs(2, 2)
+      methodVisitor.visitEnd()
+    }
+    super.visitEnd()
+  }
 }
 
 @TypeChecked
@@ -61,17 +123,19 @@ class StaterOnCreateVisitor extends MethodVisitor {
   void visitCode() {
     mv.visitCode()
 
-    Label label = new Label()
+    Label l1 = new Label()
     mv.visitVarInsn(Opcodes.ALOAD, 1)
-    mv.visitJumpInsn(Opcodes.IFNULL, label)
+    mv.visitJumpInsn(Opcodes.IFNULL, l1)
 
     mv.visitVarInsn(Opcodes.ALOAD, 0)
     mv.visitVarInsn(Opcodes.ALOAD, 1)
     mv.visitLdcInsn("KEY")
-    mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL, "android/os/Bundle", "getInt", "(Ljava/lang/String;)I", false)
-    mv.visitFieldInsn(Opcodes.PUTFIELD, "com/example/stater/MainActivity2", "aParam", "I")
+    mv.visitMethodInsn(
+        Opcodes.INVOKEVIRTUAL, Types.BUNDLE, Methods.GET_INT, "(${Descriptors.STRING})${Types.INT}", false
+    )
+    mv.visitFieldInsn(Opcodes.PUTFIELD, "com/example/stater/MainActivity2", "aParam", Types.INT)
 
-    mv.visitLabel(label)
+    mv.visitLabel(l1)
   }
 
 }
@@ -85,16 +149,21 @@ class StaterOnSavedInstanceStateVisitor extends MethodVisitor {
   }
 
   @Override
-  void visitInsn(int opcode) {
-    if ((opcode >= Opcodes.IRETURN && opcode <= Opcodes.RETURN) || opcode == Opcodes.ATHROW) {
-      mv.visitVarInsn(Opcodes.ALOAD, 1)
-      mv.visitLdcInsn("KEY")
-      mv.visitVarInsn(Opcodes.ALOAD, 0)
-      mv.visitFieldInsn(Opcodes.GETFIELD, "com/example/stater/MainActivity2", "aParam", "I")
-      mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL, "android/os/Bundle", "putInt", "(Ljava/lang/String;I)V", false)
-    }
-    super.visitInsn(opcode)
+  void visitCode() {
+    mv.visitCode()
+    mv.visitVarInsn(Opcodes.ALOAD, 1)
+    mv.visitLdcInsn("KEY")
+    mv.visitVarInsn(Opcodes.ALOAD, 0)
+    mv.visitFieldInsn(Opcodes.GETFIELD, "com/example/stater/MainActivity2", "aParam", Types.INT)
+    mv.visitMethodInsn(
+        Opcodes.INVOKEVIRTUAL,
+        Types.BUNDLE,
+        Methods.PUT_INT,
+        "(${Descriptors.STRING}${Types.INT})${Descriptors.VOID}",
+        false
+    )
   }
+
 }
 
 @TypeChecked
