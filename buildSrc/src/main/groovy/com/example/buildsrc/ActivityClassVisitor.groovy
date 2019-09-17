@@ -12,7 +12,7 @@ import org.objectweb.asm.Opcodes
 class ActivityClassVisitor extends ClassVisitor implements Opcodes {
 
   private boolean needTransform = false
-  private boolean hasonCreate = false
+  private boolean hasOnCreate = false
   private boolean hasSavedInstanceState = false
 
   ActivityClassVisitor(ClassVisitor classVisitor) {
@@ -29,6 +29,7 @@ class ActivityClassVisitor extends ClassVisitor implements Opcodes {
   MethodVisitor visitMethod(int access, String name, String descriptor, String signature, String[] exceptions) {
     MethodVisitor mv = super.visitMethod(access, name, descriptor, signature, exceptions)
     if (needTransform && name == Methods.ON_CREATE) {
+      hasOnCreate = true
       return new StaterOnCreateVisitor(mv)
     }
     if (needTransform && name == Methods.ON_SAVED_INSTANCE_STATE) {
@@ -49,7 +50,7 @@ class ActivityClassVisitor extends ClassVisitor implements Opcodes {
 
   @Override
   void visitEnd() {
-    if (needTransform && !hasonCreate) {
+    if (needTransform && !hasOnCreate) {
       MethodVisitor methodVisitor = cv.visitMethod(
           Opcodes.ACC_PROTECTED,
           Methods.ON_CREATE,
