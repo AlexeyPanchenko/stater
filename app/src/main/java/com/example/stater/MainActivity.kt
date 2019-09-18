@@ -12,13 +12,18 @@ import java.io.Serializable
 @StateSaver
 class MainActivity : AppCompatActivity() {
 
-    @Stater(StateType.INT)
-    var a: Int = 2
+  @Stater(StateType.INT)
+  var a: Int = 2
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-    }
+  @Stater(StateType.SERIALIZABLE)
+  private val serModels: SerModel? = null
 
+  @Stater(StateType.INT)
+  private val aParamObj: Int? = null
+
+  override fun onCreate(savedInstanceState: Bundle?) {
+    super.onCreate(savedInstanceState)
+    setContentView(R.layout.activity_main)
+  }
 }
 

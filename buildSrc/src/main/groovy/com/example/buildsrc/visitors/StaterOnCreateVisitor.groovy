@@ -37,8 +37,6 @@ class StaterOnCreateVisitor extends MethodVisitor {
       mv.visitLdcInsn(field.key)
 
       final StateType type = MethodDescriptorUtils.primitiveIsObject(field.descriptor) ? StateType.SERIALIZABLE : field.type
-      println("STATE=$type")
-
       MethodDescriptor methodDescriptor = MethodDescriptorUtils.getDescriptorByType(type, true)
       if (!methodDescriptor.isValid()) {
         throw new IllegalStateException("StateType for ${field.name} in ${field.owner} is unknown!")
