@@ -1,2 +1,2 @@
-include ':app', ':stater', ':buildSrc'
+include ':app', ':stater', ':buildSrc', ':library'
 rootProject.name='Stater'

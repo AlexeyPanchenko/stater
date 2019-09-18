@@ -1,4 +1,4 @@
-package com.example.stater.lib;
+package ru.alexpanchenko.stater;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -7,5 +7,4 @@ import java.lang.annotation.Target;
 
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.CLASS)
-public @interface StateSaver {
-}
+public @interface StateSaver {}

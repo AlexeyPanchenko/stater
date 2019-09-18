@@ -30,14 +30,16 @@ class StaterOnCreateVisitor extends MethodVisitor {
     mv.visitJumpInsn(Opcodes.IFNULL, l1)
 
     Store.instance.fields.each { field ->
-      println("FIELD =$field")
       Label label = new Label()
       mv.visitLabel(label)
       mv.visitVarInsn(Opcodes.ALOAD, 0)
       mv.visitVarInsn(Opcodes.ALOAD, 1)
       mv.visitLdcInsn(field.key)
 
-      MethodDescriptor methodDescriptor = MethodDescriptorUtils.getDescriptorByType(field.type, true)
+      final StateType type = MethodDescriptorUtils.primitiveIsObject(field.descriptor) ? StateType.SERIALIZABLE : field.type
+      println("STATE=$type")
+
+      MethodDescriptor methodDescriptor = MethodDescriptorUtils.getDescriptorByType(type, true)
       if (!methodDescriptor.isValid()) {
         throw new IllegalStateException("StateType for ${field.name} in ${field.owner} is unknown!")
       }
@@ -49,12 +51,12 @@ class StaterOnCreateVisitor extends MethodVisitor {
           false
       )
       // cast
-      if (field.type == StateType.SERIALIZABLE
-          || field.type == StateType.PARCELABLE
-          || field.type == StateType.PARCELABLE_ARRAY
-          || field.type == StateType.INT_ARRAY_LIST
-          || field.type == StateType.CHAR_SEQUENCE_ARRAY_LIST
-          || field.type == StateType.PARCELABLE_ARRAY_LIST
+      if (type == StateType.SERIALIZABLE
+          || type == StateType.PARCELABLE
+          || type == StateType.PARCELABLE_ARRAY
+          || type == StateType.INT_ARRAY_LIST
+          || type == StateType.CHAR_SEQUENCE_ARRAY_LIST
+          || type == StateType.PARCELABLE_ARRAY_LIST
       ) {
         mv.visitTypeInsn(Opcodes.CHECKCAST, Type.getType(field.descriptor).internalName)
       }

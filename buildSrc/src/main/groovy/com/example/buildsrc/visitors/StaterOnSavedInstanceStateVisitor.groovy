@@ -2,6 +2,7 @@ package com.example.buildsrc.visitors
 
 import com.example.buildsrc.Const
 import com.example.buildsrc.Descriptors
+import com.example.buildsrc.StateType
 import com.example.buildsrc.Store
 import com.example.buildsrc.Types
 import com.example.buildsrc.utils.MethodDescriptor
@@ -28,7 +29,9 @@ class StaterOnSavedInstanceStateVisitor extends MethodVisitor {
       mv.visitVarInsn(Opcodes.ALOAD, 1)
       mv.visitLdcInsn(field.key)
       mv.visitVarInsn(Opcodes.ALOAD, 0)
-      MethodDescriptor methodDescriptor = MethodDescriptorUtils.getDescriptorByType(field.type, false)
+      final StateType type = MethodDescriptorUtils.primitiveIsObject(field.descriptor)
+          ? StateType.SERIALIZABLE : field.type
+      MethodDescriptor methodDescriptor = MethodDescriptorUtils.getDescriptorByType(type, false)
       if (!methodDescriptor.isValid()) {
         throw new IllegalStateException("StateType for ${field.name} in ${field.owner} is unknown!")
       }

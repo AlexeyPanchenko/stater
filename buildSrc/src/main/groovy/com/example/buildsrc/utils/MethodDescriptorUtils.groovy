@@ -1,9 +1,10 @@
 package com.example.buildsrc.utils
 
+
 import com.example.buildsrc.Descriptors
 import com.example.buildsrc.Methods
 import com.example.buildsrc.StateType
-import groovy.transform.TypeChecked;
+import groovy.transform.TypeChecked
 
 @TypeChecked
 class MethodDescriptorUtils {
@@ -67,5 +68,17 @@ class MethodDescriptorUtils {
       case StateType.BUNDLE:
         return new MethodDescriptor(isGet ? Methods.Get.BUNDLE : Methods.Put.BUNDLE, Descriptors.BUNDLE)
     }
+  }
+
+  static boolean primitiveIsObject(String descriptor) {
+    final String arrayPrefix = "["
+    return descriptor == Descriptors.BYTE_OBJ || descriptor == arrayPrefix + Descriptors.BYTE_OBJ ||
+        descriptor == Descriptors.BOOLEAN_OBJ || descriptor == arrayPrefix + Descriptors.BOOLEAN_OBJ ||
+        descriptor == Descriptors.CHAR_OBJ || descriptor == arrayPrefix + Descriptors.CHAR_OBJ ||
+        descriptor == Descriptors.SHORT_OBJ || descriptor == arrayPrefix + Descriptors.SHORT_OBJ ||
+        descriptor == Descriptors.FLOAT_OBJ || descriptor == arrayPrefix + Descriptors.FLOAT_OBJ ||
+        descriptor == Descriptors.INTEGER || descriptor == arrayPrefix + Descriptors.INTEGER ||
+        descriptor == Descriptors.LONG_OBJ || descriptor == arrayPrefix + Descriptors.LONG_OBJ ||
+        descriptor == Descriptors.DOUBLE_OBJ || descriptor == arrayPrefix + Descriptors.DOUBLE_OBJ
   }
 }

@@ -1,4 +1,4 @@
-package com.example.stater.lib;
+package ru.alexpanchenko.stater;
 
 public enum StateType {
   BOOLEAN,
