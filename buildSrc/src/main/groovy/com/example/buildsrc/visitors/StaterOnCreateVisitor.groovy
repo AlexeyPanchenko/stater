@@ -2,14 +2,16 @@ package com.example.buildsrc.visitors
 
 import com.example.buildsrc.Const
 import com.example.buildsrc.Descriptors
-import com.example.buildsrc.Methods
 import com.example.buildsrc.StateType
 import com.example.buildsrc.Store
 import com.example.buildsrc.Types
+import com.example.buildsrc.utils.MethodDescriptor
+import com.example.buildsrc.utils.MethodDescriptorUtils
 import groovy.transform.TypeChecked
 import org.objectweb.asm.Label
 import org.objectweb.asm.MethodVisitor
 import org.objectweb.asm.Opcodes
+import org.objectweb.asm.Type
 
 @TypeChecked
 class StaterOnCreateVisitor extends MethodVisitor {
@@ -34,32 +36,27 @@ class StaterOnCreateVisitor extends MethodVisitor {
       mv.visitVarInsn(Opcodes.ALOAD, 0)
       mv.visitVarInsn(Opcodes.ALOAD, 1)
       mv.visitLdcInsn(field.key)
-      //todo: FixTypes
-      switch (field.type) {
-        case StateType.BOOLEAN:
-          mv.visitMethodInsn(
-              Opcodes.INVOKEVIRTUAL, Types.BUNDLE, Methods.GET_BOOLEAN, "(${Descriptors.STRING})${Descriptors.BOOLEAN}", false
-          )
-          break
-        case StateType.INT:
-          mv.visitMethodInsn(
-              Opcodes.INVOKEVIRTUAL, Types.BUNDLE, Methods.GET_INT, "(${Descriptors.STRING})${Descriptors.INT}", false
-          )
-          break
-        case StateType.LONG:
-          mv.visitMethodInsn(
-              Opcodes.INVOKEVIRTUAL, Types.BUNDLE, Methods.GET_LONG, "(${Descriptors.STRING})${Descriptors.LONG}", false
-          )
-          break
-        case StateType.STRING:
-          mv.visitMethodInsn(
-              Opcodes.INVOKEVIRTUAL, Types.BUNDLE, Methods.GET_STRING, "(${Descriptors.STRING})${Descriptors.STRING}", false
-          )
-          break
-        case StateType.SERIALIZABLE:
-          break
-        case StateType.PARCELABLE:
-          break
+
+      MethodDescriptor methodDescriptor = MethodDescriptorUtils.getDescriptorByType(field.type, true)
+      if (!methodDescriptor.isValid()) {
+        throw new IllegalStateException("StateType for ${field.name} in ${field.owner} is unknown!")
+      }
+      mv.visitMethodInsn(
+          Opcodes.INVOKEVIRTUAL,
+          Types.BUNDLE,
+          methodDescriptor.method,
+          "(${Descriptors.STRING})${methodDescriptor.descriptor}",
+          false
+      )
+      // cast
+      if (field.type == StateType.SERIALIZABLE
+          || field.type == StateType.PARCELABLE
+          || field.type == StateType.PARCELABLE_ARRAY
+          || field.type == StateType.INT_ARRAY_LIST
+          || field.type == StateType.CHAR_SEQUENCE_ARRAY_LIST
+          || field.type == StateType.PARCELABLE_ARRAY_LIST
+      ) {
+        mv.visitTypeInsn(Opcodes.CHECKCAST, Type.getType(field.descriptor).internalName)
       }
       mv.visitFieldInsn(Opcodes.PUTFIELD, field.owner, field.name, field.descriptor)
     }
