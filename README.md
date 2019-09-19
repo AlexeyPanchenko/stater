@@ -1,6 +1,7 @@
 Stater
 =======
 Lightweight library to save state in your Activity/Fragment.
+Stater also fine works with Kotlin code as it uses bytecode transformation.
 
 Download
 --------
@@ -25,6 +26,7 @@ implementation "ru.alexpanchenko.stater:stater:$stater_version"
 
 Usage
 --------
+Activity
 ```java
 import ru.alexpanchenko.stater.Stater;
 import ru.alexpanchenko.stater.StateType;
@@ -32,6 +34,21 @@ import ru.alexpanchenko.stater.State;
 
 @Stater
 public class MainActivity extends AppCompatActivity {
+  @State(StateType.INT)
+  private int yourVar = 0;
+  
+  @State(StateType.BUNDLE)
+  private Bundle bundleVar;
+}
+```
+Fragment
+```java
+import ru.alexpanchenko.stater.Stater;
+import ru.alexpanchenko.stater.StateType;
+import ru.alexpanchenko.stater.State;
+
+@Stater
+public class MainFragment extends Fragment {
   @State(StateType.INT)
   private int yourVar = 0;
   
@@ -62,7 +79,7 @@ protected void onSaveInstanceState(@NonNull Bundle outState) {
 ```
 All supported types see in `StateType` enum. It can works also with object presentation of primitives:
 `Byte, Short, Character, Boolean, Integer, Long, Double, Float` and its arrays.
-
+Transformed classes you can find in `build/intermediates/transforms/StaterTransform/yourPackage`
 
 License
 -------
