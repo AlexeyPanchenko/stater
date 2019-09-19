@@ -60,7 +60,7 @@ protected void onSaveInstanceState(@NonNull Bundle outState) {
     super.onSaveInstanceState(outState);
 }
 ```
-All supported types see in `StateType` enum. It can works also with object presentation primitives:
+All supported types see in `StateType` enum. It can works also with object presentation of primitives:
 `Byte, Short, Character, Boolean, Integer, Long, Double, Float` and its arrays.
 
 
