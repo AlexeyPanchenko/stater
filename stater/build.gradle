@@ -5,11 +5,11 @@ apply plugin: 'maven-publish'
 
 dependencies {
     implementation gradleApi()
-    implementation localGroovy()
 
     implementation 'com.android.tools.build:gradle:3.5.0'
     implementation 'com.android.tools.build:gradle-api:3.5.0'
     implementation 'org.ow2.asm:asm:7.1'
+    testImplementation "junit:junit:4.12"
 }
 
 sourceCompatibility = "8"
@@ -20,7 +20,7 @@ publishing {
         maven(MavenPublication) {
             groupId = 'ru.alexpanchenko.stater'
             artifactId = 'stater'
-            version = '1.0'
+            version = '0.1'
 
             from components.java
         }

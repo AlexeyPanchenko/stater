@@ -1,7 +1,7 @@
-package com.example.buildsrc.visitors
+package ru.alexpanchenko.stater.plugin.visitors
 
-import com.example.buildsrc.Const
-import com.example.buildsrc.Descriptors
+import ru.alexpanchenko.stater.plugin.utils.Const
+import ru.alexpanchenko.stater.plugin.utils.Descriptors
 import groovy.transform.TypeChecked
 import org.objectweb.asm.AnnotationVisitor
 import org.objectweb.asm.FieldVisitor
@@ -22,10 +22,9 @@ class StaterFieldVisitor extends FieldVisitor {
 
   @Override
   AnnotationVisitor visitAnnotation(String descriptor, boolean visible) {
-    println("INNER FIELD visitAnnotation: descriptor=$descriptor, visible=$visible")
     AnnotationVisitor av = super.visitAnnotation(descriptor, visible)
     if (descriptor == Descriptors.STATE) {
-      return new StaterAnnotationVisitor(av, this.name, this.descriptor, this.owner)
+      return new StateAnnotationVisitor(av, this.name, this.descriptor, this.owner)
     }
     return av
   }

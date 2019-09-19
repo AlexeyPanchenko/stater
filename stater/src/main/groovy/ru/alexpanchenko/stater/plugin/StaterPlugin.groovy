@@ -1,12 +1,16 @@
-package ru.alexpanchenko.stater
+package ru.alexpanchenko.stater.plugin
 
 import com.android.annotations.NonNull
 import com.android.build.gradle.BaseExtension
+import groovy.transform.CompileStatic
+import groovy.transform.TypeChecked
 import org.gradle.api.GradleException
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 
-class TransformPlugin implements Plugin<Project> {
+@TypeChecked
+@CompileStatic
+class StaterPlugin implements Plugin<Project> {
 
   @Override
   void apply(@NonNull Project project) {
@@ -18,8 +22,6 @@ class TransformPlugin implements Plugin<Project> {
       )
     }
     BaseExtension androidExtension = project.extensions.findByType(BaseExtension.class)
-    androidExtension.registerTransform(new MyTransformer())
-
-    println "HELLO"
+    androidExtension.registerTransform(new StaterTransform())
   }
 }

@@ -1,5 +1,6 @@
-package com.example.buildsrc
+package ru.alexpanchenko.stater.plugin.utils
 
+import groovy.transform.CompileStatic
 import groovy.transform.TypeChecked
 import org.objectweb.asm.Opcodes
 
@@ -78,6 +79,7 @@ class Methods {
 }
 
 @TypeChecked
+@CompileStatic
 class Types {
   public static final String LIST = "java/util/List"
   public static final String ARRAY_LIST = "java/util/ArrayList"
@@ -106,6 +108,7 @@ class Types {
 }
 
 @TypeChecked
+@CompileStatic
 class Descriptors {
   public static final String LIST = "L${Types.LIST};"
   public static final String ARRAY_LIST = "L${Types.ARRAY_LIST};"

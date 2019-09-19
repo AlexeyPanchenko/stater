@@ -1,9 +1,8 @@
-package com.example.buildsrc.utils
+package ru.alexpanchenko.stater.plugin.utils
 
-import com.example.buildsrc.Descriptors
-import com.example.buildsrc.Methods
-import com.example.buildsrc.StateType
 import groovy.transform.TypeChecked
+import ru.alexpanchenko.stater.plugin.model.MethodDescriptor
+import ru.alexpanchenko.stater.plugin.model.StateType
 
 @TypeChecked
 class MethodDescriptorUtils {

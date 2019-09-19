@@ -1,13 +1,13 @@
-package com.example.buildsrc
+package ru.alexpanchenko.stater.plugin
 
 import com.android.build.api.transform.*
 import com.android.build.gradle.internal.pipeline.TransformManager
-import com.example.buildsrc.visitors.StaterClassVisitor
 import groovy.transform.TypeChecked
 import org.apache.commons.io.FileUtils
 import org.objectweb.asm.ClassReader
 import org.objectweb.asm.ClassWriter
 import org.objectweb.asm.util.TraceClassVisitor
+import ru.alexpanchenko.stater.plugin.visitors.StaterClassVisitor
 
 @TypeChecked
 class StaterTransform extends Transform {
@@ -93,6 +93,7 @@ class StaterTransform extends Transform {
         } else {
           FileUtils.copyFile(file, destFile)
         }
+
       }
     }
   }
