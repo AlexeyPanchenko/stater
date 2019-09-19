@@ -1,6 +1,8 @@
 package com.example.stater;
 
+import android.os.Binder;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.util.Log;
 import android.widget.TextView;
 
@@ -150,6 +152,9 @@ public class MainActivity2 extends AppCompatActivity {
 
   @State(StateType.SERIALIZABLE)
   private SerModel serModels;
+
+  @State(StateType.IBINDER)
+  private IBinder iBinde;
 
   @Override
   protected void onCreate(@Nullable Bundle savedInstanceState) {

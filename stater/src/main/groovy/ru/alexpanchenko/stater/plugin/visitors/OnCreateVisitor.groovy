@@ -48,7 +48,11 @@ class OnCreateVisitor extends MethodVisitor {
           false
       )
       // cast
-      if (type == StateType.SERIALIZABLE || type == StateType.PARCELABLE || type == StateType.PARCELABLE_ARRAY ) {
+      if (type == StateType.SERIALIZABLE
+          || type == StateType.PARCELABLE
+          || type == StateType.PARCELABLE_ARRAY
+          || type == StateType.IBINDER
+      ) {
         mv.visitTypeInsn(Opcodes.CHECKCAST, Type.getType(field.descriptor).internalName)
       }
       mv.visitFieldInsn(Opcodes.PUTFIELD, field.owner, field.name, field.descriptor)

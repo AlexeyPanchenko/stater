@@ -43,6 +43,7 @@ class Methods {
     public static final String PARCELABLE_ARRAY = "putParcelableArray"
     public static final String PARCELABLE_ARRAY_LIST = "putParcelableArrayList"
     public static final String BUNDLE = "putBundle"
+    public static final String IBINDER = "putBinder"
   }
 
   static class Get {
@@ -74,6 +75,7 @@ class Methods {
     public static final String PARCELABLE_ARRAY = "getParcelableArray"
     public static final String PARCELABLE_ARRAY_LIST = "getParcelableArrayList"
     public static final String BUNDLE = "getBundle"
+    public static final String IBINDER = "getBinder"
   }
  
 }
@@ -103,6 +105,7 @@ class Types {
   public static final String SERIALIZABLE = "java/io/Serializable"
   public static final String PARCELABLE = "android/os/Parcelable"
   public static final String BUNDLE = "android/os/Bundle"
+  public static final String IBINDER = "android/os/IBinder"
   public static final String STATER = "ru/alexpanchenko/stater/Stater"
   public static final String STATE = "ru/alexpanchenko/stater/State"
 }
@@ -144,6 +147,7 @@ class Descriptors {
   public static final String PARCELABLE = "L${Types.PARCELABLE};"
   public static final String PARCELABLE_ARRAY = "[$PARCELABLE"
   public static final String BUNDLE = "L${Types.BUNDLE};"
+  public static final String IBINDER = "L${Types.IBINDER};"
   public static final String STATER = "L${Types.STATER};"
   public static final String STATE = "L${Types.STATE};"
   public static final String VOID = "V"
