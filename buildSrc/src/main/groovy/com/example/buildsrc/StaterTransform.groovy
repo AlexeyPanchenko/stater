@@ -10,11 +10,11 @@ import org.objectweb.asm.ClassWriter
 import org.objectweb.asm.util.TraceClassVisitor
 
 @TypeChecked
-class MyTransformer extends Transform {
+class StaterTransform extends Transform {
 
   @Override
   String getName() {
-    return MyTransformer.simpleName
+    return StaterTransform.simpleName
   }
 
   @Override
@@ -42,7 +42,6 @@ class MyTransformer extends Transform {
       TransformInvocation transformInvocation
   ) throws TransformException, InterruptedException, IOException {
     super.transform(transformInvocation)
-    println("===== ASM Transform =====")
 
     transformInvocation.outputProvider.deleteAll()
 

@@ -9,7 +9,8 @@ dependencies {
     implementation 'com.android.tools.build:gradle-api:3.5.0'
     implementation 'org.ow2.asm:asm:7.1'
     implementation 'org.ow2.asm:asm-util:7.1'
-    implementation "org.javassist:javassist:3.25.0-GA"
+
+    testImplementation "junit:junit:4.12"
 }
 
 sourceCompatibility = "8"

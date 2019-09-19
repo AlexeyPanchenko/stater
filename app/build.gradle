@@ -1,7 +1,9 @@
+import com.example.buildsrc.StaterPlugin
+
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
-apply plugin: com.example.buildsrc.TransformPlugin
+apply plugin: StaterPlugin
 
 android {
     compileSdkVersion 29

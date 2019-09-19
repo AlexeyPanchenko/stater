@@ -8,7 +8,7 @@ import org.gradle.api.Plugin
 import org.gradle.api.Project
 
 @TypeChecked
-class TransformPlugin implements Plugin<Project> {
+class StaterPlugin implements Plugin<Project> {
 
   @Override
   void apply(@NonNull Project project) {
@@ -20,6 +20,6 @@ class TransformPlugin implements Plugin<Project> {
       )
     }
     BaseExtension androidExtension = project.extensions.findByType(BaseExtension.class)
-    androidExtension.registerTransform(new MyTransformer())
+    androidExtension.registerTransform(new StaterTransform())
   }
 }
