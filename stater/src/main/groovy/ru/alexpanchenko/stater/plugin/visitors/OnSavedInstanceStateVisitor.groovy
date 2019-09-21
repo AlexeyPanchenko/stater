@@ -23,7 +23,7 @@ class OnSavedInstanceStateVisitor extends MethodVisitor {
   void visitCode() {
     mv.visitCode()
 
-    Store.instance.fields.each { field ->
+    Const.stateFields.each { field ->
       Label label = new Label()
       mv.visitLabel(label)
       mv.visitVarInsn(Opcodes.ALOAD, 1)

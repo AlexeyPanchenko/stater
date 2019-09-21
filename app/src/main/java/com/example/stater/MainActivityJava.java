@@ -1,6 +1,5 @@
 package com.example.stater;
 
-import android.os.Binder;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Log;
@@ -19,7 +18,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 @Stater
-public class MainActivity2 extends AppCompatActivity {
+public class MainActivityJava extends AppCompatActivity {
 
   @State(StateType.INT)
   private int aParam = 0;
@@ -46,7 +45,7 @@ public class MainActivity2 extends AppCompatActivity {
   private String bqParam = "asd";
 
   @State(StateType.PARCELABLE)
-  private ParModel parModel = new ParModel("a", "2", 3, true);
+  private ParcelableModel parModel = new ParcelableModel("a", "2", 3, true);
 
   @State(StateType.STRING_ARRAY_LIST)
   private ArrayList<String> serModel;
@@ -64,10 +63,10 @@ public class MainActivity2 extends AppCompatActivity {
   private String[] strings;
 
   @State(StateType.PARCELABLE_ARRAY_LIST)
-  private ArrayList<ParModel> parModels;
+  private ArrayList<ParcelableModel> parModels;
 
   @State(StateType.PARCELABLE_ARRAY)
-  private ParModel[] parModelsArray;
+  private ParcelableModel[] parModelsArray;
 
   @State(StateType.CHAR_SEQUENCE)
   private CharSequence charSequence;
@@ -151,7 +150,7 @@ public class MainActivity2 extends AppCompatActivity {
   private Double[] doublesO;
 
   @State(StateType.SERIALIZABLE)
-  private SerModel serModels;
+  private SerializableModel serModels;
 
   @State(StateType.IBINDER)
   private IBinder iBinde;

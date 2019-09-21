@@ -8,13 +8,13 @@ import ru.alexpanchenko.stater.StateType
 import ru.alexpanchenko.stater.State
 
 @Stater
-class MainActivity : AppCompatActivity() {
+class MainActivityKotlin : AppCompatActivity() {
 
   @State(StateType.INT)
   var a: Int = 2
 
   @State(StateType.SERIALIZABLE)
-  private val serModels: SerModel? = null
+  private val serModels: SerializableModel? = null
 
   @State(StateType.INT)
   private var intVar: Int = 2

@@ -56,59 +56,66 @@ class StaterClassVisitor extends ClassVisitor implements Opcodes {
     return mv
   }
 
-
   @Override
   void visitEnd() {
     if (needTransform && !hasOnCreate) {
-      MethodVisitor methodVisitor = cv.visitMethod(
-          Opcodes.ACC_PROTECTED, Methods.ON_CREATE, Descriptors.ON_CREATE, null, null
-      )
-      methodVisitor.visitCode()
-      Label l0 = new Label()
-      methodVisitor.visitLabel(l0)
-      methodVisitor.visitVarInsn(Opcodes.ALOAD, 0)
-      methodVisitor.visitVarInsn(Opcodes.ALOAD, 1)
-      methodVisitor.visitMethodInsn(
-          Opcodes.INVOKESPECIAL, superOwner, Methods.ON_CREATE, Descriptors.ON_CREATE, false
-      )
-      Label l1 = new Label()
-      methodVisitor.visitLabel(l1)
-      new OnCreateVisitor(methodVisitor).visitCode()
-      Label l2 = new Label()
-      methodVisitor.visitLabel(l2)
-      methodVisitor.visitInsn(Opcodes.RETURN)
-      methodVisitor.visitMaxs(2, 2)
-      methodVisitor.visitEnd()
+      visitOnCreateMethod()
     }
     if (needTransform && !hasSavedInstanceState) {
-      MethodVisitor methodVisitor = cv.visitMethod(
-          Opcodes.ACC_PROTECTED,
-          Methods.ON_SAVED_INSTANCE_STATE,
-          Descriptors.ON_SAVED_INSTANCE_STATE,
-          null,
-          null
-      )
-      methodVisitor.visitCode()
-      Label l0 = new Label()
-      methodVisitor.visitLabel(l0)
-      methodVisitor.visitVarInsn(Opcodes.ALOAD, 0)
-      methodVisitor.visitVarInsn(Opcodes.ALOAD, 1)
-      methodVisitor.visitMethodInsn(
-          Opcodes.INVOKESPECIAL, superOwner,
-          Methods.ON_SAVED_INSTANCE_STATE,
-          Descriptors.ON_SAVED_INSTANCE_STATE,
-          false
-      )
-      Label l1 = new Label()
-      methodVisitor.visitLabel(l1)
-      new OnSavedInstanceStateVisitor(methodVisitor).visitCode()
-      Label l2 = new Label()
-      methodVisitor.visitLabel(l2)
-      methodVisitor.visitInsn(Opcodes.RETURN)
-      methodVisitor.visitMaxs(2, 2)
-      methodVisitor.visitEnd()
+      visitOnSaveInstanceStateMethod()
     }
     super.visitEnd()
-    Store.instance.fields.clear()
+    Const.stateFields.clear()
+  }
+
+  private void visitOnCreateMethod() {
+    MethodVisitor methodVisitor = cv.visitMethod(
+        Opcodes.ACC_PROTECTED, Methods.ON_CREATE, Descriptors.ON_CREATE, null, null
+    )
+    methodVisitor.visitCode()
+    Label l0 = new Label()
+    methodVisitor.visitLabel(l0)
+    methodVisitor.visitVarInsn(Opcodes.ALOAD, 0)
+    methodVisitor.visitVarInsn(Opcodes.ALOAD, 1)
+    methodVisitor.visitMethodInsn(
+        Opcodes.INVOKESPECIAL, superOwner, Methods.ON_CREATE, Descriptors.ON_CREATE, false
+    )
+    Label l1 = new Label()
+    methodVisitor.visitLabel(l1)
+    new OnCreateVisitor(methodVisitor).visitCode()
+    Label l2 = new Label()
+    methodVisitor.visitLabel(l2)
+    methodVisitor.visitInsn(Opcodes.RETURN)
+    methodVisitor.visitMaxs(3, 1)
+    methodVisitor.visitEnd()
+  }
+
+  private void visitOnSaveInstanceStateMethod() {
+    MethodVisitor methodVisitor = cv.visitMethod(
+        Opcodes.ACC_PROTECTED,
+        Methods.ON_SAVED_INSTANCE_STATE,
+        Descriptors.ON_SAVED_INSTANCE_STATE,
+        null,
+        null
+    )
+    methodVisitor.visitCode()
+    Label l0 = new Label()
+    methodVisitor.visitLabel(l0)
+    methodVisitor.visitVarInsn(Opcodes.ALOAD, 0)
+    methodVisitor.visitVarInsn(Opcodes.ALOAD, 1)
+    methodVisitor.visitMethodInsn(
+        Opcodes.INVOKESPECIAL, superOwner,
+        Methods.ON_SAVED_INSTANCE_STATE,
+        Descriptors.ON_SAVED_INSTANCE_STATE,
+        false
+    )
+    Label l1 = new Label()
+    methodVisitor.visitLabel(l1)
+    new OnSavedInstanceStateVisitor(methodVisitor).visitCode()
+    Label l2 = new Label()
+    methodVisitor.visitLabel(l2)
+    methodVisitor.visitInsn(Opcodes.RETURN)
+    methodVisitor.visitMaxs(3, 1)
+    methodVisitor.visitEnd()
   }
 }

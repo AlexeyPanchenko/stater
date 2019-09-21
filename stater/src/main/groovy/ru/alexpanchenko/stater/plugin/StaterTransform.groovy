@@ -107,8 +107,8 @@ class StaterTransform extends Transform {
     ClassReader classReader = new ClassReader(is)
     ClassWriter classWriter = new ClassWriter(ClassWriter.COMPUTE_FRAMES)
 
-    TraceClassVisitor traceClassVisitor = new TraceClassVisitor(classWriter, new PrintWriter(System.out))
-    StaterClassVisitor adapter = new StaterClassVisitor(traceClassVisitor)
+    //TraceClassVisitor traceClassVisitor = new TraceClassVisitor(classWriter, new PrintWriter(System.out))
+    StaterClassVisitor adapter = new StaterClassVisitor(classWriter)
 
     classReader.accept(adapter, ClassReader.EXPAND_FRAMES)
     byte [] newBytes = classWriter.toByteArray()

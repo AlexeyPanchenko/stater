@@ -25,7 +25,7 @@ class StateAnnotationVisitor extends AnnotationVisitor {
   void visitEnum(String name, String descriptor, String value) {
     String typeString = (String) value
     SaverField field = new SaverField(this.name, this.descriptor, this.owner, StateType.valueOf(typeString))
-    Store.instance.fields.add(field)
+    Const.stateFields.add(field)
     super.visitEnum(name, descriptor, value)
   }
 }

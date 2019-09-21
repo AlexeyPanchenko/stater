@@ -3,10 +3,12 @@ package ru.alexpanchenko.stater.plugin.utils
 import groovy.transform.CompileStatic
 import groovy.transform.TypeChecked
 import org.objectweb.asm.Opcodes
+import ru.alexpanchenko.stater.plugin.model.SaverField
 
 @TypeChecked
 class Const {
   public static final int ASM_VERSION = Opcodes.ASM7
+  public static final ArrayList<SaverField> stateFields = new ArrayList<>()
 }
 
 @TypeChecked

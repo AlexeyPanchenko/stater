@@ -28,7 +28,7 @@ class OnCreateVisitor extends MethodVisitor {
     mv.visitVarInsn(Opcodes.ALOAD, 1)
     mv.visitJumpInsn(Opcodes.IFNULL, l1)
 
-    Store.instance.fields.each { field ->
+    Const.stateFields.each { field ->
       Label label = new Label()
       mv.visitLabel(label)
       mv.visitVarInsn(Opcodes.ALOAD, 0)

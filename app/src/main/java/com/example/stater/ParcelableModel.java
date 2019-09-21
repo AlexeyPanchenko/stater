@@ -3,14 +3,14 @@ package com.example.stater;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-public class ParModel implements Parcelable {
+public class ParcelableModel implements Parcelable {
 
   public String val1;
   public String val2;
   public int val3;
   public boolean val4;
 
-  public ParModel(String val1, String val2, int val3, boolean val4) {
+  public ParcelableModel(String val1, String val2, int val3, boolean val4) {
     this.val1 = val1;
     this.val2 = val2;
     this.val3 = val3;
@@ -28,20 +28,20 @@ public class ParModel implements Parcelable {
     dest.writeByte(this.val4 ? (byte) 1 : (byte) 0);
   }
 
-  public ParModel() {}
+  public ParcelableModel() {}
 
-  protected ParModel(Parcel in) {
+  protected ParcelableModel(Parcel in) {
     this.val1 = in.readString();
     this.val2 = in.readString();
     this.val3 = in.readInt();
     this.val4 = in.readByte() != 0;
   }
 
-  public static final Creator<ParModel> CREATOR = new Creator<ParModel>() {
+  public static final Creator<ParcelableModel> CREATOR = new Creator<ParcelableModel>() {
     @Override
-    public ParModel createFromParcel(Parcel source) {return new ParModel(source);}
+    public ParcelableModel createFromParcel(Parcel source) {return new ParcelableModel(source);}
 
     @Override
-    public ParModel[] newArray(int size) {return new ParModel[size];}
+    public ParcelableModel[] newArray(int size) {return new ParcelableModel[size];}
   };
 }

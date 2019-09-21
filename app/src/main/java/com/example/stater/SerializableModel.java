@@ -2,7 +2,7 @@ package com.example.stater;
 
 import java.io.Serializable;
 
-public class SerModel implements Serializable {
+public class SerializableModel implements Serializable {
 
   public int param1;
   public int param2;
