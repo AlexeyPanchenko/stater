@@ -6,7 +6,6 @@ import groovy.transform.TypeChecked
 import org.apache.commons.io.FileUtils
 import org.objectweb.asm.ClassReader
 import org.objectweb.asm.ClassWriter
-import org.objectweb.asm.util.TraceClassVisitor
 import ru.alexpanchenko.stater.plugin.visitors.StaterClassVisitor
 
 @TypeChecked
@@ -26,11 +25,6 @@ class StaterTransform extends Transform {
   Set<? super QualifiedContent.Scope> getScopes() {
     return TransformManager.PROJECT_ONLY
   }
-
-//  @Override
-//  Set<? super QualifiedContent.Scope> getReferencedScopes() {
-//    return ImmutableSet.of(QualifiedContent.Scope.EXTERNAL_LIBRARIES, QualifiedContent.Scope.SUB_PROJECTS)
-//  }
 
   @Override
   boolean isIncremental() {
@@ -93,7 +87,6 @@ class StaterTransform extends Transform {
         } else {
           FileUtils.copyFile(file, destFile)
         }
-
       }
     }
   }
@@ -107,7 +100,6 @@ class StaterTransform extends Transform {
     ClassReader classReader = new ClassReader(is)
     ClassWriter classWriter = new ClassWriter(ClassWriter.COMPUTE_FRAMES)
 
-    //TraceClassVisitor traceClassVisitor = new TraceClassVisitor(classWriter, new PrintWriter(System.out))
     StaterClassVisitor adapter = new StaterClassVisitor(classWriter)
 
     classReader.accept(adapter, ClassReader.EXPAND_FRAMES)
