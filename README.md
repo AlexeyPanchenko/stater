@@ -1,9 +1,11 @@
 Stater
 =======
+[![Build status](https://travis-ci.org/AlexeyPanchenko/stater.svg?branch=master)]
+
 Lightweight library to save state in your Activity/Fragment.
 Stater also fine works with Kotlin code as it uses bytecode transformation.
 
-Download
+Download (TBD)
 --------
 In root `build.gradle` file:
 ```groovy
