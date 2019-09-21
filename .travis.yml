@@ -1,9 +1,5 @@
 language: java
-jdk: oraclejdk7
-
-env:
-  global:
-    - ANDROID_API=28
+jdk: openjdk8
 
 before_cache:
   - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
@@ -20,4 +16,5 @@ branches:
 
 script:
   - ./gradlew :stater:assemble
-  - ./gradlew test
+  - ./gradlew :stater:test
+  - ./gradlew :library:test

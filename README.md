@@ -1,6 +1,6 @@
 Stater
 =======
-![Build status](https://travis-ci.org/AlexeyPanchenko/stater.svg?branch=master)
+[![Build status](https://travis-ci.org/AlexeyPanchenko/stater.svg)](https://travis-ci.org/AlexeyPanchenko/stater)
 
 Lightweight library to save state in your Activity/Fragment.
 Stater also fine works with Kotlin code as it uses bytecode transformation.
@@ -13,10 +13,6 @@ buildscript {
     ext.stater_version = '0.1'
     repositories {
         jcenter()
-        ...
-        maven {
-            url  "https://dl.bintray.com/alexeypanchenko/maven"
-        }
     }
     dependencies {
         ...
@@ -27,10 +23,6 @@ buildscript {
 allprojects {
     repositories {
         jcenter()
-        ..
-        maven {
-            url  "https://dl.bintray.com/alexeypanchenko/maven"
-        }
     }
 }
 
