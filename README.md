@@ -5,15 +5,35 @@ Stater
 Lightweight library to save state in your Activity/Fragment.
 Stater also fine works with Kotlin code as it uses bytecode transformation.
 
-Download (TBD)
+Download
 --------
 In root `build.gradle` file:
 ```groovy
-ext.stater_version = '0.1'
-dependencies {
-    ...
-    classpath "ru.alexpanchenko.stater:stater:$stater_version"
+buildscript {
+    ext.stater_version = '0.1'
+    repositories {
+        jcenter()
+        ...
+        maven {
+            url  "https://dl.bintray.com/alexeypanchenko/maven"
+        }
+    }
+    dependencies {
+        ...
+        classpath "ru.alexpanchenko:stater-plugin:$stater_version"
+    }
 }
+
+allprojects {
+    repositories {
+        jcenter()
+        ..
+        maven {
+            url  "https://dl.bintray.com/alexeypanchenko/maven"
+        }
+    }
+}
+
 ```
 In your app `build.gradle` file add plugin:
 ```groovy
@@ -23,7 +43,7 @@ apply plugin: 'stater-plugin'
 ```
 And library:
 ```groovy
-implementation "ru.alexpanchenko.stater:stater:$stater_version"
+implementation "ru.alexpanchenko:stater:$stater_version"
 ```
 
 Usage

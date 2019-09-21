@@ -1,8 +1,16 @@
 apply plugin: 'java-library'
-
-dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
-}
+apply plugin: 'com.novoda.bintray-release'
 
 sourceCompatibility = "8"
 targetCompatibility = "8"
+
+publish {
+    userOrg = USER_ORG
+    groupId = GROUP_ID
+    artifactId = ARTIFACT_ID_LIB
+    publishVersion = VERSION
+    desc = 'Lightweight library to save state in your Activity/Fragment.'
+    website = 'https://github.com/AlexeyPanchenko/stater'
+}
+
+// ./gradlew :library:clean :library:build :library:bintrayUpload -PbintrayUser=BINTRAY_USERNAME -PbintrayKey=BINTRAY_KEY -PdryRun=false
