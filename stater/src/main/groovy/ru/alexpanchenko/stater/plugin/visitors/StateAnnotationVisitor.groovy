@@ -2,10 +2,9 @@ package ru.alexpanchenko.stater.plugin.visitors
 
 import groovy.transform.TypeChecked
 import org.objectweb.asm.AnnotationVisitor
-import ru.alexpanchenko.stater.plugin.utils.Const
 import ru.alexpanchenko.stater.plugin.model.SaverField
 import ru.alexpanchenko.stater.plugin.model.StateType
-import ru.alexpanchenko.stater.plugin.utils.Store
+import ru.alexpanchenko.stater.plugin.utils.Const
 
 @TypeChecked
 class StateAnnotationVisitor extends AnnotationVisitor {

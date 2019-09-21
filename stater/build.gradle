@@ -9,7 +9,8 @@ dependencies {
     implementation 'com.android.tools.build:gradle:3.5.0'
     implementation 'com.android.tools.build:gradle-api:3.5.0'
     implementation 'org.ow2.asm:asm:7.1'
-    testImplementation "junit:junit:4.12"
+    testImplementation 'junit:junit:4.12'
+    testImplementation'org.mockito:mockito-core:3.0.0'
 }
 
 sourceCompatibility = "8"

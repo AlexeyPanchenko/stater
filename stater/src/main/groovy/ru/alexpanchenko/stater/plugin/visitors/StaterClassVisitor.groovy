@@ -3,7 +3,7 @@ package ru.alexpanchenko.stater.plugin.visitors
 import ru.alexpanchenko.stater.plugin.utils.Const
 import ru.alexpanchenko.stater.plugin.utils.Descriptors
 import ru.alexpanchenko.stater.plugin.utils.Methods
-import ru.alexpanchenko.stater.plugin.utils.Store
+
 import groovy.transform.TypeChecked
 import org.objectweb.asm.*
 

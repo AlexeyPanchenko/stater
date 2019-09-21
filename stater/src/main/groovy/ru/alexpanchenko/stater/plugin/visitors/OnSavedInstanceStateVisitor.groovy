@@ -6,7 +6,7 @@ import org.objectweb.asm.MethodVisitor
 import org.objectweb.asm.Opcodes
 import ru.alexpanchenko.stater.plugin.utils.Const
 import ru.alexpanchenko.stater.plugin.utils.Descriptors
-import ru.alexpanchenko.stater.plugin.utils.Store
+
 import ru.alexpanchenko.stater.plugin.utils.Types
 import ru.alexpanchenko.stater.plugin.model.StateType
 import ru.alexpanchenko.stater.plugin.model.MethodDescriptor
@@ -32,7 +32,7 @@ class OnSavedInstanceStateVisitor extends MethodVisitor {
       final StateType type = MethodDescriptorUtils.primitiveIsObject(field.descriptor)
           ? StateType.SERIALIZABLE : field.type
       MethodDescriptor methodDescriptor = MethodDescriptorUtils.getDescriptorByType(type, false)
-      if (!methodDescriptor.isValid()) {
+      if (methodDescriptor == null || !methodDescriptor.isValid()) {
         throw new IllegalStateException("StateType for ${field.name} in ${field.owner} is unknown!")
       }
       mv.visitFieldInsn(Opcodes.GETFIELD, field.owner, field.name, field.descriptor)

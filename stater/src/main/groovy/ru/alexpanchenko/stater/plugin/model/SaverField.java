@@ -1,5 +1,7 @@
 package ru.alexpanchenko.stater.plugin.model;
 
+import java.util.Objects;
+
 public class SaverField {
 
   public final String name;
@@ -14,6 +16,27 @@ public class SaverField {
     this.owner = owner;
     this.type = type;
     this.key = owner + "_" + name;
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+    SaverField that = (SaverField) o;
+    return name.equals(that.name) &&
+      descriptor.equals(that.descriptor) &&
+      owner.equals(that.owner) &&
+      type == that.type &&
+      key.equals(that.key);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(name, descriptor, owner, type, key);
   }
 
   @Override

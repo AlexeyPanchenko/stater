@@ -1,4 +1,4 @@
-package ru.alexpanchenko.stater;
+package ru.alexpanchenko.stater.plugin;
 
 import com.android.build.api.transform.Transform;
 import com.android.build.gradle.AppPlugin;
