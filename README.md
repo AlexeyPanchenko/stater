@@ -1,6 +1,6 @@
 Stater
 =======
-[![Build status](https://travis-ci.org/AlexeyPanchenko/stater.svg)](https://travis-ci.org/AlexeyPanchenko/stater)
+[![Build status](https://travis-ci.org/AlexeyPanchenko/stater.svg?branch=master)](https://travis-ci.org/AlexeyPanchenko/stater)
 
 Lightweight library to save state in your Activity/Fragment.
 Stater also fine works with Kotlin code as it uses bytecode transformation.
