@@ -1,9 +1,8 @@
 package com.example.buildsrc.utils
 
-import com.example.buildsrc.Descriptors
-import com.example.buildsrc.Methods
-import com.example.buildsrc.StateType
 import groovy.transform.TypeChecked
+import com.example.buildsrc.model.MethodDescriptor
+import com.example.buildsrc.model.StateType
 
 @TypeChecked
 class MethodDescriptorUtils {
@@ -66,6 +65,8 @@ class MethodDescriptorUtils {
         return new MethodDescriptor(isGet ? Methods.Get.PARCELABLE_ARRAY_LIST : Methods.Put.PARCELABLE_ARRAY_LIST, Descriptors.ARRAY_LIST)
       case StateType.BUNDLE:
         return new MethodDescriptor(isGet ? Methods.Get.BUNDLE : Methods.Put.BUNDLE, Descriptors.BUNDLE)
+      case StateType.IBINDER:
+        return new MethodDescriptor(isGet ? Methods.Get.IBINDER : Methods.Put.IBINDER, Descriptors.IBINDER)
     }
   }
 

@@ -1,4 +1,4 @@
-package com.example.buildsrc.utils;
+package com.example.buildsrc.model;
 
 public class MethodDescriptor {
   public final String method;

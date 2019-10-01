@@ -1,6 +1,5 @@
-package com.example.buildsrc;
+package com.example.buildsrc.model;
 
-//todo remove
 public enum StateType {
   BOOLEAN,
   BOOLEAN_ARRAY,
@@ -29,5 +28,6 @@ public enum StateType {
   PARCELABLE,
   PARCELABLE_ARRAY,
   PARCELABLE_ARRAY_LIST,
-  BUNDLE
+  BUNDLE,
+  IBINDER
 }

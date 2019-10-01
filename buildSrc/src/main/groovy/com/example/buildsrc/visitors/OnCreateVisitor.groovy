@@ -1,23 +1,21 @@
 package com.example.buildsrc.visitors
 
-import com.example.buildsrc.Const
-import com.example.buildsrc.Descriptors
-import com.example.buildsrc.StateType
-import com.example.buildsrc.Store
-import com.example.buildsrc.Types
-import com.example.buildsrc.utils.MethodDescriptor
-import com.example.buildsrc.utils.MethodDescriptorUtils
 import groovy.transform.TypeChecked
 import org.objectweb.asm.Label
 import org.objectweb.asm.MethodVisitor
 import org.objectweb.asm.Opcodes
 import org.objectweb.asm.Type
+import com.example.buildsrc.model.MethodDescriptor
+import com.example.buildsrc.model.StateType
+import com.example.buildsrc.utils.Const
+import com.example.buildsrc.utils.Descriptors
+import com.example.buildsrc.utils.MethodDescriptorUtils
+import com.example.buildsrc.utils.Types
 
 @TypeChecked
-class StaterOnCreateVisitor extends MethodVisitor {
+class OnCreateVisitor extends MethodVisitor {
 
-
-  StaterOnCreateVisitor(MethodVisitor methodVisitor) {
+  OnCreateVisitor(MethodVisitor methodVisitor) {
     super(Const.ASM_VERSION, methodVisitor)
   }
 
@@ -29,7 +27,7 @@ class StaterOnCreateVisitor extends MethodVisitor {
     mv.visitVarInsn(Opcodes.ALOAD, 1)
     mv.visitJumpInsn(Opcodes.IFNULL, l1)
 
-    Store.instance.fields.each { field ->
+    Const.stateFields.each { field ->
       Label label = new Label()
       mv.visitLabel(label)
       mv.visitVarInsn(Opcodes.ALOAD, 0)
@@ -38,7 +36,7 @@ class StaterOnCreateVisitor extends MethodVisitor {
 
       final StateType type = MethodDescriptorUtils.primitiveIsObject(field.descriptor) ? StateType.SERIALIZABLE : field.type
       MethodDescriptor methodDescriptor = MethodDescriptorUtils.getDescriptorByType(type, true)
-      if (!methodDescriptor.isValid()) {
+      if (methodDescriptor == null || !methodDescriptor.isValid()) {
         throw new IllegalStateException("StateType for ${field.name} in ${field.owner} is unknown!")
       }
       mv.visitMethodInsn(
@@ -52,9 +50,7 @@ class StaterOnCreateVisitor extends MethodVisitor {
       if (type == StateType.SERIALIZABLE
           || type == StateType.PARCELABLE
           || type == StateType.PARCELABLE_ARRAY
-          || type == StateType.INT_ARRAY_LIST
-          || type == StateType.CHAR_SEQUENCE_ARRAY_LIST
-          || type == StateType.PARCELABLE_ARRAY_LIST
+          || type == StateType.IBINDER
       ) {
         mv.visitTypeInsn(Opcodes.CHECKCAST, Type.getType(field.descriptor).internalName)
       }
