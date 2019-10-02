@@ -13,155 +13,154 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import ru.alexpanchenko.stater.State;
-import ru.alexpanchenko.stater.StateType;
 
 public class MainActivityJava extends AppCompatActivity {
 
-  @State(StateType.INT)
+  @State
   private int aParam = 0;
 
-  @State(StateType.INT)
+  @State
   private Integer aParamObj = null;
 
-  @State(StateType.LONG)
+  @State
   private long dParam = 5L;
 
-  @State(StateType.LONG)
+  @State
   private Long dParamO = 5L;
 
-  @State(StateType.LONG_ARRAY)
+  @State
   private long[] longs;
 
-  @State(StateType.LONG_ARRAY)
+  @State
   private Long[] longsO;
 
-  @State(StateType.BOOLEAN)
+  @State
   private boolean eParam = false;
 
-  @State(StateType.STRING)
+  @State
   private String bqParam = "asd";
 
-  @State(StateType.PARCELABLE)
+  @State
   private ParcelableModel parModel = new ParcelableModel("a", "2", 3, true);
 
-  @State(StateType.STRING_ARRAY_LIST)
+  @State
   private ArrayList<String> serModel;
 
-  @State(StateType.BUNDLE)
+  @State
   private Bundle bbb;
 
-  @State(StateType.INT_ARRAY)
+  @State
   private int[] ints;
 
-  @State(StateType.INT_ARRAY_LIST)
+  @State
   private ArrayList<Integer> integers;
 
-  @State(StateType.STRING_ARRAY)
+  @State
   private String[] strings;
 
-  @State(StateType.PARCELABLE_ARRAY_LIST)
+  @State
   private ArrayList<ParcelableModel> parModels;
 
-  @State(StateType.PARCELABLE_ARRAY)
+  @State
   private ParcelableModel[] parModelsArray;
 
-  @State(StateType.CHAR_SEQUENCE)
+  @State
   private CharSequence charSequence;
 
-  @State(StateType.CHAR_SEQUENCE_ARRAY)
+  @State
   private CharSequence[] charSequences;
 
-  @State(StateType.CHAR_SEQUENCE_ARRAY_LIST)
+  @State
   private ArrayList<CharSequence> charSequenceArrayList;
 
-  @State(StateType.CHAR_SEQUENCE_ARRAY_LIST)
+  @State
   private List<CharSequence> charSequenceList;
 
-  @State(StateType.BOOLEAN_ARRAY)
+  @State
   private boolean[] booleans;
 
-  @State(StateType.BOOLEAN_ARRAY)
+  @State
   private Boolean[] booleansObj;
 
-  @State(StateType.BOOLEAN)
+  @State
   private Boolean booleanObj = true;
 
-  @State(StateType.BYTE)
+  @State
   private byte aByte;
 
-  @State(StateType.BYTE)
+  @State
   private Byte aByteObj;
 
-  @State(StateType.BYTE_ARRAY)
+  @State
   private byte[] bytes;
 
-  @State(StateType.BYTE_ARRAY)
+  @State
   private Byte[] bytesObj;
 
-  @State(StateType.CHAR)
+  @State
   private char aChar;
 
-  @State(StateType.CHAR)
+  @State
   private Character character;
 
-  @State(StateType.CHAR_ARRAY)
+  @State
   private char[] chars;
 
-  @State(StateType.CHAR_ARRAY)
+  @State
   private Character[] characters;
 
-  @State(StateType.FLOAT)
+  @State
   private float aFloat;
 
-  @State(StateType.FLOAT)
+  @State
   private Float aFloatObj;
 
-  @State(StateType.FLOAT_ARRAY)
+  @State
   private float[] floats;
 
-  @State(StateType.FLOAT_ARRAY)
+  @State
   private Float[] floatsObj;
 
-  @State(StateType.SHORT)
+  @State
   private short aShort;
 
-  @State(StateType.SHORT)
+  @State
   private Short aShortObj;
 
-  @State(StateType.SHORT_ARRAY)
+  @State
   private short[] shorts;
 
-  @State(StateType.SHORT_ARRAY)
+  @State
   private Short[] shortObj;
 
-  @State(StateType.DOUBLE)
+  @State
   private double aDouble;
 
-  @State(StateType.DOUBLE)
+  @State
   private Double aDoubleO;
 
-  @State(StateType.DOUBLE_ARRAY)
+  @State
   private double[] doubles;
 
-  @State(StateType.DOUBLE_ARRAY)
+  @State
   private Double[] doublesO;
 
-  @State(StateType.SERIALIZABLE)
+  @State
   private SerializableModel serModels;
 
-  @State(StateType.IBINDER)
+  @State
   private IBinder iBinde;
 
-  @State(StateType.BOOLEAN)
+  @State
   private ParcelableModelKotlin parcelableModelKotlin;
 
-  @State(StateType.INT)
+  @State
   private ParcelableModelJava parcelableModelJava;
 
-  @State(StateType.BOOLEAN)
+  @State
   private SerializableModelJava serializableModelJava;
 
-  @State(StateType.INT)
+  @State
   private SerializableModelKotlin serializableModelKotlin;
 
   @Override
@@ -178,7 +177,7 @@ public class MainActivityJava extends AppCompatActivity {
     Log.d("TTT", "booleansObj = " + Arrays.toString(booleansObj));
   }
 
-  @State(StateType.INT)
+  @State
   private int bParam = 5;
 
   private int cParam = 15;
