@@ -1,13 +1,13 @@
-package com.example.buildsrc.utils
+package ru.alexpanchenko.stater.plugin.utils
 
 import com.android.annotations.NonNull
 import com.android.annotations.Nullable
-import com.example.buildsrc.model.StateType
-import com.example.buildsrc.visitors.TypesSignatureVisitor
 import groovy.transform.CompileStatic
 import groovy.transform.TypeChecked
 import org.objectweb.asm.Type
 import org.objectweb.asm.signature.SignatureReader
+import ru.alexpanchenko.stater.plugin.model.StateType
+import ru.alexpanchenko.stater.plugin.visitors.TypesSignatureVisitor
 
 /**
  * Mapper, witch define {@link StateType} by descriptor and signature of field.

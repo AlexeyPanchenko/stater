@@ -7,7 +7,6 @@ import ru.alexpanchenko.stater.Stater
 import ru.alexpanchenko.stater.StateType
 import ru.alexpanchenko.stater.State
 
-@Stater
 class MainActivityKotlin : AppCompatActivity() {
 
   @State(StateType.INT)

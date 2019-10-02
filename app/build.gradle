@@ -3,8 +3,8 @@ import com.example.buildsrc.StaterPlugin
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
-//apply plugin: 'stater-plugin'
-apply plugin: StaterPlugin
+apply plugin: 'stater-plugin'
+//apply plugin: StaterPlugin
 
 android {
     compileSdkVersion 29

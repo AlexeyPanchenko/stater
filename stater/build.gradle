@@ -2,14 +2,15 @@ apply plugin: 'java-gradle-plugin'
 apply plugin: 'groovy'
 apply plugin: 'maven'
 apply plugin: 'maven-publish'
-apply plugin: 'com.novoda.bintray-release'
+//apply plugin: 'com.novoda.bintray-release'
 
 dependencies {
     implementation gradleApi()
 
     implementation 'com.android.tools.build:gradle:3.5.0'
     implementation 'com.android.tools.build:gradle-api:3.5.0'
-    implementation 'org.ow2.asm:asm:7.1'
+    implementation 'org.ow2.asm:asm:7.2'
+    implementation 'org.javassist:javassist:3.25.0-GA'
     testImplementation 'junit:junit:4.12'
     testImplementation'org.mockito:mockito-core:3.0.0'
 }
@@ -18,30 +19,30 @@ sourceCompatibility = "8"
 targetCompatibility = "8"
 
 // Local
-//publishing {
-//    publications {
-//        maven(MavenPublication) {
-//            groupId = 'ru.alexpanchenko.stater'
-//            artifactId = 'stater'
-//            version = '0.1'
-//
-//            from components.java
-//        }
-//    }
-//    repositories {
-//        maven {
-//            url = "file:///$buildDir/m2repo"
-//        }
-//    }
-//}
+publishing {
+    publications {
+        maven(MavenPublication) {
+            groupId = GROUP_ID
+            artifactId = ARTIFACT_ID_PLUGIN
+            version = '1.0'
 
-publish {
-    userOrg = USER_ORG
-    groupId = GROUP_ID
-    artifactId = ARTIFACT_ID_PLUGIN
-    publishVersion = VERSION
-    desc = 'Plugin for transform Activity/Fragment bytecode.'
-    website = 'https://github.com/AlexeyPanchenko/stater'
+            from components.java
+        }
+    }
+    repositories {
+        maven {
+            url = "file:///$buildDir/m2repo"
+        }
+    }
 }
+
+//publish {
+//    userOrg = USER_ORG
+//    groupId = GROUP_ID
+//    artifactId = ARTIFACT_ID_PLUGIN
+//    publishVersion = VERSION
+//    desc = 'Plugin for transform Activity/Fragment bytecode.'
+//    website = 'https://github.com/AlexeyPanchenko/stater'
+//}
 
 // ./gradlew :stater:clean :stater:build :stater:bintrayUpload -PbintrayUser=BINTRAY_USERNAME -PbintrayKey=BINTRAY_KEY -PdryRun=false

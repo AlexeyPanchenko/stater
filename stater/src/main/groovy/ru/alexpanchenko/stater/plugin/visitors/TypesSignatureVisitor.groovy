@@ -1,10 +1,13 @@
-package com.example.buildsrc.utils
+package ru.alexpanchenko.stater.plugin.visitors
 
-import org.objectweb.asm.signature.SignatureVisitor;
+import groovy.transform.TypeChecked
+import org.objectweb.asm.signature.SignatureVisitor
+import ru.alexpanchenko.stater.plugin.utils.Const;
 
 /**
  * {@link SignatureVisitor} for define hierarchy of types.
  */
+@TypeChecked
 class TypesSignatureVisitor extends SignatureVisitor {
 
   List<String> types = new ArrayList<>()
