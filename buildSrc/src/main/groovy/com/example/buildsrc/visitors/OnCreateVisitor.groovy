@@ -34,8 +34,7 @@ class OnCreateVisitor extends MethodVisitor {
       mv.visitVarInsn(Opcodes.ALOAD, 1)
       mv.visitLdcInsn(field.key)
 
-      final StateType type = MethodDescriptorUtils.primitiveIsObject(field.descriptor) ? StateType.SERIALIZABLE : field.type
-      MethodDescriptor methodDescriptor = MethodDescriptorUtils.getDescriptorByType(type, true)
+      MethodDescriptor methodDescriptor = MethodDescriptorUtils.getDescriptorByType(field.type, true)
       if (methodDescriptor == null || !methodDescriptor.isValid()) {
         throw new IllegalStateException("StateType for ${field.name} in ${field.owner} is unknown!")
       }
@@ -47,10 +46,10 @@ class OnCreateVisitor extends MethodVisitor {
           false
       )
       // cast
-      if (type == StateType.SERIALIZABLE
-          || type == StateType.PARCELABLE
-          || type == StateType.PARCELABLE_ARRAY
-          || type == StateType.IBINDER
+      if (field.type == StateType.SERIALIZABLE
+          || field.type == StateType.PARCELABLE
+          || field.type == StateType.PARCELABLE_ARRAY
+          || field.type == StateType.IBINDER
       ) {
         mv.visitTypeInsn(Opcodes.CHECKCAST, Type.getType(field.descriptor).internalName)
       }

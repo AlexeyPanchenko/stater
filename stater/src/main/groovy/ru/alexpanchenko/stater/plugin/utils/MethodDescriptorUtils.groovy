@@ -74,7 +74,7 @@ class MethodDescriptorUtils {
     return descriptor == Descriptors.BYTE_OBJ || descriptor == Descriptors.BYTE_OBJ_ARRAY ||
         descriptor == Descriptors.BOOLEAN_OBJ || descriptor == Descriptors.BOOLEAN_OBJ_ARRAY ||
         descriptor == Descriptors.CHAR_OBJ || descriptor == Descriptors.CHAR_OBJ_ARRAY ||
-        descriptor == Descriptors.SHORT_OBJ || descriptor == Descriptors.FLOAT_OBJ_ARRAY ||
+        descriptor == Descriptors.SHORT_OBJ || descriptor == Descriptors.SHORT_OBJ_ARRAY ||
         descriptor == Descriptors.FLOAT_OBJ || descriptor == Descriptors.FLOAT_OBJ_ARRAY ||
         descriptor == Descriptors.INTEGER || descriptor == Descriptors.INTEGER_ARRAY ||
         descriptor == Descriptors.LONG_OBJ || descriptor == Descriptors.LONG_OBJ_ARRAY ||

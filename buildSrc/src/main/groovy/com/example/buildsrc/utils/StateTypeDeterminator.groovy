@@ -50,52 +50,36 @@ class StateTypeDeterminator {
   private StateType getPrimitiveType(@NonNull String descriptor) {
     switch (descriptor) {
       case Descriptors.BOOLEAN:
-      case Descriptors.BOOLEAN_OBJ:
         return StateType.BOOLEAN
       case Descriptors.BOOLEAN_ARRAY:
-      case Descriptors.BOOLEAN_OBJ_ARRAY:
         return StateType.BOOLEAN_ARRAY
       case Descriptors.BYTE:
-      case Descriptors.BYTE_OBJ:
         return StateType.BYTE
       case Descriptors.BYTE_ARRAY:
-      case Descriptors.BYTE_OBJ_ARRAY:
         return StateType.BYTE_ARRAY
       case Descriptors.CHAR:
-      case Descriptors.CHAR_OBJ:
         return StateType.CHAR
       case Descriptors.CHAR_ARRAY:
-      case Descriptors.CHAR_OBJ_ARRAY:
         return StateType.CHAR_ARRAY
       case Descriptors.SHORT:
-      case Descriptors.SHORT_OBJ:
         return StateType.SHORT
       case Descriptors.SHORT_ARRAY:
-      case Descriptors.SHORT_OBJ_ARRAY:
         return StateType.SHORT_ARRAY
       case Descriptors.INT:
-      case Descriptors.INTEGER:
         return StateType.INT
       case Descriptors.INT_ARRAY:
-      case Descriptors.INTEGER_ARRAY:
         return StateType.INT_ARRAY
       case Descriptors.FLOAT:
-      case Descriptors.FLOAT_OBJ:
         return StateType.FLOAT
       case Descriptors.FLOAT_ARRAY:
-      case Descriptors.FLOAT_OBJ_ARRAY:
         return StateType.FLOAT_ARRAY
       case Descriptors.LONG:
-      case Descriptors.LONG_OBJ:
         return StateType.LONG
       case Descriptors.LONG_ARRAY:
-      case Descriptors.LONG_OBJ_ARRAY:
         return StateType.LONG_ARRAY
       case Descriptors.DOUBLE:
-      case Descriptors.DOUBLE_OBJ:
         return StateType.DOUBLE
       case Descriptors.DOUBLE_ARRAY:
-      case Descriptors.DOUBLE_OBJ_ARRAY:
         return StateType.DOUBLE_ARRAY
       case Descriptors.STRING:
         return StateType.STRING
@@ -109,10 +93,15 @@ class StateTypeDeterminator {
         return StateType.SERIALIZABLE
       case Descriptors.PARCELABLE:
         return StateType.PARCELABLE
+      case Descriptors.PARCELABLE_ARRAY:
+        return StateType.PARCELABLE_ARRAY
       case Descriptors.BUNDLE:
         return StateType.BUNDLE
       case Descriptors.IBINDER:
         return StateType.IBINDER
+    }
+    if (MethodDescriptorUtils.primitiveIsObject(descriptor)) {
+      return StateType.SERIALIZABLE
     }
     return null
   }

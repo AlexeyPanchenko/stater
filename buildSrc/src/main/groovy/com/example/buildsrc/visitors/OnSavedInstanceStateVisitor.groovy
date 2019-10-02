@@ -28,9 +28,7 @@ class OnSavedInstanceStateVisitor extends MethodVisitor {
       mv.visitVarInsn(Opcodes.ALOAD, 1)
       mv.visitLdcInsn(field.key)
       mv.visitVarInsn(Opcodes.ALOAD, 0)
-      final StateType type = MethodDescriptorUtils.primitiveIsObject(field.descriptor)
-          ? StateType.SERIALIZABLE : field.type
-      MethodDescriptor methodDescriptor = MethodDescriptorUtils.getDescriptorByType(type, false)
+      MethodDescriptor methodDescriptor = MethodDescriptorUtils.getDescriptorByType(field.type, false)
       if (methodDescriptor == null || !methodDescriptor.isValid()) {
         throw new IllegalStateException("StateType for ${field.name} in ${field.owner} is unknown!")
       }

@@ -332,31 +332,28 @@ public class MethodDescriptorUtilsTest {
   @Test
   public void testObjectsAsPrimitives() {
     assertTrue(MethodDescriptorUtils.primitiveIsObject(Descriptors.BOOLEAN_OBJ));
-    assertTrue(MethodDescriptorUtils.primitiveIsObject("[" + Descriptors.BOOLEAN_OBJ));
+    assertTrue(MethodDescriptorUtils.primitiveIsObject(Descriptors.BOOLEAN_OBJ_ARRAY));
 
     assertTrue(MethodDescriptorUtils.primitiveIsObject(Descriptors.BYTE_OBJ));
-    assertTrue(MethodDescriptorUtils.primitiveIsObject("[" + Descriptors.BYTE_OBJ));
+    assertTrue(MethodDescriptorUtils.primitiveIsObject(Descriptors.BYTE_OBJ_ARRAY));
 
     assertTrue(MethodDescriptorUtils.primitiveIsObject(Descriptors.CHAR_OBJ));
-    assertTrue(MethodDescriptorUtils.primitiveIsObject("[" + Descriptors.CHAR_OBJ));
+    assertTrue(MethodDescriptorUtils.primitiveIsObject(Descriptors.CHAR_OBJ_ARRAY));
 
     assertTrue(MethodDescriptorUtils.primitiveIsObject(Descriptors.SHORT_OBJ));
-    assertTrue(MethodDescriptorUtils.primitiveIsObject("[" + Descriptors.SHORT_OBJ));
+    assertTrue(MethodDescriptorUtils.primitiveIsObject(Descriptors.SHORT_OBJ_ARRAY));
 
     assertTrue(MethodDescriptorUtils.primitiveIsObject(Descriptors.FLOAT_OBJ));
-    assertTrue(MethodDescriptorUtils.primitiveIsObject("[" + Descriptors.FLOAT_OBJ));
+    assertTrue(MethodDescriptorUtils.primitiveIsObject(Descriptors.FLOAT_OBJ_ARRAY));
 
     assertTrue(MethodDescriptorUtils.primitiveIsObject(Descriptors.INTEGER));
-    assertTrue(MethodDescriptorUtils.primitiveIsObject("[" + Descriptors.INTEGER));
+    assertTrue(MethodDescriptorUtils.primitiveIsObject(Descriptors.INTEGER_ARRAY));
 
     assertTrue(MethodDescriptorUtils.primitiveIsObject(Descriptors.LONG_OBJ));
-    assertTrue(MethodDescriptorUtils.primitiveIsObject("[" + Descriptors.LONG_OBJ));
+    assertTrue(MethodDescriptorUtils.primitiveIsObject(Descriptors.LONG_OBJ_ARRAY));
 
     assertTrue(MethodDescriptorUtils.primitiveIsObject(Descriptors.DOUBLE_OBJ));
-    assertTrue(MethodDescriptorUtils.primitiveIsObject("[" + Descriptors.DOUBLE_OBJ));
+    assertTrue(MethodDescriptorUtils.primitiveIsObject(Descriptors.DOUBLE_OBJ_ARRAY));
   }
-
-
-
 
 }
