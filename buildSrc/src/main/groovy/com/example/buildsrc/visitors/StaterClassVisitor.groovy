@@ -1,9 +1,6 @@
 package com.example.buildsrc.visitors
 
-import com.example.buildsrc.utils.ClassHierarchyUtils
-import com.example.buildsrc.utils.Const
-import com.example.buildsrc.utils.Descriptors
-import com.example.buildsrc.utils.Methods
+import com.example.buildsrc.utils.*
 import groovy.transform.TypeChecked
 import org.objectweb.asm.*
 
@@ -16,6 +13,8 @@ class StaterClassVisitor extends ClassVisitor implements Opcodes {
   private String owner
   private String superOwner
 
+  private final StateTypeDeterminator typeDeterminator = new StateTypeDeterminator()
+
   StaterClassVisitor(ClassVisitor classVisitor) {
     super(Const.ASM_VERSION, classVisitor)
   }
@@ -24,25 +23,22 @@ class StaterClassVisitor extends ClassVisitor implements Opcodes {
   void visit(int version, int access, String name, String signature, String superName, String[] interfaces) {
     this.owner = name
     this.superOwner = superName
-    println("NAME = $name")
-    println("SUPER = $superName")
-    println("INTERFACES = ${Arrays.toString(interfaces)}")
-
+    needTransform = ClassHierarchyUtils.containsParent(
+        superName,
+        Packages.ACTIVITY,
+        Packages.ACTIVITY_X_SUPPORT,
+        Packages.FRAGMENT_X,
+        Packages.FRAGMENT_SUPPORT,
+        Packages.FRAGMENT
+    )
     super.visit(version, access, name, signature, superName, interfaces)
-    println("IS ACTIVITY = ${ClassHierarchyUtils.containsParent(superName, "android.app.Activity")}")
-  }
-
-  @Override
-  AnnotationVisitor visitAnnotation(String descriptor, boolean visible) {
-    needTransform = descriptor == Descriptors.STATER
-    return super.visitAnnotation(descriptor, visible)
   }
 
   @Override
   FieldVisitor visitField(int access, String name, String descriptor, String signature, Object value) {
     FieldVisitor fv = super.visitField(access, name, descriptor, signature, value)
     if (needTransform) {
-      return new StaterFieldVisitor(fv, name, descriptor, owner)
+      return new StaterFieldVisitor(fv, name, descriptor, signature, owner, typeDeterminator)
     }
     return fv
   }

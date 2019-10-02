@@ -15,7 +15,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import ru.alexpanchenko.stater.State;
 import ru.alexpanchenko.stater.StateType;
 
-public class MainActivityJava extends AppCompatActivity {
+public class MainActivityJava9 extends AppCompatActivity {
 
   @State(StateType.INT)
   private int aParam = 0;

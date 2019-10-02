@@ -1,5 +1,6 @@
 package com.example.buildsrc
 
+import com.android.annotations.NonNull
 import com.android.build.api.transform.*
 import com.android.build.gradle.BaseExtension
 import com.android.build.gradle.internal.pipeline.TransformManager
@@ -61,16 +62,15 @@ class StaterTransform extends Transform {
     ClassPool classPool = ClassPool.getDefault()
     fillPoolAndroidInputs(classPool)
     fillPoolReferencedInputs(transformInvocation, classPool)
+    fillPoolInputs(transformInvocation, classPool)
 
     transformInvocation.outputProvider.deleteAll()
 
     transformInvocation.inputs.each { transformInput ->
       transformInput.directoryInputs.each { directoryInput ->
-        classPool.appendClassPath(directoryInput.file.absolutePath)
         transformDirectoryInputs(directoryInput, transformInvocation)
       }
       transformInput.jarInputs.each { jarInput ->
-        classPool.appendClassPath(jarInput.file.absolutePath)
         copyJarInputs(jarInput, transformInvocation)
       }
     }
@@ -81,7 +81,9 @@ class StaterTransform extends Transform {
     classPool.appendClassPath(project.extensions.findByType(BaseExtension.class).bootClasspath[0].toString())
   }
 
-  private void fillPoolReferencedInputs(TransformInvocation transformInvocation, ClassPool classPool) {
+  private void fillPoolReferencedInputs(
+      @NonNull TransformInvocation transformInvocation, @NonNull ClassPool classPool
+  ) {
     transformInvocation.referencedInputs.each { transformInput ->
       transformInput.directoryInputs.each { directoryInput ->
         classPool.appendClassPath(directoryInput.file.absolutePath)
@@ -92,7 +94,22 @@ class StaterTransform extends Transform {
     }
   }
 
-  private void transformDirectoryInputs(DirectoryInput directoryInput, TransformInvocation transformInvocation) {
+  private void fillPoolInputs(
+      @NonNull TransformInvocation transformInvocation, @NonNull ClassPool classPool
+  ) {
+    transformInvocation.inputs.each { transformInput ->
+      transformInput.directoryInputs.each { directoryInput ->
+        classPool.appendClassPath(directoryInput.file.absolutePath)
+      }
+      transformInput.jarInputs.each { jarInput ->
+        classPool.appendClassPath(jarInput.file.absolutePath)
+      }
+    }
+  }
+
+  private void transformDirectoryInputs(
+      @NonNull DirectoryInput directoryInput, @NonNull TransformInvocation transformInvocation
+  ) {
     File destFolder = transformInvocation.outputProvider.getContentLocation(
         directoryInput.getName(),
         directoryInput.getContentTypes(),
@@ -102,7 +119,7 @@ class StaterTransform extends Transform {
     transformDir(directoryInput.file, destFolder)
   }
 
-  private void copyJarInputs(JarInput jarInput, TransformInvocation transformInvocation) {
+  private void copyJarInputs(@NonNull JarInput jarInput, @NonNull TransformInvocation transformInvocation) {
     File destFolder = transformInvocation.outputProvider.getContentLocation(
         jarInput.getName(),
         jarInput.getContentTypes(),
@@ -112,7 +129,7 @@ class StaterTransform extends Transform {
     FileUtils.copyFile(jarInput.file, destFolder)
   }
 
-  private void transformDir(File input, File dest) {
+  private void transformDir(@NonNull File input, @NonNull File dest) {
     if (dest.exists()) {
       FileUtils.forceDelete(dest)
     }
@@ -137,11 +154,11 @@ class StaterTransform extends Transform {
     }
   }
 
-  private void transformSingleFile(File input, File dest) {
+  private void transformSingleFile(@NonNull File input, @NonNull File dest) {
     transformClass(input.getAbsolutePath(), dest.getAbsolutePath())
   }
 
-  private void transformClass(String inputPath, String outputPath) {
+  private void transformClass(@NonNull String inputPath, @NonNull String outputPath) {
     FileInputStream is = new FileInputStream(inputPath)
     ClassReader classReader = new ClassReader(is)
     ClassWriter classWriter = new ClassWriter(ClassWriter.COMPUTE_FRAMES)

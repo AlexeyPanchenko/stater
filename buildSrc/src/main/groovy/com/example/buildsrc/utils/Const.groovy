@@ -84,6 +84,23 @@ class Methods {
 
 @TypeChecked
 @CompileStatic
+class Packages {
+  public static final String ACTIVITY = "android.app.Activity"
+  public static final String ACTIVITY_X_SUPPORT = "androidx.appcompat.app.AppCompatActivity"
+  public static final String FRAGMENT = "android.app.Fragment"
+  public static final String FRAGMENT_X = "androidx.fragment.app.Fragment"
+  public static final String FRAGMENT_SUPPORT = "android.support.v4.app.Fragment"
+
+  public static final String INTEGER = "java.lang.Integer"
+  public static final String STRING = "java.lang.String"
+  public static final String CHAR_SEQUENCE = "java.lang.CharSequence"
+  public static final String SERIALIZABLE = "java.io.Serializable"
+  public static final String PARCELABLE = "android.os.Parcelable"
+  public static final String IBINDER = "android.os.IBinder"
+}
+
+@TypeChecked
+@CompileStatic
 class Types {
   public static final String LIST = "java/util/List"
   public static final String ARRAY_LIST = "java/util/ArrayList"
@@ -120,27 +137,35 @@ class Descriptors {
   public static final String BOOLEAN = "Z"
   public static final String BOOLEAN_OBJ = "L${Types.BOOLEAN_OBJ};"
   public static final String BOOLEAN_ARRAY = "[$BOOLEAN"
+  public static final String BOOLEAN_OBJ_ARRAY = "[$BOOLEAN_OBJ"
   public static final String BYTE = "B"
   public static final String BYTE_OBJ = "L${Types.BYTE_OBJ};"
   public static final String BYTE_ARRAY = "[$BYTE"
+  public static final String BYTE_OBJ_ARRAY = "[$BYTE_OBJ"
   public static final String CHAR = "C"
   public static final String CHAR_OBJ = "L${Types.CHAR_OBJ};"
   public static final String CHAR_ARRAY = "[$CHAR"
+  public static final String CHAR_OBJ_ARRAY = "[$CHAR_OBJ"
   public static final String SHORT = "S"
   public static final String SHORT_OBJ = "L${Types.SHORT_OBJ};"
   public static final String SHORT_ARRAY = "[$SHORT"
+  public static final String SHORT_OBJ_ARRAY = "[$SHORT_OBJ"
   public static final String INT = "I"
   public static final String INTEGER = "L${Types.INTEGER};"
   public static final String INT_ARRAY = "[$INT"
+  public static final String INTEGER_ARRAY = "[$INTEGER"
   public static final String FLOAT = "F"
   public static final String FLOAT_OBJ = "L${Types.FLOAT_OBJ};"
   public static final String FLOAT_ARRAY = "[$FLOAT"
+  public static final String FLOAT_OBJ_ARRAY = "[$FLOAT_OBJ"
   public static final String LONG = "J"
   public static final String LONG_OBJ = "L${Types.LONG_OBJ};"
   public static final String LONG_ARRAY = "[$LONG"
+  public static final String LONG_OBJ_ARRAY = "[$LONG_OBJ"
   public static final String DOUBLE = "D"
   public static final String DOUBLE_OBJ = "L${Types.DOUBLE_OBJ};"
   public static final String DOUBLE_ARRAY = "[$DOUBLE"
+  public static final String DOUBLE_OBJ_ARRAY = "[$DOUBLE_OBJ"
   public static final String STRING = "L${Types.STRING};"
   public static final String STRING_ARRAY = "[$STRING"
   public static final String CHAR_SEQUENCE = "L${Types.CHAR_SEQUENCE};"
