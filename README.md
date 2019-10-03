@@ -56,7 +56,6 @@ Fragment
 ```java
 import ru.alexpanchenko.stater.State;
 
-@Stater
 public class MainFragment extends Fragment {
   @State
   private int yourVar = 0;
