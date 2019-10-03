@@ -1,28 +1,25 @@
 package com.example.stater
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_main.*
-import ru.alexpanchenko.stater.Stater
-import ru.alexpanchenko.stater.StateType
 import ru.alexpanchenko.stater.State
 
-@Stater
 class MainActivityKotlin : AppCompatActivity() {
 
-  @State(StateType.INT)
+  @State
   var a: Int = 2
 
-  @State(StateType.SERIALIZABLE)
+  @State
   private val serModels: SerializableModel? = null
 
-  @State(StateType.INT)
+  @State
   private var intVar: Int = 2
 
-  @State(StateType.FLOAT_ARRAY)
+  @State
   private val floats: FloatArray = floatArrayOf(1.0f)
 
-  @State(StateType.FLOAT_ARRAY)
+  @State
   private val floatsObj: Array<Float?> = arrayOf()
 
   override fun onCreate(savedInstanceState: Bundle?) {

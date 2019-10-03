@@ -1,11 +1,14 @@
 package ru.alexpanchenko.stater.plugin.visitors
 
+import ru.alexpanchenko.stater.plugin.utils.ClassHierarchyUtils
 import ru.alexpanchenko.stater.plugin.utils.Const
 import ru.alexpanchenko.stater.plugin.utils.Descriptors
 import ru.alexpanchenko.stater.plugin.utils.Methods
 
 import groovy.transform.TypeChecked
 import org.objectweb.asm.*
+import ru.alexpanchenko.stater.plugin.utils.Packages
+import ru.alexpanchenko.stater.plugin.utils.StateTypeDeterminator
 
 @TypeChecked
 class StaterClassVisitor extends ClassVisitor implements Opcodes {
@@ -16,6 +19,8 @@ class StaterClassVisitor extends ClassVisitor implements Opcodes {
   private String owner
   private String superOwner
 
+  private final StateTypeDeterminator typeDeterminator = new StateTypeDeterminator()
+
   StaterClassVisitor(ClassVisitor classVisitor) {
     super(Const.ASM_VERSION, classVisitor)
   }
@@ -24,20 +29,22 @@ class StaterClassVisitor extends ClassVisitor implements Opcodes {
   void visit(int version, int access, String name, String signature, String superName, String[] interfaces) {
     this.owner = name
     this.superOwner = superName
+    needTransform = ClassHierarchyUtils.containsParent(
+        superName,
+        Packages.ACTIVITY,
+        Packages.ACTIVITY_X_SUPPORT,
+        Packages.FRAGMENT_X,
+        Packages.FRAGMENT_SUPPORT,
+        Packages.FRAGMENT
+    )
     super.visit(version, access, name, signature, superName, interfaces)
-  }
-
-  @Override
-  AnnotationVisitor visitAnnotation(String descriptor, boolean visible) {
-    needTransform = descriptor == Descriptors.STATER
-    return super.visitAnnotation(descriptor, visible)
   }
 
   @Override
   FieldVisitor visitField(int access, String name, String descriptor, String signature, Object value) {
     FieldVisitor fv = super.visitField(access, name, descriptor, signature, value)
     if (needTransform) {
-      return new StaterFieldVisitor(fv, name, descriptor, owner)
+      return new StaterFieldVisitor(fv, name, descriptor, signature, owner, typeDeterminator)
     }
     return fv
   }

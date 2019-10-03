@@ -14,7 +14,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import ru.alexpanchenko.stater.State;
 
-public class MainActivityJava extends AppCompatActivity {
+public class MainActivityJava10 extends AppCompatActivity {
 
   @State
   private int aParam = 0;

@@ -4,13 +4,13 @@ buildscript {
         google()
         jcenter()
         //flatDir dirs: "app/libs"
-        
+
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.5.0'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         classpath "com.novoda:bintray-release:0.9.1"
-        classpath "ru.alexpanchenko:stater-plugin:0.1"
+        classpath "ru.alexpanchenko:stater-plugin:1.0"
     }
 }
 

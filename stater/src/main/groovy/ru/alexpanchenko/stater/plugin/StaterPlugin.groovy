@@ -22,6 +22,6 @@ class StaterPlugin implements Plugin<Project> {
       )
     }
     BaseExtension androidExtension = project.extensions.findByType(BaseExtension.class)
-    androidExtension.registerTransform(new StaterTransform())
+    androidExtension.registerTransform(new StaterTransform(project))
   }
 }

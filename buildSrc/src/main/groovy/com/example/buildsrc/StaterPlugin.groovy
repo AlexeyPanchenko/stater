@@ -2,12 +2,14 @@ package com.example.buildsrc
 
 import com.android.annotations.NonNull
 import com.android.build.gradle.BaseExtension
+import groovy.transform.CompileStatic
 import groovy.transform.TypeChecked
 import org.gradle.api.GradleException
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 
 @TypeChecked
+@CompileStatic
 class StaterPlugin implements Plugin<Project> {
 
   @Override
@@ -20,6 +22,6 @@ class StaterPlugin implements Plugin<Project> {
       )
     }
     BaseExtension androidExtension = project.extensions.findByType(BaseExtension.class)
-    androidExtension.registerTransform(new StaterTransform())
+    androidExtension.registerTransform(new StaterTransform(project))
   }
 }

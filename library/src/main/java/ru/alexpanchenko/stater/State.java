@@ -10,9 +10,4 @@ import java.lang.annotation.Target;
  */
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.CLASS)
-public @interface State {
-  /**
-   * @return type of your var that need to be saved in bundle.
-   */
-  StateType value();
-}
+public @interface State {}

@@ -1,9 +1,8 @@
 package com.example.buildsrc.utils
 
-import com.example.buildsrc.Descriptors
-import com.example.buildsrc.Methods
-import com.example.buildsrc.StateType
 import groovy.transform.TypeChecked
+import com.example.buildsrc.model.MethodDescriptor
+import com.example.buildsrc.model.StateType
 
 @TypeChecked
 class MethodDescriptorUtils {
@@ -66,18 +65,19 @@ class MethodDescriptorUtils {
         return new MethodDescriptor(isGet ? Methods.Get.PARCELABLE_ARRAY_LIST : Methods.Put.PARCELABLE_ARRAY_LIST, Descriptors.ARRAY_LIST)
       case StateType.BUNDLE:
         return new MethodDescriptor(isGet ? Methods.Get.BUNDLE : Methods.Put.BUNDLE, Descriptors.BUNDLE)
+      case StateType.IBINDER:
+        return new MethodDescriptor(isGet ? Methods.Get.IBINDER : Methods.Put.IBINDER, Descriptors.IBINDER)
     }
   }
 
   static boolean primitiveIsObject(String descriptor) {
-    final String arrayPrefix = "["
-    return descriptor == Descriptors.BYTE_OBJ || descriptor == arrayPrefix + Descriptors.BYTE_OBJ ||
-        descriptor == Descriptors.BOOLEAN_OBJ || descriptor == arrayPrefix + Descriptors.BOOLEAN_OBJ ||
-        descriptor == Descriptors.CHAR_OBJ || descriptor == arrayPrefix + Descriptors.CHAR_OBJ ||
-        descriptor == Descriptors.SHORT_OBJ || descriptor == arrayPrefix + Descriptors.SHORT_OBJ ||
-        descriptor == Descriptors.FLOAT_OBJ || descriptor == arrayPrefix + Descriptors.FLOAT_OBJ ||
-        descriptor == Descriptors.INTEGER || descriptor == arrayPrefix + Descriptors.INTEGER ||
-        descriptor == Descriptors.LONG_OBJ || descriptor == arrayPrefix + Descriptors.LONG_OBJ ||
-        descriptor == Descriptors.DOUBLE_OBJ || descriptor == arrayPrefix + Descriptors.DOUBLE_OBJ
+    return descriptor == Descriptors.BYTE_OBJ || descriptor == Descriptors.BYTE_OBJ_ARRAY ||
+        descriptor == Descriptors.BOOLEAN_OBJ || descriptor == Descriptors.BOOLEAN_OBJ_ARRAY ||
+        descriptor == Descriptors.CHAR_OBJ || descriptor == Descriptors.CHAR_OBJ_ARRAY ||
+        descriptor == Descriptors.SHORT_OBJ || descriptor == Descriptors.SHORT_OBJ_ARRAY ||
+        descriptor == Descriptors.FLOAT_OBJ || descriptor == Descriptors.FLOAT_OBJ_ARRAY ||
+        descriptor == Descriptors.INTEGER || descriptor == Descriptors.INTEGER_ARRAY ||
+        descriptor == Descriptors.LONG_OBJ || descriptor == Descriptors.LONG_OBJ_ARRAY ||
+        descriptor == Descriptors.DOUBLE_OBJ || descriptor == Descriptors.DOUBLE_OBJ_ARRAY
   }
 }
