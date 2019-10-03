@@ -10,7 +10,7 @@ Download
 In root `build.gradle` file:
 ```groovy
 buildscript {
-    ext.stater_version = '0.1'
+    ext.stater_version = '1.0'
     repositories {
         jcenter()
     }
@@ -42,31 +42,26 @@ Usage
 --------
 Activity
 ```java
-import ru.alexpanchenko.stater.Stater;
-import ru.alexpanchenko.stater.StateType;
 import ru.alexpanchenko.stater.State;
 
-@Stater
 public class MainActivity extends AppCompatActivity {
-  @State(StateType.INT)
+  @State
   private int yourVar = 0;
   
-  @State(StateType.BUNDLE)
+  @State
   private Bundle bundleVar;
 }
 ```
 Fragment
 ```java
-import ru.alexpanchenko.stater.Stater;
-import ru.alexpanchenko.stater.StateType;
 import ru.alexpanchenko.stater.State;
 
 @Stater
 public class MainFragment extends Fragment {
-  @State(StateType.INT)
+  @State
   private int yourVar = 0;
   
-  @State(StateType.BUNDLE)
+  @State
   private Bundle bundleVar;
 }
 ```
@@ -74,7 +69,7 @@ It's all!
 
 How it works
 --------
-Stater plugin transform classes with `@Stater` annotation in compile time (see `transformClassesWithStaterTransformFor...` task).
+Stater plugin transform classes that inherit Activity/Fragment in compile time (see `transformClassesWithStaterTransformFor...` task).
 It save state in `onSaveInstanceState` and restore it in `onCreate`.
 ```java
 protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -91,9 +86,27 @@ protected void onSaveInstanceState(@NonNull Bundle outState) {
     super.onSaveInstanceState(outState);
 }
 ```
-All supported types see in `StateType` enum. It can works also with object presentation of primitives:
+It can works also with object presentation of primitives:
 `Byte, Short, Character, Boolean, Integer, Long, Double, Float` and its arrays.
-Transformed classes you can find in `build/intermediates/transforms/StaterTransform/yourPackage`
+Transformed classes you can find in `build/intermediates/transforms/StaterTransform/yourPackage`.
+All supported types:
+
+| Supported Types  |
+|:-------|
+| boolean/Boolean/boolean[ ]/Boolean[ ]|
+| byte/Byte/byte[ ]/Byte[ ]|
+| char/Character/char[ ]/Character[ ]|
+| short/Short/short[ ]/Short[ ]|
+| int/Integer/int[ ]/Integer[ ]  List/ArrayList\<Integer\> |
+| float/Float/float[ ]/Float[ ] |
+| long/Long/long[ ]/Long[ ] |
+| double/Double/double[ ]/double[ ] |
+| String/String[ ]  List/ArrayList\<String\> |
+| CharSequence/CharSequence[ ]  List/ArrayList\<CharSequence\> |
+| Serializable |
+| Parcelable/Parcelable[ ] List/ArrayList\<Parcelable\> |
+| Bundle |
+| IBinder |
 
 License
 -------
