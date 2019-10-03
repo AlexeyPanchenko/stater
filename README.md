@@ -1,6 +1,8 @@
 Stater
 =======
 [![Build status](https://travis-ci.org/AlexeyPanchenko/stater.svg?branch=master)](https://travis-ci.org/AlexeyPanchenko/stater)
+[![Download-plugin](https://api.bintray.com/packages/alexeypanchenko/maven/stater-plugin/images/download.svg) ](https://bintray.com/alexeypanchenko/maven/stater-plugin/_latestVersion)
+[![Download-lib](https://api.bintray.com/packages/alexeypanchenko/maven/stater/images/download.svg) ](https://bintray.com/alexeypanchenko/maven/stater/_latestVersion)
 
 Lightweight library to save state in your Activity/Fragment.
 Stater also fine works with Kotlin code as it uses bytecode transformation.
@@ -10,7 +12,7 @@ Download
 In root `build.gradle` file:
 ```groovy
 buildscript {
-    ext.stater_version = '1.0'
+    ext.stater_version = '1.0.1'
     repositories {
         jcenter()
     }

@@ -24,7 +24,7 @@ targetCompatibility = "8"
 //        maven(MavenPublication) {
 //            groupId = GROUP_ID
 //            artifactId = ARTIFACT_ID_PLUGIN
-//            version = '1.0'
+//            version = '1.0.1'
 //
 //            from components.java
 //        }

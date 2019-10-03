@@ -11,7 +11,6 @@ import org.apache.commons.io.FileUtils
 import org.gradle.api.Project
 import org.objectweb.asm.ClassReader
 import org.objectweb.asm.ClassWriter
-import org.objectweb.asm.util.TraceClassVisitor
 import ru.alexpanchenko.stater.plugin.visitors.StaterClassVisitor
 
 @TypeChecked
@@ -158,12 +157,11 @@ class StaterTransform extends Transform {
   private void transformClass(@NonNull String inputPath, @NonNull String outputPath) {
     FileInputStream is = new FileInputStream(inputPath)
     ClassReader classReader = new ClassReader(is)
-    ClassWriter classWriter = new ClassWriter(ClassWriter.COMPUTE_FRAMES)
+    ClassWriter classWriter = new ClassWriter(ClassWriter.COMPUTE_MAXS)
 
-    TraceClassVisitor traceClassVisitor = new TraceClassVisitor(classWriter, new PrintWriter(System.out))
     StaterClassVisitor adapter = new StaterClassVisitor(classWriter)
 
-    classReader.accept(adapter, ClassReader.EXPAND_FRAMES)
+    classReader.accept(adapter, ClassReader.SKIP_FRAMES)
     byte [] newBytes = classWriter.toByteArray()
     FileOutputStream fos = new FileOutputStream(outputPath)
     fos.write(newBytes)
