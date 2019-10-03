@@ -100,7 +100,7 @@ All supported types:
 | int/Integer/int[ ]/Integer[ ]  List/ArrayList\<Integer\> |
 | float/Float/float[ ]/Float[ ] |
 | long/Long/long[ ]/Long[ ] |
-| double/Double/double[ ]/double[ ] |
+| double/Double/double[ ]/Double[ ] |
 | String/String[ ]  List/ArrayList\<String\> |
 | CharSequence/CharSequence[ ]  List/ArrayList\<CharSequence\> |
 | Serializable |
