@@ -2,7 +2,6 @@ package ru.alexpanchenko.stater.plugin.visitors;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.objectweb.asm.FieldVisitor;
 
 import javassist.ClassPool;
 import javassist.NotFoundException;
@@ -10,6 +9,7 @@ import ru.alexpanchenko.stater.plugin.model.StateType;
 import ru.alexpanchenko.stater.plugin.utils.Const;
 import ru.alexpanchenko.stater.plugin.utils.Descriptors;
 import ru.alexpanchenko.stater.plugin.utils.StateTypeDeterminator;
+import stater.org.objectweb.asm.FieldVisitor;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;

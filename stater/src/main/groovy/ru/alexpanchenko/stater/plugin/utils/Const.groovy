@@ -2,8 +2,8 @@ package ru.alexpanchenko.stater.plugin.utils
 
 import groovy.transform.CompileStatic
 import groovy.transform.TypeChecked
-import org.objectweb.asm.Opcodes
 import ru.alexpanchenko.stater.plugin.model.SaverField
+import stater.org.objectweb.asm.Opcodes
 
 @TypeChecked
 class Const {

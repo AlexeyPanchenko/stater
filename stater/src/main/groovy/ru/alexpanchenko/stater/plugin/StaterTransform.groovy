@@ -9,9 +9,9 @@ import groovy.transform.TypeChecked
 import javassist.ClassPool
 import org.apache.commons.io.FileUtils
 import org.gradle.api.Project
-import org.objectweb.asm.ClassReader
-import org.objectweb.asm.ClassWriter
 import ru.alexpanchenko.stater.plugin.visitors.StaterClassVisitor
+import stater.org.objectweb.asm.ClassReader
+import stater.org.objectweb.asm.ClassWriter
 
 @TypeChecked
 class StaterTransform extends Transform {
@@ -54,7 +54,6 @@ class StaterTransform extends Transform {
   void transform(
       TransformInvocation transformInvocation
   ) throws TransformException, InterruptedException, IOException {
-    super.transform(transformInvocation)
 
     ClassPool classPool = ClassPool.getDefault()
     fillPoolAndroidInputs(classPool)

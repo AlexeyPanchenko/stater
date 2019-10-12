@@ -1,14 +1,8 @@
 package ru.alexpanchenko.stater.plugin.visitors
 
-import ru.alexpanchenko.stater.plugin.utils.ClassHierarchyUtils
-import ru.alexpanchenko.stater.plugin.utils.Const
-import ru.alexpanchenko.stater.plugin.utils.Descriptors
-import ru.alexpanchenko.stater.plugin.utils.Methods
-
 import groovy.transform.TypeChecked
-import org.objectweb.asm.*
-import ru.alexpanchenko.stater.plugin.utils.Packages
-import ru.alexpanchenko.stater.plugin.utils.StateTypeDeterminator
+import ru.alexpanchenko.stater.plugin.utils.*
+import stater.org.objectweb.asm.*
 
 @TypeChecked
 class StaterClassVisitor extends ClassVisitor implements Opcodes {
