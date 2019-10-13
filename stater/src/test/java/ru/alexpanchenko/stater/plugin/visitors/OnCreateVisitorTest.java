@@ -2,9 +2,6 @@ package ru.alexpanchenko.stater.plugin.visitors;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.objectweb.asm.MethodVisitor;
-import org.objectweb.asm.Opcodes;
-import org.objectweb.asm.Type;
 
 import ru.alexpanchenko.stater.plugin.model.SaverField;
 import ru.alexpanchenko.stater.plugin.model.StateType;
@@ -12,6 +9,9 @@ import ru.alexpanchenko.stater.plugin.utils.Const;
 import ru.alexpanchenko.stater.plugin.utils.Descriptors;
 import ru.alexpanchenko.stater.plugin.utils.Methods;
 import ru.alexpanchenko.stater.plugin.utils.Types;
+import stater.org.objectweb.asm.MethodVisitor;
+import stater.org.objectweb.asm.Opcodes;
+import stater.org.objectweb.asm.Type;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;

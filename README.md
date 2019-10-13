@@ -11,7 +11,7 @@ Download
 In root `build.gradle` file:
 ```groovy
 buildscript {
-    ext.stater_version = '1.0.1'
+    ext.stater_version = '1.1'
     repositories {
         jcenter()
     }
@@ -33,10 +33,6 @@ In your app `build.gradle` file add plugin:
 apply plugin: 'com.android.application'
 ...
 apply plugin: 'stater-plugin'
-```
-And library:
-```groovy
-implementation "ru.alexpanchenko:stater:$stater_version"
 ```
 
 Usage

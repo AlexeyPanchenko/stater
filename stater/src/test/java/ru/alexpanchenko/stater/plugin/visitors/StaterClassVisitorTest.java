@@ -2,15 +2,15 @@ package ru.alexpanchenko.stater.plugin.visitors;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.objectweb.asm.ClassVisitor;
-import org.objectweb.asm.FieldVisitor;
-import org.objectweb.asm.MethodVisitor;
-import org.objectweb.asm.Opcodes;
 
 import javassist.ClassPool;
 import javassist.NotFoundException;
 import ru.alexpanchenko.stater.plugin.utils.Const;
 import ru.alexpanchenko.stater.plugin.utils.Methods;
+import stater.org.objectweb.asm.ClassVisitor;
+import stater.org.objectweb.asm.FieldVisitor;
+import stater.org.objectweb.asm.MethodVisitor;
+import stater.org.objectweb.asm.Opcodes;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
@@ -23,6 +23,8 @@ public class StaterClassVisitorTest {
   private static final String ACTIVITY_NAME = ACTIVITY_CLASS.replace(".class", "");
   private static final String FRAGMENT_CLASS = "androidx/fragment/app/Fragment.class";
   private static final String FRAGMENT_NAME = FRAGMENT_CLASS.replace(".class", "");
+
+  private final ClassPool classPool = ClassPool.getDefault();
 
   @Before
   public void setUp() {
@@ -40,7 +42,7 @@ public class StaterClassVisitorTest {
     when(classVisitor.visitField(Opcodes.ACC_PRIVATE, name, descriptor, signature, null)).thenReturn(mockFieldVisitor);
     when(classVisitor.visitMethod(Opcodes.ACC_PROTECTED, name, descriptor, signature, null)).thenReturn(mockMethodVisitor);
 
-    StaterClassVisitor visitor = new StaterClassVisitor(classVisitor);
+    StaterClassVisitor visitor = new StaterClassVisitor(classVisitor, classPool);
     visitor.visitAnnotation("", true);
     FieldVisitor fieldVisitor = visitor.visitField(Opcodes.ACC_PRIVATE, name, descriptor, signature, null);
 
@@ -55,22 +57,22 @@ public class StaterClassVisitorTest {
 
   @Test
   public void testVisitActivityClass() throws NotFoundException {
-    ClassPool.getDefault().appendClassPath(ACTIVITY_CLASS);
+    classPool.appendClassPath(ACTIVITY_CLASS);
     ClassVisitor classVisitor = mock(ClassVisitor.class);
 
-    StaterClassVisitor visitor = new StaterClassVisitor(classVisitor);
-    visitor.visit(Const.ASM_VERSION, Opcodes.ACC_PUBLIC, "MyActivity", null, ACTIVITY_NAME, null);
+    StaterClassVisitor visitor = new StaterClassVisitor(classVisitor, classPool);
+    visitor.visit(Const.ASM_VERSION, Opcodes.ACC_PUBLIC, "MyActivity", null, ACTIVITY_NAME, new String[]{});
     FieldVisitor fieldVisitor = visitor.visitField(Opcodes.ACC_PRIVATE, "name", "descriptor", null, null);
     assertEquals(fieldVisitor.getClass(), StaterFieldVisitor.class);
   }
 
   @Test
   public void testVisitFragmentClass() throws NotFoundException {
-    ClassPool.getDefault().appendClassPath(FRAGMENT_CLASS);
+    classPool.appendClassPath(FRAGMENT_CLASS);
     ClassVisitor classVisitor = mock(ClassVisitor.class);
 
-    StaterClassVisitor visitor = new StaterClassVisitor(classVisitor);
-    visitor.visit(Const.ASM_VERSION, Opcodes.ACC_PUBLIC, "MyFragment", null, FRAGMENT_NAME, null);
+    StaterClassVisitor visitor = new StaterClassVisitor(classVisitor, classPool);
+    visitor.visit(Const.ASM_VERSION, Opcodes.ACC_PUBLIC, "MyFragment", null, FRAGMENT_NAME, new String[]{});
     FieldVisitor fieldVisitor = visitor.visitField(Opcodes.ACC_PRIVATE, "name", "descriptor", null, null);
     assertEquals(fieldVisitor.getClass(), StaterFieldVisitor.class);
   }
@@ -79,11 +81,11 @@ public class StaterClassVisitorTest {
   public void testOnCreateMethodVisitor() {
     ClassVisitor classVisitor = mock(ClassVisitor.class);
 
-    StaterClassVisitor visitor = new StaterClassVisitor(classVisitor);
-    visitor.visit(Const.ASM_VERSION, Opcodes.ACC_PUBLIC, "MyActivity", null, ACTIVITY_NAME, null);
+    StaterClassVisitor visitor = new StaterClassVisitor(classVisitor, classPool);
+    visitor.visit(Const.ASM_VERSION, Opcodes.ACC_PUBLIC, "MyActivity", null, ACTIVITY_NAME, new String[]{});
 
     MethodVisitor methodVisitor = visitor.visitMethod(
-      Opcodes.ACC_PRIVATE, Methods.ON_CREATE, "descriptor", null, null
+      Opcodes.ACC_PRIVATE, Methods.ON_CREATE, "descriptor", null, new String[]{}
     );
 
     assertEquals(methodVisitor.getClass(), OnCreateVisitor.class);
@@ -93,11 +95,11 @@ public class StaterClassVisitorTest {
   public void testOnSaveInstanceStateMethodVisitor() {
     ClassVisitor classVisitor = mock(ClassVisitor.class);
 
-    StaterClassVisitor visitor = new StaterClassVisitor(classVisitor);
-    visitor.visit(Const.ASM_VERSION, Opcodes.ACC_PUBLIC, "MyActivity", null, ACTIVITY_NAME, null);
+    StaterClassVisitor visitor = new StaterClassVisitor(classVisitor, classPool);
+    visitor.visit(Const.ASM_VERSION, Opcodes.ACC_PUBLIC, "MyActivity", null, ACTIVITY_NAME, new String[]{});
 
     MethodVisitor methodVisitor = visitor.visitMethod(
-      Opcodes.ACC_PRIVATE, Methods.ON_SAVED_INSTANCE_STATE, "descriptor", null, null
+      Opcodes.ACC_PRIVATE, Methods.ON_SAVED_INSTANCE_STATE, "descriptor", null, new String[]{}
     );
 
     assertEquals(methodVisitor.getClass(), OnSavedInstanceStateVisitor.class);

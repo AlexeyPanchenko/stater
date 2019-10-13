@@ -20,43 +20,49 @@ public class ClassHierarchyUtilsTest {
 
   @Test
   public void testContainsParentSelf() throws NotFoundException {
-    ClassPool.getDefault().appendClassPath(A_CLASS);
-    assertTrue(ClassHierarchyUtils.containsParent(B_PACKAGE, B_PACKAGE));
+    final ClassPool classPool = ClassPool.getDefault();
+    classPool.appendClassPath(A_CLASS);
+    assertTrue(ClassHierarchyUtils.containsParent(classPool, B_PACKAGE, B_PACKAGE));
   }
 
   @Test
   public void testContainsParent() throws NotFoundException {
-    ClassPool.getDefault().appendClassPath(A_CLASS);
-    ClassPool.getDefault().appendClassPath(B_CLASS);
-    assertTrue(ClassHierarchyUtils.containsParent(B_PACKAGE, A_PACKAGE));
+    final ClassPool classPool = ClassPool.getDefault();
+    classPool.appendClassPath(A_CLASS);
+    classPool.appendClassPath(B_CLASS);
+    assertTrue(ClassHierarchyUtils.containsParent(classPool, B_PACKAGE, A_PACKAGE));
   }
 
   @Test
   public void testNotContainsParent() throws NotFoundException {
-    ClassPool.getDefault().appendClassPath(A_CLASS);
-    ClassPool.getDefault().appendClassPath(B_CLASS);
-    ClassPool.getDefault().appendClassPath(C_CLASS);
-    assertFalse(ClassHierarchyUtils.containsParent(B_PACKAGE, C_CLASS));
-    assertFalse(ClassHierarchyUtils.containsParent(A_PACKAGE, C_CLASS));
+    final ClassPool classPool = ClassPool.getDefault();
+    classPool.appendClassPath(A_CLASS);
+    classPool.appendClassPath(B_CLASS);
+    classPool.appendClassPath(C_CLASS);
+    assertFalse(ClassHierarchyUtils.containsParent(classPool, B_PACKAGE, C_CLASS));
+    assertFalse(ClassHierarchyUtils.containsParent(classPool, A_PACKAGE, C_CLASS));
   }
 
   @Test
   public void testNotContainsInterface() throws NotFoundException {
-    ClassPool.getDefault().appendClassPath(C_CLASS);
-    assertFalse(ClassHierarchyUtils.containsInterface(C_PACKAGE, SERIALIZABLE_PACKAGE));
+    final ClassPool classPool = ClassPool.getDefault();
+    classPool.appendClassPath(C_CLASS);
+    assertFalse(ClassHierarchyUtils.containsInterface(classPool, C_PACKAGE, SERIALIZABLE_PACKAGE));
   }
 
   @Test
   public void testContainsInterface() throws NotFoundException {
-    ClassPool.getDefault().appendClassPath(A_CLASS);
-    assertTrue(ClassHierarchyUtils.containsInterface(A_PACKAGE, SERIALIZABLE_PACKAGE));
+    final ClassPool classPool = ClassPool.getDefault();
+    classPool.appendClassPath(A_CLASS);
+    assertTrue(ClassHierarchyUtils.containsInterface(classPool, A_PACKAGE, SERIALIZABLE_PACKAGE));
   }
 
   @Test
   public void testParentContainsInterface() throws NotFoundException {
-    ClassPool.getDefault().appendClassPath(A_CLASS);
-    ClassPool.getDefault().appendClassPath(B_CLASS);
-    assertTrue(ClassHierarchyUtils.containsInterface(B_PACKAGE, SERIALIZABLE_PACKAGE));
+    final ClassPool classPool = ClassPool.getDefault();
+    classPool.appendClassPath(A_CLASS);
+    classPool.appendClassPath(B_CLASS);
+    assertTrue(ClassHierarchyUtils.containsInterface(classPool, B_PACKAGE, SERIALIZABLE_PACKAGE));
   }
 
 

@@ -2,17 +2,36 @@ apply plugin: 'java-gradle-plugin'
 apply plugin: 'groovy'
 apply plugin: 'maven'
 apply plugin: 'maven-publish'
+apply plugin: 'org.anarres.jarjar'
 apply plugin: 'com.novoda.bintray-release'
+
+configurations {
+    extraLibs
+    implementation.extendsFrom(extraLibs)
+}
 
 dependencies {
     implementation gradleApi()
 
-    implementation 'com.android.tools.build:gradle:3.5.0'
-    implementation 'com.android.tools.build:gradle-api:3.5.0'
-    implementation 'org.ow2.asm:asm:7.2'
+    implementation 'com.android.tools.build:gradle:3.5.1'
+    implementation 'com.android.tools.build:gradle-api:3.5.1'
     implementation 'org.javassist:javassist:3.25.0-GA'
+    // For resolve ASM version conflicts with other libs.
+    extraLibs fileTree(dir: 'build/jarjar', include: ['*.jar'])
+    implementation jarjar.repackage('asm') {
+        from 'org.ow2.asm:asm:7.2'
+        classRename "org.objectweb.asm.**", "stater.org.objectweb.asm.@1"
+    }
+
     testImplementation 'junit:junit:4.12'
-    testImplementation'org.mockito:mockito-core:3.0.0'
+    testImplementation'org.mockito:mockito-core:3.1.0'
+}
+
+// Add all extraLibs directly to jar file.
+jar {
+    from {
+        configurations.extraLibs.collect { it.isDirectory() ? it : zipTree(it) }
+    }
 }
 
 sourceCompatibility = "8"
@@ -24,7 +43,7 @@ targetCompatibility = "8"
 //        maven(MavenPublication) {
 //            groupId = GROUP_ID
 //            artifactId = ARTIFACT_ID_PLUGIN
-//            version = '1.0.1'
+//            version = '1.1'
 //
 //            from components.java
 //        }
@@ -46,3 +65,4 @@ publish {
 }
 
 // ./gradlew :stater:clean :stater:build :stater:bintrayUpload -PbintrayUser=BINTRAY_USERNAME -PbintrayKey=BINTRAY_KEY -PdryRun=false
+//
