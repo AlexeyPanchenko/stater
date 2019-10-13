@@ -11,7 +11,7 @@ Download
 In root `build.gradle` file:
 ```groovy
 buildscript {
-    ext.stater_version = '1.0.1'
+    ext.stater_version = '1.1'
     repositories {
         jcenter()
     }
