@@ -34,10 +34,6 @@ apply plugin: 'com.android.application'
 ...
 apply plugin: 'stater-plugin'
 ```
-And library:
-```groovy
-implementation "ru.alexpanchenko:stater:$stater_version"
-```
 
 Usage
 --------
