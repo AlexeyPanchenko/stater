@@ -22,7 +22,7 @@ class StaterPlugin implements Plugin<Project> {
       )
     }
     // Automatically adds stater library
-    project.getDependencies().add('implementation', "ru.alexpanchenko:stater:1.0.1")
+    project.getDependencies().add('implementation', "ru.alexpanchenko:stater:1.1")
     BaseExtension androidExtension = project.extensions.findByType(BaseExtension.class)
     androidExtension.registerTransform(new StaterTransform(project))
   }

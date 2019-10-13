@@ -65,4 +65,3 @@ publish {
 }
 
 // ./gradlew :stater:clean :stater:build :stater:bintrayUpload -PbintrayUser=BINTRAY_USERNAME -PbintrayKey=BINTRAY_KEY -PdryRun=false
-//
