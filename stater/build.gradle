@@ -3,7 +3,7 @@ apply plugin: 'groovy'
 apply plugin: 'maven'
 apply plugin: 'maven-publish'
 apply plugin: 'org.anarres.jarjar'
-apply plugin: 'com.novoda.bintray-release'
+//apply plugin: 'com.novoda.bintray-release'
 
 configurations {
     extraLibs
@@ -38,30 +38,30 @@ sourceCompatibility = "8"
 targetCompatibility = "8"
 
 // Local
-//publishing {
-//    publications {
-//        maven(MavenPublication) {
-//            groupId = GROUP_ID
-//            artifactId = ARTIFACT_ID_PLUGIN
-//            version = '1.1'
-//
-//            from components.java
-//        }
-//    }
-//    repositories {
-//        maven {
-//            url = "file:///$buildDir/m2repo"
-//        }
-//    }
-//}
+publishing {
+    publications {
+        maven(MavenPublication) {
+            groupId = GROUP_ID
+            artifactId = ARTIFACT_ID_PLUGIN
+            version = '1.1'
 
-publish {
-    userOrg = USER_ORG
-    groupId = GROUP_ID
-    artifactId = ARTIFACT_ID_PLUGIN
-    publishVersion = VERSION
-    desc = 'Plugin for transform Activity/Fragment bytecode.'
-    website = 'https://github.com/AlexeyPanchenko/stater'
+            from components.java
+        }
+    }
+    repositories {
+        maven {
+            url = "file:///$buildDir/m2repo"
+        }
+    }
 }
+
+//publish {
+//    userOrg = USER_ORG
+//    groupId = GROUP_ID
+//    artifactId = ARTIFACT_ID_PLUGIN
+//    publishVersion = VERSION
+//    desc = 'Plugin for transform Activity/Fragment bytecode.'
+//    website = 'https://github.com/AlexeyPanchenko/stater'
+//}
 
 // ./gradlew :stater:clean :stater:build :stater:bintrayUpload -PbintrayUser=BINTRAY_USERNAME -PbintrayKey=BINTRAY_KEY -PdryRun=false

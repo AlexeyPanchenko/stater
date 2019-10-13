@@ -10,10 +10,11 @@ import static org.junit.Assert.assertEquals;
 
 public class StateTypeDeterminatorTest {
 
+  private final ClassPool classPool = ClassPool.getDefault();
   private static final String A_CLASS = "ru/alexpanchenko/stater/plugin/utils/models/A.class";
   private static final String B_CLASS = "ru/alexpanchenko/stater/plugin/utils/models/B.class";
 
-  private final StateTypeDeterminator typeDeterminator = new StateTypeDeterminator();
+  private final StateTypeDeterminator typeDeterminator = new StateTypeDeterminator(classPool);
 
   @Test
   public void testBoolean() {
@@ -171,8 +172,8 @@ public class StateTypeDeterminatorTest {
 
   @Test
   public void testParentSerializable() throws NotFoundException {
-    ClassPool.getDefault().appendClassPath(A_CLASS);
-    ClassPool.getDefault().appendClassPath(B_CLASS);
+    classPool.appendClassPath(A_CLASS);
+    classPool.appendClassPath(B_CLASS);
 
     String descriptor = "L" + B_CLASS.replace(".class", "") + ";";
     assertEquals(typeDeterminator.determinate(descriptor,null), StateType.SERIALIZABLE);

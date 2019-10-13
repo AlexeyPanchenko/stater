@@ -23,6 +23,7 @@ public class StaterFieldVisitorTest {
   private static final String B_CLASS = "ru/alexpanchenko/stater/plugin/utils/models/B.class";
   private static final String B_PACKAGE = B_CLASS.replace(".class", "").replace("/", ".");
 
+  private final ClassPool classPool = ClassPool.getDefault();
   private final FieldVisitor fieldVisitor = mock(FieldVisitor.class);
   private String name = "name";
   private String descriptor = "descriptor";
@@ -62,7 +63,7 @@ public class StaterFieldVisitorTest {
     signature = null;
 
     StaterFieldVisitor visitor = new StaterFieldVisitor(
-      fieldVisitor, name, descriptor, signature, owner, new StateTypeDeterminator()
+      fieldVisitor, name, descriptor, signature, owner, new StateTypeDeterminator(classPool)
     );
     visitor.visitAnnotation(Descriptors.STATE, true);
   }
@@ -73,7 +74,7 @@ public class StaterFieldVisitorTest {
     signature = null;
 
     StaterFieldVisitor visitor = new StaterFieldVisitor(
-      fieldVisitor, name, descriptor, signature, owner, new StateTypeDeterminator()
+      fieldVisitor, name, descriptor, signature, owner, new StateTypeDeterminator(classPool)
     );
     visitor.visitAnnotation(Descriptors.STATE, true);
 
@@ -84,13 +85,13 @@ public class StaterFieldVisitorTest {
 
   @Test
   public void testSerializable() throws NotFoundException {
-    ClassPool.getDefault().appendClassPath(A_CLASS);
-    ClassPool.getDefault().appendClassPath(B_CLASS);
+    classPool.appendClassPath(A_CLASS);
+    classPool.appendClassPath(B_CLASS);
     descriptor = "L" + B_PACKAGE + ";";
     signature = null;
 
     StaterFieldVisitor visitor = new StaterFieldVisitor(
-      fieldVisitor, name, descriptor, signature, owner, new StateTypeDeterminator()
+      fieldVisitor, name, descriptor, signature, owner, new StateTypeDeterminator(classPool)
     );
     visitor.visitAnnotation(Descriptors.STATE, true);
 
