@@ -1,15 +1,14 @@
-package com.example.buildsrc.visitors
+package ru.alexpanchenko.stater.plugin.visitors
 
 import groovy.transform.TypeChecked
 import org.objectweb.asm.Label
 import org.objectweb.asm.MethodVisitor
 import org.objectweb.asm.Opcodes
-import com.example.buildsrc.model.MethodDescriptor
-import com.example.buildsrc.model.StateType
-import com.example.buildsrc.utils.Const
-import com.example.buildsrc.utils.Descriptors
-import com.example.buildsrc.utils.MethodDescriptorUtils
-import com.example.buildsrc.utils.Types
+import ru.alexpanchenko.stater.plugin.model.MethodDescriptor
+import ru.alexpanchenko.stater.plugin.utils.Const
+import ru.alexpanchenko.stater.plugin.utils.Descriptors
+import ru.alexpanchenko.stater.plugin.utils.MethodDescriptorUtils
+import ru.alexpanchenko.stater.plugin.utils.Types
 
 @TypeChecked
 class OnSavedInstanceStateVisitor extends MethodVisitor {

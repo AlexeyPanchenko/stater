@@ -1,8 +1,10 @@
-package com.example.buildsrc.visitors
+package ru.alexpanchenko.stater.plugin.visitors
 
-import com.example.buildsrc.utils.*
+import com.android.annotations.NonNull
 import groovy.transform.TypeChecked
+import javassist.ClassPool
 import org.objectweb.asm.*
+import ru.alexpanchenko.stater.plugin.utils.*
 
 @TypeChecked
 class StaterClassVisitor extends ClassVisitor implements Opcodes {
@@ -13,10 +15,13 @@ class StaterClassVisitor extends ClassVisitor implements Opcodes {
   private String owner
   private String superOwner
 
-  private final StateTypeDeterminator typeDeterminator = new StateTypeDeterminator()
+  private final ClassPool classPool
+  private final StateTypeDeterminator typeDeterminator
 
-  StaterClassVisitor(ClassVisitor classVisitor) {
+  StaterClassVisitor(@NonNull ClassVisitor classVisitor, @NonNull ClassPool classPool) {
     super(Const.ASM_VERSION, classVisitor)
+    this.classPool = classPool
+    typeDeterminator = new StateTypeDeterminator(classPool)
   }
 
   @Override
@@ -24,6 +29,7 @@ class StaterClassVisitor extends ClassVisitor implements Opcodes {
     this.owner = name
     this.superOwner = superName
     needTransform = ClassHierarchyUtils.containsParent(
+        classPool,
         superName,
         Packages.ACTIVITY,
         Packages.ACTIVITY_X_SUPPORT,

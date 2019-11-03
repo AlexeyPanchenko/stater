@@ -1,4 +1,4 @@
-package com.example.buildsrc
+package ru.alexpanchenko.stater.plugin
 
 import com.android.annotations.NonNull
 import com.android.build.gradle.BaseExtension
@@ -21,6 +21,8 @@ class StaterPlugin implements Plugin<Project> {
           "'com.android.application' or 'com.android.library' plugin required."
       )
     }
+    // Automatically adds stater library
+    project.getDependencies().add('implementation', "ru.alexpanchenko:stater:1.1")
     BaseExtension androidExtension = project.extensions.findByType(BaseExtension.class)
     androidExtension.registerTransform(new StaterTransform(project))
   }

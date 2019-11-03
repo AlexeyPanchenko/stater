@@ -1,8 +1,9 @@
-package com.example.buildsrc.utils
+package ru.alexpanchenko.stater.plugin.utils
 
+import com.android.annotations.NonNull
 import groovy.transform.TypeChecked
 import javassist.ClassPool
-import javassist.CtClass;
+import javassist.CtClass
 
 /**
  * Utils for work with classes hierarchy.
@@ -13,10 +14,13 @@ class ClassHierarchyUtils {
    * @return true if class with className or one of his parent extends one of parents, false otherwise.
    */
   @TypeChecked
-  static boolean containsParent(String className, String... parents) {
+  static boolean containsParent(
+      @NonNull ClassPool classPool,
+      @NonNull String className,
+      @NonNull String... parents
+  ) {
     try {
-      ClassPool pool = ClassPool.getDefault()
-      CtClass currentClass = pool.get(className.replace("/", "."))
+      CtClass currentClass = classPool.get(className.replace("/", "."))
 
       while (currentClass != null) {
         if (parents.contains(currentClass.name)) {
@@ -35,10 +39,13 @@ class ClassHierarchyUtils {
    * @return true if class with className or one of his parent implement interfacePckg, false otherwise.
    */
   @TypeChecked
-  static boolean containsInterface(String className, String interfacePckg) {
+  static boolean containsInterface(
+      @NonNull ClassPool classPool,
+      @NonNull String className,
+      @NonNull String interfacePckg
+  ) {
     try {
-      ClassPool pool = ClassPool.getDefault()
-      CtClass currentClass = pool.get(className.replace("/", "."))
+      CtClass currentClass = classPool.get(className.replace("/", "."))
 
       while (currentClass != null) {
         for (CtClass currentInterface : currentClass.interfaces) {

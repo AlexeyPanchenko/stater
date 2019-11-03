@@ -4,13 +4,14 @@ import com.android.build.api.transform.Transform;
 import com.android.build.gradle.AppPlugin;
 import com.android.build.gradle.BaseExtension;
 import com.android.build.gradle.LibraryPlugin;
-import com.example.buildsrc.StaterPlugin;
-import com.example.buildsrc.StaterTransform;
 
 import org.gradle.api.GradleException;
 import org.gradle.api.Project;
 import org.gradle.testfixtures.ProjectBuilder;
 import org.junit.Test;
+
+import ru.alexpanchenko.stater.plugin.StaterPlugin;
+import ru.alexpanchenko.stater.plugin.StaterTransform;
 
 import static org.junit.Assert.assertNotNull;
 

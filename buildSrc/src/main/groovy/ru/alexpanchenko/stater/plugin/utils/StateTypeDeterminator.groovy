@@ -1,13 +1,14 @@
-package com.example.buildsrc.utils
+package ru.alexpanchenko.stater.plugin.utils
 
 import com.android.annotations.NonNull
 import com.android.annotations.Nullable
-import com.example.buildsrc.model.StateType
-import com.example.buildsrc.visitors.TypesSignatureVisitor
 import groovy.transform.CompileStatic
 import groovy.transform.TypeChecked
+import javassist.ClassPool
 import org.objectweb.asm.Type
 import org.objectweb.asm.signature.SignatureReader
+import ru.alexpanchenko.stater.plugin.model.StateType
+import ru.alexpanchenko.stater.plugin.visitors.TypesSignatureVisitor
 
 /**
  * Mapper, witch define {@link StateType} by descriptor and signature of field.
@@ -16,8 +17,24 @@ import org.objectweb.asm.signature.SignatureReader
 @CompileStatic
 class StateTypeDeterminator {
 
+  private final ClassPool classPool
+
+  /**
+   * @param classPool - pool of all available classes for analyze AST.
+   */
+  StateTypeDeterminator(@NonNull ClassPool classPool) {
+    this.classPool = classPool
+  }
+
+  /**
+   * Determinate {@link StateType}, using {@param descriptor} and {@param signature}.
+   *
+   * @throws IllegalStateException if unable to determine type.
+   */
   @NonNull
-  StateType determinate(@NonNull final String descriptor, @NonNull final String signature) {
+  StateType determinate(
+      @NonNull final String descriptor, @NonNull final String signature
+  ) throws IllegalStateException {
     final StateType primitiveType = getPrimitiveType(descriptor)
     if (primitiveType != null) {
       return primitiveType
@@ -31,16 +48,16 @@ class StateTypeDeterminator {
     String className = Type.getType(descriptor).className
         .replace("[", "")
         .replace("]", "")
-    if (ClassHierarchyUtils.containsInterface(className, Packages.PARCELABLE)) {
+    if (ClassHierarchyUtils.containsInterface(classPool, className, Packages.PARCELABLE)) {
       if (descriptor.startsWith("[")) {
         return StateType.PARCELABLE_ARRAY
       }
       return StateType.PARCELABLE
     }
-    if (ClassHierarchyUtils.containsInterface(className, Packages.SERIALIZABLE)) {
+    if (ClassHierarchyUtils.containsInterface(classPool, className, Packages.SERIALIZABLE)) {
       return StateType.SERIALIZABLE
     }
-    if (ClassHierarchyUtils.containsInterface(className, Packages.IBINDER)) {
+    if (ClassHierarchyUtils.containsInterface(classPool, className, Packages.IBINDER)) {
       return StateType.IBINDER
     }
     throw new IllegalStateException("Impossible to define correct type of your variable with descriptor $descriptor and signature $signature")
@@ -125,7 +142,7 @@ class StateTypeDeterminator {
       case Types.CHAR_SEQUENCE:
         return StateType.CHAR_SEQUENCE_ARRAY_LIST
     }
-    if (genericType == Types.PARCELABLE || ClassHierarchyUtils.containsInterface(genericType, Packages.PARCELABLE)) {
+    if (genericType == Types.PARCELABLE || ClassHierarchyUtils.containsInterface(classPool, genericType, Packages.PARCELABLE)) {
       return StateType.PARCELABLE_ARRAY_LIST
     }
     return null

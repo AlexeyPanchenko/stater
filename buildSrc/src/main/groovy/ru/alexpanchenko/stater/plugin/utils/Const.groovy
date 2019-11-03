@@ -1,9 +1,9 @@
-package com.example.buildsrc.utils
+package ru.alexpanchenko.stater.plugin.utils
 
-import com.example.buildsrc.model.SaverField
 import groovy.transform.CompileStatic
 import groovy.transform.TypeChecked
 import org.objectweb.asm.Opcodes
+import ru.alexpanchenko.stater.plugin.model.SaverField
 
 @TypeChecked
 class Const {
@@ -125,7 +125,6 @@ class Types {
   public static final String PARCELABLE = "android/os/Parcelable"
   public static final String BUNDLE = "android/os/Bundle"
   public static final String IBINDER = "android/os/IBinder"
-  public static final String STATER = "ru/alexpanchenko/stater/Stater"
   public static final String STATE = "ru/alexpanchenko/stater/State"
 }
 
@@ -175,7 +174,6 @@ class Descriptors {
   public static final String PARCELABLE_ARRAY = "[$PARCELABLE"
   public static final String BUNDLE = "L${Types.BUNDLE};"
   public static final String IBINDER = "L${Types.IBINDER};"
-  public static final String STATER = "L${Types.STATER};"
   public static final String STATE = "L${Types.STATE};"
   public static final String VOID = "V"
   public static final String ON_CREATE = "(${BUNDLE})${VOID}"
