@@ -40,7 +40,7 @@ class StaterFieldVisitor extends FieldVisitor {
     AnnotationVisitor av = super.visitAnnotation(descriptor, visible)
     if (descriptor == Descriptors.STATE) {
       StateType type = typeDeterminator.determinate(this.descriptor, this.signature)
-      SaverField field = new SaverField(this.name, this.descriptor, this.owner, type)
+      SaverField field = new SaverField(this.name, this.descriptor, this.signature, this.owner, type)
       Const.stateFields.add(field)
     }
     return av

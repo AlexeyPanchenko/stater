@@ -18,12 +18,14 @@ import ru.alexpanchenko.stater.plugin.visitors.TypesSignatureVisitor
 class StateTypeDeterminator {
 
   private final ClassPool classPool
+  private final boolean withCustomSerializer
 
   /**
    * @param classPool - pool of all available classes for analyze AST.
    */
-  StateTypeDeterminator(@NonNull ClassPool classPool) {
+  StateTypeDeterminator(@NonNull ClassPool classPool, boolean withCustomSerializer) {
     this.classPool = classPool
+    this.withCustomSerializer = withCustomSerializer
   }
 
   /**
@@ -59,6 +61,9 @@ class StateTypeDeterminator {
     }
     if (ClassHierarchyUtils.containsInterface(classPool, className, Packages.IBINDER)) {
       return StateType.IBINDER
+    }
+    if (withCustomSerializer) {
+      return StateType.CUSTOM
     }
     throw new IllegalStateException("Impossible to define correct type of your variable with descriptor $descriptor and signature $signature")
   }
@@ -126,11 +131,11 @@ class StateTypeDeterminator {
   @Nullable
   private StateType getGenericType(@NonNull String signature) {
     List<String> signatureTypes = getSignatureTypes(signature)
-    if (signatureTypes.isEmpty() || signatureTypes.size() < 2 || signatureTypes.size() > 2) {
+    if (signatureTypes.isEmpty() || signatureTypes.size() < 2 || (signatureTypes.size() > 2 && !withCustomSerializer)) {
       throw new IllegalStateException("Wrong Generic signature $signature")
     }
     String containerType = signatureTypes.get(0)
-    if (containerType != Types.LIST && containerType != Types.ARRAY_LIST) {
+    if (containerType != Types.LIST && containerType != Types.ARRAY_LIST && !withCustomSerializer) {
       throw new IllegalStateException("Stater can save only $Types.LIST or $Types.ARRAY_LIST Generic. Yout signature $signature is not correct")
     }
     String genericType = signatureTypes.get(1)

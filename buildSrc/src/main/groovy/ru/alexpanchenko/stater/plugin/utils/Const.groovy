@@ -102,6 +102,7 @@ class Packages {
 @TypeChecked
 @CompileStatic
 class Types {
+  public static final String OBJECT = "java/lang/Object"
   public static final String LIST = "java/util/List"
   public static final String ARRAY_LIST = "java/util/ArrayList"
   public static final String BYTE = "B"
@@ -126,11 +127,13 @@ class Types {
   public static final String BUNDLE = "android/os/Bundle"
   public static final String IBINDER = "android/os/IBinder"
   public static final String STATE = "ru/alexpanchenko/stater/State"
+  public static final String SERIALIZER = "ru/alexpanchenko/stater/serializer/Serializer"
 }
 
 @TypeChecked
 @CompileStatic
 class Descriptors {
+  public static final String OBJECT = "L${Types.OBJECT};"
   public static final String LIST = "L${Types.LIST};"
   public static final String ARRAY_LIST = "L${Types.ARRAY_LIST};"
   public static final String BOOLEAN = "Z"
@@ -175,7 +178,9 @@ class Descriptors {
   public static final String BUNDLE = "L${Types.BUNDLE};"
   public static final String IBINDER = "L${Types.IBINDER};"
   public static final String STATE = "L${Types.STATE};"
+  public static final String SERIALIZER = "L${Types.SERIALIZER};"
   public static final String VOID = "V"
   public static final String ON_CREATE = "(${BUNDLE})${VOID}"
   public static final String ON_SAVED_INSTANCE_STATE = "(${BUNDLE})${VOID}"
+  public static final String SERIALIZER_SERIALIZE = "(${OBJECT})${STRING}"
 }

@@ -1,10 +1,10 @@
 package ru.alexpanchenko.stater.plugin.visitors
 
 import groovy.transform.TypeChecked
-import org.objectweb.asm.Label
 import org.objectweb.asm.MethodVisitor
 import org.objectweb.asm.Opcodes
 import ru.alexpanchenko.stater.plugin.model.MethodDescriptor
+import ru.alexpanchenko.stater.plugin.model.StateType
 import ru.alexpanchenko.stater.plugin.utils.Const
 import ru.alexpanchenko.stater.plugin.utils.Descriptors
 import ru.alexpanchenko.stater.plugin.utils.MethodDescriptorUtils
@@ -22,18 +22,24 @@ class OnSavedInstanceStateVisitor extends MethodVisitor {
     mv.visitCode()
 
     Const.stateFields.each { field ->
-      Label label = new Label()
-      mv.visitLabel(label)
-      mv.visitVarInsn(Opcodes.ALOAD, 1)
-      mv.visitLdcInsn(field.key)
-      mv.visitVarInsn(Opcodes.ALOAD, 0)
       MethodDescriptor methodDescriptor = MethodDescriptorUtils.getDescriptorByType(field.type, false)
       if (methodDescriptor == null || !methodDescriptor.isValid()) {
         throw new IllegalStateException("StateType for ${field.name} in ${field.owner} is unknown!")
       }
+      mv.visitVarInsn(Opcodes.ALOAD, 1)
+      mv.visitLdcInsn(field.key)
+      mv.visitVarInsn(Opcodes.ALOAD, 0)
       mv.visitFieldInsn(Opcodes.GETFIELD, field.owner, field.name, field.descriptor)
-      // cast List to ArrayList :)
-      if (field.descriptor == Descriptors.LIST) {
+      if (field.type == StateType.CUSTOM) {
+        mv.visitMethodInsn(
+            Opcodes.INVOKESTATIC,
+            Types.SERIALIZER,
+            "serialize",
+            Descriptors.SERIALIZER_SERIALIZE,
+            false
+        )
+      } else if (field.descriptor == Descriptors.LIST) {
+        // cast List to ArrayList :)
         mv.visitTypeInsn(Opcodes.CHECKCAST, Types.ARRAY_LIST)
       }
       mv.visitMethodInsn(

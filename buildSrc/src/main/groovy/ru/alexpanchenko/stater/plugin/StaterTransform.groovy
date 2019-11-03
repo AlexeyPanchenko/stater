@@ -10,14 +10,16 @@ import org.apache.commons.io.FileUtils
 import org.gradle.api.Project
 import org.objectweb.asm.ClassReader
 import org.objectweb.asm.ClassWriter
+import org.objectweb.asm.util.TraceClassVisitor
 import ru.alexpanchenko.stater.plugin.visitors.StaterClassVisitor
 
 @TypeChecked
 class StaterTransform extends Transform {
 
-  Project project
+  private final Project project
+  private boolean withCustomSerializer
 
-  StaterTransform(Project project) {
+  StaterTransform(@NonNull Project project) {
     this.project = project
   }
 
@@ -53,6 +55,7 @@ class StaterTransform extends Transform {
   void transform(
       TransformInvocation transformInvocation
   ) throws TransformException, InterruptedException, IOException {
+    this.withCustomSerializer = project.extensions.getByType(StaterPluginExtension.class).getCustomSerializerEnabled()
 
     transformInvocation.outputProvider.deleteAll()
 
@@ -129,7 +132,8 @@ class StaterTransform extends Transform {
     ClassReader classReader = new ClassReader(is)
     ClassWriter classWriter = new ClassWriter(ClassWriter.COMPUTE_MAXS)
 
-    StaterClassVisitor adapter = new StaterClassVisitor(classWriter, classPool)
+    TraceClassVisitor traceClassVisitor = new TraceClassVisitor(classWriter, new PrintWriter(System.out))
+    StaterClassVisitor adapter = new StaterClassVisitor(traceClassVisitor, classPool, withCustomSerializer)
 
     classReader.accept(adapter, ClassReader.SKIP_FRAMES)
     byte [] newBytes = classWriter.toByteArray()

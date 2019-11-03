@@ -67,6 +67,8 @@ class MethodDescriptorUtils {
         return new MethodDescriptor(isGet ? Methods.Get.BUNDLE : Methods.Put.BUNDLE, Descriptors.BUNDLE)
       case StateType.IBINDER:
         return new MethodDescriptor(isGet ? Methods.Get.IBINDER : Methods.Put.IBINDER, Descriptors.IBINDER)
+      case StateType.CUSTOM:
+        return new MethodDescriptor(isGet ? Methods.Get.STRING : Methods.Put.STRING, Descriptors.STRING)
     }
   }
 

@@ -29,5 +29,6 @@ public enum StateType {
   PARCELABLE_ARRAY,
   PARCELABLE_ARRAY_LIST,
   BUNDLE,
-  IBINDER
+  IBINDER,
+  CUSTOM
 }

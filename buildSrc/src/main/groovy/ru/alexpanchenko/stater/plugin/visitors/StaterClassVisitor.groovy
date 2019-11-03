@@ -18,10 +18,14 @@ class StaterClassVisitor extends ClassVisitor implements Opcodes {
   private final ClassPool classPool
   private final StateTypeDeterminator typeDeterminator
 
-  StaterClassVisitor(@NonNull ClassVisitor classVisitor, @NonNull ClassPool classPool) {
+  StaterClassVisitor(
+      @NonNull ClassVisitor classVisitor,
+      @NonNull ClassPool classPool,
+      boolean withCustomSerializer
+  ) {
     super(Const.ASM_VERSION, classVisitor)
     this.classPool = classPool
-    typeDeterminator = new StateTypeDeterminator(classPool)
+    typeDeterminator = new StateTypeDeterminator(classPool, withCustomSerializer)
   }
 
   @Override
