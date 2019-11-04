@@ -23,17 +23,18 @@ class StaterPlugin implements Plugin<Project> {
           "'com.android.application' or 'com.android.library' plugin required."
       )
     }
+    registerExtension(project)
     // Automatically add stater library
     project.getDependencies().add('implementation', "ru.alexpanchenko:stater:$VERSION")
-
-    registerExtension(project)
 
     BaseExtension androidExtension = project.extensions.findByType(BaseExtension.class)
     androidExtension.registerTransform(new StaterTransform(project))
   }
 
   private void registerExtension(@NonNull Project project) {
-    StaterPluginExtension extension = project.extensions.create('stater', StaterPluginExtension.class)
+    StaterPluginExtension extension = project.extensions.create(
+        StaterPluginExtension.NAME, StaterPluginExtension.class
+    )
     extension.setExtensionChangeListener {
       if (extension.getCustomSerializerEnabled()) {
         // Add serializer library
@@ -43,29 +44,3 @@ class StaterPlugin implements Plugin<Project> {
   }
 }
 
-@TypeChecked
-@CompileStatic
-class StaterPluginExtension {
-  private boolean customSerializerEnabled = false
-  private ExtensionChangeListener listener
-
-  void setCustomSerializerEnabled(boolean enable) {
-    customSerializerEnabled = enable
-    if (listener != null) {
-      listener.onChanged()
-    }
-  }
-
-  boolean getCustomSerializerEnabled() {
-    return customSerializerEnabled
-  }
-
-  void setExtensionChangeListener(ExtensionChangeListener listener) {
-    this.listener = listener
-  }
-
-}
-
-interface ExtensionChangeListener {
-  void onChanged()
-}
