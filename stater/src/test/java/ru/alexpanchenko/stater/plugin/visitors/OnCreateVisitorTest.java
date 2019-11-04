@@ -3,9 +3,9 @@ package ru.alexpanchenko.stater.plugin.visitors;
 import org.junit.Before;
 import org.junit.Test;
 
+import ru.alexpanchenko.stater.plugin.StateFieldStorage;
 import ru.alexpanchenko.stater.plugin.model.SaverField;
 import ru.alexpanchenko.stater.plugin.model.StateType;
-import ru.alexpanchenko.stater.plugin.utils.Const;
 import ru.alexpanchenko.stater.plugin.utils.Descriptors;
 import ru.alexpanchenko.stater.plugin.utils.Methods;
 import ru.alexpanchenko.stater.plugin.utils.Types;
@@ -18,17 +18,19 @@ import static org.mockito.Mockito.verify;
 
 public class OnCreateVisitorTest {
 
+  private final StateFieldStorage fieldStorage = new StateFieldStorage();
+
   @Before
   public void setUp() {
-    Const.stateFields.clear();
+    fieldStorage.clear();
   }
 
   @Test(expected = IllegalStateException.class)
   public void testIllegalType() {
     MethodVisitor mockMethodVisitor = mock(MethodVisitor.class);
-    Const.stateFields.add(new SaverField("n", "d", "o", null));
+    fieldStorage.add(new SaverField("n", "d", "sign", "o", null));
 
-    OnCreateVisitor onCreateVisitor = new OnCreateVisitor(mockMethodVisitor);
+    OnCreateVisitor onCreateVisitor = new OnCreateVisitor(mockMethodVisitor, fieldStorage);
     onCreateVisitor.visitCode();
   }
 
@@ -39,10 +41,10 @@ public class OnCreateVisitorTest {
     String fieldOwner = Descriptors.INT;
     StateType fieldType = StateType.INT;
     MethodVisitor mockMethodVisitor = mock(MethodVisitor.class);
-    SaverField field = new SaverField(fieldName, fieldDescriptor, fieldOwner, fieldType);
-    Const.stateFields.add(field);
+    SaverField field = new SaverField(fieldName, fieldDescriptor, null, fieldOwner, fieldType);
+    fieldStorage.add(field);
 
-    OnCreateVisitor onCreateVisitor = new OnCreateVisitor(mockMethodVisitor);
+    OnCreateVisitor onCreateVisitor = new OnCreateVisitor(mockMethodVisitor, fieldStorage);
     onCreateVisitor.visitCode();
 
     verify(mockMethodVisitor).visitCode();
@@ -64,10 +66,10 @@ public class OnCreateVisitorTest {
     String fieldOwner = Descriptors.SERIALIZABLE;
     StateType fieldType = StateType.SERIALIZABLE;
     MethodVisitor mockMethodVisitor = mock(MethodVisitor.class);
-    SaverField field = new SaverField(fieldName, fieldDescriptor, fieldOwner, fieldType);
-    Const.stateFields.add(field);
+    SaverField field = new SaverField(fieldName, fieldDescriptor, null, fieldOwner, fieldType);
+    fieldStorage.add(field);
 
-    OnCreateVisitor onCreateVisitor = new OnCreateVisitor(mockMethodVisitor);
+    OnCreateVisitor onCreateVisitor = new OnCreateVisitor(mockMethodVisitor, fieldStorage);
     onCreateVisitor.visitCode();
 
     verify(mockMethodVisitor).visitTypeInsn(Opcodes.CHECKCAST, Type.getType(field.descriptor).getInternalName());

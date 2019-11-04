@@ -70,6 +70,8 @@ class MethodDescriptorUtils {
         return new MethodDescriptor(isGet ? Methods.Get.BUNDLE : Methods.Put.BUNDLE, Descriptors.BUNDLE)
       case StateType.IBINDER:
         return new MethodDescriptor(isGet ? Methods.Get.IBINDER : Methods.Put.IBINDER, Descriptors.IBINDER)
+      case StateType.CUSTOM:
+        return new MethodDescriptor(isGet ? Methods.Get.STRING : Methods.Put.STRING, Descriptors.STRING)
     }
   }
 
@@ -79,7 +81,6 @@ class MethodDescriptorUtils {
     new SignatureReader(signature).accept(signatureVisitor)
     return signatureVisitor.types
   }
-
 
   static boolean primitiveIsObject(String descriptor) {
     return descriptor == Descriptors.BYTE_OBJ || descriptor == Descriptors.BYTE_OBJ_ARRAY ||

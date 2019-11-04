@@ -8,16 +8,20 @@ import groovy.transform.TypeChecked
 import javassist.ClassPool
 import org.apache.commons.io.FileUtils
 import org.gradle.api.Project
+import ru.alexpanchenko.stater.plugin.utils.StateTypeDeterminator
 import ru.alexpanchenko.stater.plugin.visitors.StaterClassVisitor
 import stater.org.objectweb.asm.ClassReader
 import stater.org.objectweb.asm.ClassWriter
+import stater.org.objectweb.asm.util.TraceClassVisitor
 
 @TypeChecked
 class StaterTransform extends Transform {
 
-  Project project
+  private final Project project
+  private StateTypeDeterminator typeDeterminator
+  private StateFieldStorage fieldStorage
 
-  StaterTransform(Project project) {
+  StaterTransform(@NonNull Project project) {
     this.project = project
   }
 
@@ -59,6 +63,10 @@ class StaterTransform extends Transform {
     ClassPool classPool = new StaterClassPool(
         project, transformInvocation.inputs, transformInvocation.referencedInputs
     )
+    boolean withCustomSerializer = project.extensions.getByType(StaterPluginExtension.class)
+        .getCustomSerializerEnabled()
+    typeDeterminator = new StateTypeDeterminator(classPool, withCustomSerializer)
+    fieldStorage = new StateFieldStorage()
 
     transformInvocation.inputs.each { transformInput ->
       transformInput.directoryInputs.each { directoryInput ->
@@ -129,7 +137,13 @@ class StaterTransform extends Transform {
     ClassReader classReader = new ClassReader(is)
     ClassWriter classWriter = new ClassWriter(ClassWriter.COMPUTE_MAXS)
 
-    StaterClassVisitor adapter = new StaterClassVisitor(classWriter, classPool)
+    TraceClassVisitor traceClassVisitor = new TraceClassVisitor(classWriter, new PrintWriter(System.out))
+    StaterClassVisitor adapter = new StaterClassVisitor(
+        traceClassVisitor,
+        classPool,
+        typeDeterminator,
+        fieldStorage
+    )
 
     classReader.accept(adapter, ClassReader.SKIP_FRAMES)
     byte [] newBytes = classWriter.toByteArray()

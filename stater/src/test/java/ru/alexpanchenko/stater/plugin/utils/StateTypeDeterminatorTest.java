@@ -14,7 +14,7 @@ public class StateTypeDeterminatorTest {
   private static final String A_CLASS = "ru/alexpanchenko/stater/plugin/utils/models/A.class";
   private static final String B_CLASS = "ru/alexpanchenko/stater/plugin/utils/models/B.class";
 
-  private final StateTypeDeterminator typeDeterminator = new StateTypeDeterminator(classPool);
+  private final StateTypeDeterminator typeDeterminator = new StateTypeDeterminator(classPool, false);
 
   @Test
   public void testBoolean() {
