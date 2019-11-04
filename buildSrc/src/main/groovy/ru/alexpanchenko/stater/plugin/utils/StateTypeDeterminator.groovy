@@ -134,7 +134,7 @@ class StateTypeDeterminator {
     }
     String containerType = signatureTypes.get(0)
     if (containerType != Types.LIST && containerType != Types.ARRAY_LIST && !withCustomSerializer) {
-      throw new IllegalStateException("Stater can save only $Types.LIST or $Types.ARRAY_LIST Generic. Yout signature $signature is not correct")
+      throw new IllegalStateException("Stater can save only $Types.LIST or $Types.ARRAY_LIST Generic. Your signature $signature is not correct")
     }
     String genericType = signatureTypes.get(1)
     switch (genericType) {
