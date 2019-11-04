@@ -6,6 +6,7 @@ import org.objectweb.asm.Label
 import org.objectweb.asm.MethodVisitor
 import org.objectweb.asm.Opcodes
 import org.objectweb.asm.Type
+import ru.alexpanchenko.stater.plugin.StateFieldStorage
 import ru.alexpanchenko.stater.plugin.model.MethodDescriptor
 import ru.alexpanchenko.stater.plugin.model.SaverField
 import ru.alexpanchenko.stater.plugin.model.StateType
@@ -14,8 +15,11 @@ import ru.alexpanchenko.stater.plugin.utils.*
 @TypeChecked
 class OnCreateVisitor extends MethodVisitor {
 
-  OnCreateVisitor(MethodVisitor methodVisitor) {
+  private final StateFieldStorage fieldStorage
+
+  OnCreateVisitor(@NonNull MethodVisitor methodVisitor, @NonNull StateFieldStorage fieldStorage) {
     super(Const.ASM_VERSION, methodVisitor)
+    this.fieldStorage = fieldStorage
   }
 
   @Override
@@ -26,7 +30,7 @@ class OnCreateVisitor extends MethodVisitor {
     mv.visitVarInsn(Opcodes.ALOAD, 1)
     mv.visitJumpInsn(Opcodes.IFNULL, l1)
 
-    Const.stateFields.each { field ->
+    fieldStorage.getFields().each { field ->
       MethodDescriptor methodDescriptor = MethodDescriptorUtils.getDescriptorByType(field.type, true)
       if (methodDescriptor == null || !methodDescriptor.isValid()) {
         throw new IllegalStateException("StateType for ${field.name} in ${field.owner} is unknown!")
@@ -42,11 +46,7 @@ class OnCreateVisitor extends MethodVisitor {
           false
       )
       // cast
-      if (field.type == StateType.SERIALIZABLE
-          || field.type == StateType.PARCELABLE
-          || field.type == StateType.PARCELABLE_ARRAY
-          || field.type == StateType.IBINDER
-      ) {
+      if (needToCastField(field)) {
         mv.visitTypeInsn(Opcodes.CHECKCAST, Type.getType(field.descriptor).internalName)
       }
 
@@ -58,7 +58,14 @@ class OnCreateVisitor extends MethodVisitor {
     mv.visitLabel(l1)
   }
 
-  private addCustomTypeDeserialization(@NonNull SaverField field) {
+  private boolean needToCastField(SaverField field) {
+   return field.type == StateType.SERIALIZABLE ||
+       field.type == StateType.PARCELABLE ||
+       field.type == StateType.PARCELABLE_ARRAY ||
+       field.type == StateType.IBINDER
+  }
+
+  private void addCustomTypeDeserialization(@NonNull SaverField field) {
     if (field.signature == null || field.signature.isEmpty()) {
       mv.visitLdcInsn(Type.getType(field.descriptor))
       mv.visitMethodInsn(
@@ -74,7 +81,7 @@ class OnCreateVisitor extends MethodVisitor {
     mv.visitTypeInsn(Opcodes.CHECKCAST, Type.getType(field.descriptor).internalName)
   }
 
-  private addTypedDeserialization(@NonNull SaverField field) throws IllegalStateException {
+  private void addTypedDeserialization(@NonNull SaverField field) throws IllegalStateException {
     final List<String> types = MethodDescriptorUtils.getSignatureTypes(field.signature)
     final int size = types.size()
     addIntConstToStack(size)

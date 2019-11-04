@@ -1,8 +1,10 @@
 package ru.alexpanchenko.stater.plugin.visitors
 
+import com.android.annotations.NonNull
 import groovy.transform.TypeChecked
 import org.objectweb.asm.MethodVisitor
 import org.objectweb.asm.Opcodes
+import ru.alexpanchenko.stater.plugin.StateFieldStorage
 import ru.alexpanchenko.stater.plugin.model.MethodDescriptor
 import ru.alexpanchenko.stater.plugin.model.StateType
 import ru.alexpanchenko.stater.plugin.utils.*
@@ -10,15 +12,21 @@ import ru.alexpanchenko.stater.plugin.utils.*
 @TypeChecked
 class OnSavedInstanceStateVisitor extends MethodVisitor {
 
-  OnSavedInstanceStateVisitor(MethodVisitor methodVisitor) {
+  private final StateFieldStorage fieldStorage
+
+  OnSavedInstanceStateVisitor(
+      @NonNull MethodVisitor methodVisitor,
+      @NonNull StateFieldStorage fieldStorage
+  ) {
     super(Const.ASM_VERSION, methodVisitor)
+    this.fieldStorage = fieldStorage
   }
 
   @Override
   void visitCode() {
     mv.visitCode()
 
-    Const.stateFields.each { field ->
+    fieldStorage.getFields().each { field ->
       MethodDescriptor methodDescriptor = MethodDescriptorUtils.getDescriptorByType(field.type, false)
       if (methodDescriptor == null || !methodDescriptor.isValid()) {
         throw new IllegalStateException("StateType for ${field.name} in ${field.owner} is unknown!")

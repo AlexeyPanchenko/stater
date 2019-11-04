@@ -11,13 +11,15 @@ import org.gradle.api.Project
 import org.objectweb.asm.ClassReader
 import org.objectweb.asm.ClassWriter
 import org.objectweb.asm.util.TraceClassVisitor
+import ru.alexpanchenko.stater.plugin.utils.StateTypeDeterminator
 import ru.alexpanchenko.stater.plugin.visitors.StaterClassVisitor
 
 @TypeChecked
 class StaterTransform extends Transform {
 
   private final Project project
-  private boolean withCustomSerializer
+  private StateTypeDeterminator typeDeterminator
+  private StateFieldStorage fieldStorage
 
   StaterTransform(@NonNull Project project) {
     this.project = project
@@ -55,13 +57,16 @@ class StaterTransform extends Transform {
   void transform(
       TransformInvocation transformInvocation
   ) throws TransformException, InterruptedException, IOException {
-    this.withCustomSerializer = project.extensions.getByType(StaterPluginExtension.class).getCustomSerializerEnabled()
 
     transformInvocation.outputProvider.deleteAll()
 
     ClassPool classPool = new StaterClassPool(
         project, transformInvocation.inputs, transformInvocation.referencedInputs
     )
+    boolean withCustomSerializer = project.extensions.getByType(StaterPluginExtension.class)
+        .getCustomSerializerEnabled()
+    typeDeterminator = new StateTypeDeterminator(classPool, withCustomSerializer)
+    fieldStorage = new StateFieldStorage()
 
     transformInvocation.inputs.each { transformInput ->
       transformInput.directoryInputs.each { directoryInput ->
@@ -133,7 +138,12 @@ class StaterTransform extends Transform {
     ClassWriter classWriter = new ClassWriter(ClassWriter.COMPUTE_MAXS)
 
     TraceClassVisitor traceClassVisitor = new TraceClassVisitor(classWriter, new PrintWriter(System.out))
-    StaterClassVisitor adapter = new StaterClassVisitor(traceClassVisitor, classPool, withCustomSerializer)
+    StaterClassVisitor adapter = new StaterClassVisitor(
+        traceClassVisitor,
+        classPool,
+        typeDeterminator,
+        fieldStorage
+    )
 
     classReader.accept(adapter, ClassReader.SKIP_FRAMES)
     byte [] newBytes = classWriter.toByteArray()
