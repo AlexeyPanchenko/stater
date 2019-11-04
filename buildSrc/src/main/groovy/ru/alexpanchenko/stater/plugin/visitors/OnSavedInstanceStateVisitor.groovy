@@ -5,10 +5,7 @@ import org.objectweb.asm.MethodVisitor
 import org.objectweb.asm.Opcodes
 import ru.alexpanchenko.stater.plugin.model.MethodDescriptor
 import ru.alexpanchenko.stater.plugin.model.StateType
-import ru.alexpanchenko.stater.plugin.utils.Const
-import ru.alexpanchenko.stater.plugin.utils.Descriptors
-import ru.alexpanchenko.stater.plugin.utils.MethodDescriptorUtils
-import ru.alexpanchenko.stater.plugin.utils.Types
+import ru.alexpanchenko.stater.plugin.utils.*
 
 @TypeChecked
 class OnSavedInstanceStateVisitor extends MethodVisitor {
@@ -31,13 +28,7 @@ class OnSavedInstanceStateVisitor extends MethodVisitor {
       mv.visitVarInsn(Opcodes.ALOAD, 0)
       mv.visitFieldInsn(Opcodes.GETFIELD, field.owner, field.name, field.descriptor)
       if (field.type == StateType.CUSTOM) {
-        mv.visitMethodInsn(
-            Opcodes.INVOKESTATIC,
-            Types.SERIALIZER,
-            "serialize",
-            Descriptors.SERIALIZER_SERIALIZE,
-            false
-        )
+        addCustomTypeSerialization()
       } else if (field.descriptor == Descriptors.LIST) {
         // cast List to ArrayList :)
         mv.visitTypeInsn(Opcodes.CHECKCAST, Types.ARRAY_LIST)
@@ -50,6 +41,16 @@ class OnSavedInstanceStateVisitor extends MethodVisitor {
           false
       )
     }
+  }
+
+  private addCustomTypeSerialization() {
+    mv.visitMethodInsn(
+        Opcodes.INVOKESTATIC,
+        Types.SERIALIZER,
+        Methods.SERIALIZE,
+        Descriptors.SERIALIZER_SERIALIZE,
+        false
+    )
   }
 
 }

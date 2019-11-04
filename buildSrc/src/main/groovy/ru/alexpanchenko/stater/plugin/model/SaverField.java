@@ -1,11 +1,14 @@
 package ru.alexpanchenko.stater.plugin.model;
 
+import com.android.annotations.Nullable;
+
 import java.util.Objects;
 
 public class SaverField {
 
   public final String name;
   public final String descriptor;
+  @Nullable
   public final String signature;
   public final String owner;
   public final StateType type;

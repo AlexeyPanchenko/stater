@@ -72,7 +72,6 @@ public class StaterPluginTest {
 
     Dependency staterDependency = project.getConfigurations().getByName("implementation").getAllDependencies().stream()
       .filter(dependency -> {
-        System.out.println(dependency);
         return dependency != null && dependency.getGroup().equals("ru.alexpanchenko") && dependency.getName().equals("stater");
       })
       .findFirst()

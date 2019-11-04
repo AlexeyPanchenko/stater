@@ -15,6 +15,9 @@ class Const {
 class Methods {
   public static final String ON_CREATE = "onCreate"
   public static final String ON_SAVED_INSTANCE_STATE = "onSaveInstanceState"
+  public static final String SERIALIZE = "serialize"
+  public static final String DESERIALIZE = "deserialize"
+  public static final String DESERIALIZE_TYPED = "deserializeTyped"
 
   static class Put {
     public static final String BOOLEAN = "putBoolean"
@@ -103,6 +106,7 @@ class Packages {
 @CompileStatic
 class Types {
   public static final String OBJECT = "java/lang/Object"
+  public static final String CLASS = "java/lang/Class"
   public static final String LIST = "java/util/List"
   public static final String ARRAY_LIST = "java/util/ArrayList"
   public static final String BYTE = "B"
@@ -127,13 +131,14 @@ class Types {
   public static final String BUNDLE = "android/os/Bundle"
   public static final String IBINDER = "android/os/IBinder"
   public static final String STATE = "ru/alexpanchenko/stater/State"
-  public static final String SERIALIZER = "ru/alexpanchenko/stater/serializer/Serializer"
+  public static final String SERIALIZER = "ru/alexpanchenko/stater/serializer/StaterSerializer"
 }
 
 @TypeChecked
 @CompileStatic
 class Descriptors {
   public static final String OBJECT = "L${Types.OBJECT};"
+  public static final String CLASS = "L${Types.CLASS};"
   public static final String LIST = "L${Types.LIST};"
   public static final String ARRAY_LIST = "L${Types.ARRAY_LIST};"
   public static final String BOOLEAN = "Z"
@@ -183,4 +188,6 @@ class Descriptors {
   public static final String ON_CREATE = "(${BUNDLE})${VOID}"
   public static final String ON_SAVED_INSTANCE_STATE = "(${BUNDLE})${VOID}"
   public static final String SERIALIZER_SERIALIZE = "(${OBJECT})${STRING}"
+  public static final String SERIALIZER_DESERIALIZE = "(${STRING}${CLASS})${OBJECT}"
+  public static final String SERIALIZER_DESERIALIZE_TYPED = "(${STRING}[${CLASS})${OBJECT}"
 }

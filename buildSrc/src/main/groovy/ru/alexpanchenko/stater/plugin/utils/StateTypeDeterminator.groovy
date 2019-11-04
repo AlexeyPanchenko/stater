@@ -6,9 +6,7 @@ import groovy.transform.CompileStatic
 import groovy.transform.TypeChecked
 import javassist.ClassPool
 import org.objectweb.asm.Type
-import org.objectweb.asm.signature.SignatureReader
 import ru.alexpanchenko.stater.plugin.model.StateType
-import ru.alexpanchenko.stater.plugin.visitors.TypesSignatureVisitor
 
 /**
  * Mapper, witch define {@link StateType} by descriptor and signature of field.
@@ -130,7 +128,7 @@ class StateTypeDeterminator {
 
   @Nullable
   private StateType getGenericType(@NonNull String signature) {
-    List<String> signatureTypes = getSignatureTypes(signature)
+    List<String> signatureTypes = MethodDescriptorUtils.getSignatureTypes(signature)
     if (signatureTypes.isEmpty() || signatureTypes.size() < 2 || (signatureTypes.size() > 2 && !withCustomSerializer)) {
       throw new IllegalStateException("Wrong Generic signature $signature")
     }
@@ -151,13 +149,6 @@ class StateTypeDeterminator {
       return StateType.PARCELABLE_ARRAY_LIST
     }
     return null
-  }
-
-  @NonNull
-  private List<String> getSignatureTypes(@NonNull String signature) {
-    TypesSignatureVisitor signatureVisitor = new TypesSignatureVisitor()
-    new SignatureReader(signature).accept(signatureVisitor)
-    return signatureVisitor.types
   }
 
 }

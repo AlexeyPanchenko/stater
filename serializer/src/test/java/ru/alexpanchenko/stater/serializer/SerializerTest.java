@@ -12,7 +12,7 @@ public class SerializerTest {
   @Test
   public void testSerializeClass() {
     CustomClass customClass = new CustomClass(1, "text");
-    String serializedClass = Serializer.serialize(customClass);
+    String serializedClass = StaterSerializer.serialize(customClass);
     assertEquals("{\"count\":1,\"text\":\"text\"}", serializedClass);
   }
 
@@ -21,15 +21,15 @@ public class SerializerTest {
     List<CustomClass> list = new ArrayList<>();
     CustomClass customClass = new CustomClass(1, "text");
     list.add(customClass);
-    String deserializedClass = Serializer.serialize(list);
+    String deserializedClass = StaterSerializer.serialize(list);
     assertEquals("[{\"count\":1,\"text\":\"text\"}]", deserializedClass);
   }
 
   @Test
   public void testDeserializeClass() {
     CustomClass customClass = new CustomClass(1, "text");
-    String customClassString = Serializer.serialize(customClass);
-    CustomClass deserializedClass = Serializer.deserialize(customClassString, CustomClass.class);
+    String customClassString = StaterSerializer.serialize(customClass);
+    CustomClass deserializedClass = StaterSerializer.deserialize(customClassString, CustomClass.class);
     assertEquals(customClass, deserializedClass);
   }
 
@@ -38,8 +38,8 @@ public class SerializerTest {
     List<CustomClass> list = new ArrayList<>();
     list.add(new CustomClass(1, "text1"));
     list.add(new CustomClass(2, "text2"));
-    String listString = Serializer.serialize(list);
-    List<CustomClass> deserializedList = Serializer.deserialize(listString, List.class, CustomClass.class);
+    String listString = StaterSerializer.serialize(list);
+    List<CustomClass> deserializedList = StaterSerializer.deserializeTyped(listString, List.class, CustomClass.class);
     assertEquals(deserializedList.size(), 2);
     assertEquals(deserializedList, list);
   }
@@ -51,8 +51,8 @@ public class SerializerTest {
     list.add(new CustomClass(2, "text2"));
     List<List<CustomClass>> lists = new ArrayList<>();
     lists.add(list);
-    String listString = Serializer.serialize(lists);
-    List<List<CustomClass>> deserializedList = Serializer.deserialize(
+    String listString = StaterSerializer.serialize(lists);
+    List<List<CustomClass>> deserializedList = StaterSerializer.deserializeTyped(
       listString, List.class, List.class, CustomClass.class
     );
     assertEquals(deserializedList.size(), 1);
@@ -69,8 +69,8 @@ public class SerializerTest {
     lists.add(list);
     List<List<List<CustomClass>>> lists2 = new ArrayList<>();
     lists2.add(lists);
-    String listString = Serializer.serialize(lists2);
-    List<List<List<CustomClass>>> deserializedList = Serializer.deserialize(
+    String listString = StaterSerializer.serialize(lists2);
+    List<List<List<CustomClass>>> deserializedList = StaterSerializer.deserializeTyped(
       listString, List.class, List.class, List.class, CustomClass.class
     );
     assertEquals(deserializedList.size(), 1);

@@ -8,16 +8,16 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.Queue;
 
-public class Serializer {
+public final class StaterSerializer {
 
-  private static Serializer instance;
+  private static StaterSerializer instance;
   private final Gson gson = new Gson();
 
-  private Serializer() { }
+  private StaterSerializer() { }
 
-  public static Serializer getInstance() {
+  static StaterSerializer getInstance() {
     if (instance == null) {
-      instance = new Serializer();
+      instance = new StaterSerializer();
     }
     return instance;
   }
@@ -28,12 +28,21 @@ public class Serializer {
 
   /**
    * @param json - string presentation of object
-   * @param classes - object classes. First {@link Class} is require for define type.
-   *                If you have a generic type, add all classes by order:
-   *                {@code List<List<String>> -> deserialize(json, List.class, List.class, String.class)}
+   * @param currentClass - object classes that you need.
    * @return object of {@link T} type.
    */
-  public static <T> T deserialize(String json, Class... classes) {
+  public static <T> T deserialize(String json, Class<T> currentClass) {
+    return getInstance().gson.fromJson(json, TypeToken.getParameterized(currentClass).getType());
+  }
+
+  /**
+   * {@link #deserialize} for typed object.
+   * @param json - string presentation of object
+   * @param classes - object classes. Add all classes of your typed object by order:
+   *                {@code List<List<String>> -> deserializeTyped(json, List.class, List.class, String.class)}
+   * @return object of {@link T} type.
+   */
+  public static <T> T deserializeTyped(String json, Class... classes) {
     LinkedList<Class> list = new LinkedList<>(Arrays.asList(classes));
     return getInstance().gson.fromJson(json, getType(list));
   }

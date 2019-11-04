@@ -1,8 +1,11 @@
 package ru.alexpanchenko.stater.plugin.utils
 
+import com.android.annotations.NonNull
 import groovy.transform.TypeChecked
+import org.objectweb.asm.signature.SignatureReader
 import ru.alexpanchenko.stater.plugin.model.MethodDescriptor
 import ru.alexpanchenko.stater.plugin.model.StateType
+import ru.alexpanchenko.stater.plugin.visitors.TypesSignatureVisitor
 
 @TypeChecked
 class MethodDescriptorUtils {
@@ -70,6 +73,13 @@ class MethodDescriptorUtils {
       case StateType.CUSTOM:
         return new MethodDescriptor(isGet ? Methods.Get.STRING : Methods.Put.STRING, Descriptors.STRING)
     }
+  }
+
+  @NonNull
+  static List<String> getSignatureTypes(@NonNull String signature) {
+    TypesSignatureVisitor signatureVisitor = new TypesSignatureVisitor()
+    new SignatureReader(signature).accept(signatureVisitor)
+    return signatureVisitor.types
   }
 
   static boolean primitiveIsObject(String descriptor) {
