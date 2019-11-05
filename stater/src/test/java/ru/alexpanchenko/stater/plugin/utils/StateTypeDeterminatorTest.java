@@ -209,4 +209,28 @@ public class StateTypeDeterminatorTest {
   public void testIBinder() {
     assertEquals(typeDeterminator.determinate(Descriptors.IBINDER,null), StateType.IBINDER);
   }
+
+  @Test(expected = IllegalStateException.class)
+  public void testUnsupportedType() {
+    typeDeterminator.determinate(Descriptors.OBJECT, null);
+  }
+
+  @Test(expected = IllegalStateException.class)
+  public void testUnsupportedListType() {
+    typeDeterminator.determinate(Descriptors.LIST, "Ljava/util/List<" + Descriptors.OBJECT + ">;");
+  }
+
+  @Test
+  public void testUnsupportedTypeWithCustomSerialization() {
+    final StateTypeDeterminator typeDeterminator = new StateTypeDeterminator(classPool, true);
+    StateType type = typeDeterminator.determinate(Descriptors.OBJECT, null);
+    assertEquals(type, StateType.CUSTOM);
+  }
+
+  @Test
+  public void testUnsupportedTypedTypeWithCustomSerialization() {
+    final StateTypeDeterminator typeDeterminator = new StateTypeDeterminator(classPool, true);
+    StateType type = typeDeterminator.determinate(Descriptors.OBJECT, "Ljava/util/List<" + Descriptors.OBJECT + ">;");
+    assertEquals(type, StateType.CUSTOM);
+  }
 }

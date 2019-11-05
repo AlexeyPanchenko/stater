@@ -33,7 +33,7 @@ class StateTypeDeterminator {
    */
   @NonNull
   StateType determinate(
-      @NonNull final String descriptor, @NonNull final String signature
+      @NonNull final String descriptor, @Nullable final String signature
   ) throws IllegalStateException {
     final StateType primitiveType = getPrimitiveType(descriptor)
     if (primitiveType != null) {
