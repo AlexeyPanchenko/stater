@@ -12,7 +12,6 @@ import ru.alexpanchenko.stater.plugin.utils.StateTypeDeterminator
 import ru.alexpanchenko.stater.plugin.visitors.StaterClassVisitor
 import stater.org.objectweb.asm.ClassReader
 import stater.org.objectweb.asm.ClassWriter
-import stater.org.objectweb.asm.util.TraceClassVisitor
 
 @TypeChecked
 class StaterTransform extends Transform {
@@ -137,9 +136,8 @@ class StaterTransform extends Transform {
     ClassReader classReader = new ClassReader(is)
     ClassWriter classWriter = new ClassWriter(ClassWriter.COMPUTE_MAXS)
 
-    TraceClassVisitor traceClassVisitor = new TraceClassVisitor(classWriter, new PrintWriter(System.out))
     StaterClassVisitor adapter = new StaterClassVisitor(
-        traceClassVisitor,
+        classWriter,
         classPool,
         typeDeterminator,
         fieldStorage

@@ -1,5 +1,4 @@
 apply plugin: 'java-library'
-apply plugin: 'kotlin'
 apply plugin: 'com.novoda.bintray-release'
 
 sourceCompatibility = "8"
@@ -9,7 +8,6 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.8.6'
 
     testImplementation 'junit:junit:4.12'
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
 }
 
 publish {
@@ -17,30 +15,8 @@ publish {
     groupId = GROUP_ID
     artifactId = ARTIFACT_ID_SERIALIZER
     publishVersion = VERSION
-    desc = 'Lightweight library to save state in your Activity/Fragment.'
+    desc = 'Lightweight serializer for stater plugin.'
     website = 'https://github.com/AlexeyPanchenko/stater'
-}
-buildscript {
-    ext.kotlin_version = '1.3.50'
-    repositories {
-        mavenCentral()
-    }
-    dependencies {
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-    }
-}
-repositories {
-    mavenCentral()
-}
-compileKotlin {
-    kotlinOptions {
-        jvmTarget = "1.8"
-    }
-}
-compileTestKotlin {
-    kotlinOptions {
-        jvmTarget = "1.8"
-    }
 }
 
 // ./gradlew :serializer:clean :serializer:build :serializer:bintrayUpload -PbintrayUser=BINTRAY_USERNAME -PbintrayKey=BINTRAY_KEY -PdryRun=false
