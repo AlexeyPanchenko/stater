@@ -1,4 +1,4 @@
-import com.example.buildsrc.StaterPlugin
+import ru.alexpanchenko.stater.plugin.StaterPlugin
 
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
@@ -40,10 +40,12 @@ android {
     }
 }
 
+stater {
+    customSerializerEnabled = true
+}
+
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-
-    //implementation project(':library')
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${kotlin_version}"
     implementation 'androidx.appcompat:appcompat:1.1.0'

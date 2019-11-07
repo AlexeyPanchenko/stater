@@ -22,13 +22,19 @@ class MainActivityKotlin : AppCompatActivity() {
   @State
   private val floatsObj: Array<Float?> = arrayOf()
 
+  @State
+  private var customClass = CustomClass(1, "")
+
+  @State
+  private val listListListCustomClass: List<List<List<CustomClass>>>? = null
+
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     setContentView(R.layout.activity_main)
-    text.setText(intVar.toString())
+    text.setText(customClass.a.toString())
     button.setOnClickListener {
-      intVar++
-      text.setText(intVar.toString())
+      customClass.a++
+      text.setText(customClass.a.toString())
     }
   }
 }

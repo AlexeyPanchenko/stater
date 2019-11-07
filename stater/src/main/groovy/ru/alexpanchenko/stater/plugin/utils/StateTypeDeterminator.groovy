@@ -6,9 +6,7 @@ import groovy.transform.CompileStatic
 import groovy.transform.TypeChecked
 import javassist.ClassPool
 import ru.alexpanchenko.stater.plugin.model.StateType
-import ru.alexpanchenko.stater.plugin.visitors.TypesSignatureVisitor
 import stater.org.objectweb.asm.Type
-import stater.org.objectweb.asm.signature.SignatureReader
 
 /**
  * Mapper, witch define {@link StateType} by descriptor and signature of field.
@@ -18,12 +16,14 @@ import stater.org.objectweb.asm.signature.SignatureReader
 class StateTypeDeterminator {
 
   private final ClassPool classPool
+  private final boolean withCustomSerializer
 
   /**
    * @param classPool - pool of all available classes for analyze AST.
    */
-  StateTypeDeterminator(@NonNull ClassPool classPool) {
+  StateTypeDeterminator(@NonNull ClassPool classPool, boolean withCustomSerializer) {
     this.classPool = classPool
+    this.withCustomSerializer = withCustomSerializer
   }
 
   /**
@@ -33,7 +33,7 @@ class StateTypeDeterminator {
    */
   @NonNull
   StateType determinate(
-      @NonNull final String descriptor, @NonNull final String signature
+      @NonNull final String descriptor, @Nullable final String signature
   ) throws IllegalStateException {
     final StateType primitiveType = getPrimitiveType(descriptor)
     if (primitiveType != null) {
@@ -59,6 +59,9 @@ class StateTypeDeterminator {
     }
     if (ClassHierarchyUtils.containsInterface(classPool, className, Packages.IBINDER)) {
       return StateType.IBINDER
+    }
+    if (withCustomSerializer) {
+      return StateType.CUSTOM
     }
     throw new IllegalStateException("Impossible to define correct type of your variable with descriptor $descriptor and signature $signature")
   }
@@ -125,13 +128,13 @@ class StateTypeDeterminator {
 
   @Nullable
   private StateType getGenericType(@NonNull String signature) {
-    List<String> signatureTypes = getSignatureTypes(signature)
-    if (signatureTypes.isEmpty() || signatureTypes.size() < 2 || signatureTypes.size() > 2) {
+    List<String> signatureTypes = MethodDescriptorUtils.getSignatureTypes(signature)
+    if (signatureTypes.isEmpty() || signatureTypes.size() < 2 || (signatureTypes.size() > 2 && !withCustomSerializer)) {
       throw new IllegalStateException("Wrong Generic signature $signature")
     }
     String containerType = signatureTypes.get(0)
-    if (containerType != Types.LIST && containerType != Types.ARRAY_LIST) {
-      throw new IllegalStateException("Stater can save only $Types.LIST or $Types.ARRAY_LIST Generic. Yout signature $signature is not correct")
+    if (containerType != Types.LIST && containerType != Types.ARRAY_LIST && !withCustomSerializer) {
+      throw new IllegalStateException("Stater can save only $Types.LIST or $Types.ARRAY_LIST Generic. Your signature $signature is not correct")
     }
     String genericType = signatureTypes.get(1)
     switch (genericType) {
@@ -146,13 +149,6 @@ class StateTypeDeterminator {
       return StateType.PARCELABLE_ARRAY_LIST
     }
     return null
-  }
-
-  @NonNull
-  private List<String> getSignatureTypes(@NonNull String signature) {
-    TypesSignatureVisitor signatureVisitor = new TypesSignatureVisitor()
-    new SignatureReader(signature).accept(signatureVisitor)
-    return signatureVisitor.types
   }
 
 }

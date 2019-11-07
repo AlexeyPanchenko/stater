@@ -11,7 +11,7 @@ Download
 In root `build.gradle` file:
 ```groovy
 buildscript {
-    ext.stater_version = '1.1'
+    ext.stater_version = '1.2'
     repositories {
         jcenter()
     }
@@ -63,6 +63,54 @@ public class MainFragment extends Fragment {
 ```
 It's all!
 
+If you need to save custom fields just add a setting in your `build.gradle` file:
+```java
+apply plugin: 'stater-plugin'
+
+android {
+  ...
+}
+
+stater {
+  customSerializerEnabled = true
+}
+```
+And then use:
+```java
+import ru.alexpanchenko.stater.State;
+
+public class MainActivity extends AppCompatActivity {
+  @State
+  private CustomClass customClass;
+  // or
+  @State
+  private List<CustomClass> customClassList;
+  // or
+  @State
+  private Container<CustomClass> customClassContainer;
+}
+```
+
+Supported types
+--------
+| Supported Types  |
+|:-------|
+| boolean/Boolean/boolean[ ]/Boolean[ ]|
+| byte/Byte/byte[ ]/Byte[ ]|
+| char/Character/char[ ]/Character[ ]|
+| short/Short/short[ ]/Short[ ]|
+| int/Integer/int[ ]/Integer[ ]  List/ArrayList\<Integer\> |
+| float/Float/float[ ]/Float[ ] |
+| long/Long/long[ ]/Long[ ] |
+| double/Double/double[ ]/Double[ ] |
+| String/String[ ]  List/ArrayList\<String\> |
+| CharSequence/CharSequence[ ]  List/ArrayList\<CharSequence\> |
+| Serializable |
+| Parcelable/Parcelable[ ] List/ArrayList\<Parcelable\> |
+| Bundle |
+| IBinder |
+| Custom types (optional) |
+
 How it works
 --------
 Stater plugin transform classes that inherit Activity/Fragment in compile time (see `transformClassesWithStaterTransformFor...` task).
@@ -82,27 +130,7 @@ protected void onSaveInstanceState(@NonNull Bundle outState) {
     super.onSaveInstanceState(outState);
 }
 ```
-It can works also with object presentation of primitives:
-`Byte, Short, Character, Boolean, Integer, Long, Double, Float` and its arrays.
 Transformed classes you can find in `build/intermediates/transforms/StaterTransform/yourPackage`.
-All supported types:
-
-| Supported Types  |
-|:-------|
-| boolean/Boolean/boolean[ ]/Boolean[ ]|
-| byte/Byte/byte[ ]/Byte[ ]|
-| char/Character/char[ ]/Character[ ]|
-| short/Short/short[ ]/Short[ ]|
-| int/Integer/int[ ]/Integer[ ]  List/ArrayList\<Integer\> |
-| float/Float/float[ ]/Float[ ] |
-| long/Long/long[ ]/Long[ ] |
-| double/Double/double[ ]/Double[ ] |
-| String/String[ ]  List/ArrayList\<String\> |
-| CharSequence/CharSequence[ ]  List/ArrayList\<CharSequence\> |
-| Serializable |
-| Parcelable/Parcelable[ ] List/ArrayList\<Parcelable\> |
-| Bundle |
-| IBinder |
 
 License
 -------

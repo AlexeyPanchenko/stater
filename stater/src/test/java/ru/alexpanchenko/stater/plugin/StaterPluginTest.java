@@ -11,6 +11,9 @@ import org.gradle.api.artifacts.Dependency;
 import org.gradle.testfixtures.ProjectBuilder;
 import org.junit.Test;
 
+import java.util.Optional;
+
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 
 public class StaterPluginTest {
@@ -72,7 +75,6 @@ public class StaterPluginTest {
 
     Dependency staterDependency = project.getConfigurations().getByName("implementation").getAllDependencies().stream()
       .filter(dependency -> {
-        System.out.println(dependency);
         return dependency != null && dependency.getGroup().equals("ru.alexpanchenko") && dependency.getName().equals("stater");
       })
       .findFirst()
@@ -80,4 +82,49 @@ public class StaterPluginTest {
 
     assertNotNull(staterDependency);
   }
+
+
+  @Test
+  public void testNoAddSerializerDependency() {
+    Project project = ProjectBuilder.builder().build();
+    project.getPlugins().apply(LibraryPlugin.class);
+    StaterPlugin staterPlugin = new StaterPlugin();
+    staterPlugin.apply(project);
+
+    StaterPluginExtension staterExtension = project.getExtensions().getByType(StaterPluginExtension.class);
+    staterExtension.setCustomSerializerEnabled(false);
+
+    assertNotNull(staterExtension);
+
+    Optional<Dependency> serializerDependencyOption = project.getConfigurations().getByName("implementation").getAllDependencies().stream()
+      .filter(dependency -> {
+        return dependency != null && dependency.getGroup().equals("ru.alexpanchenko") && dependency.getName().equals("serializer");
+      })
+      .findFirst();
+
+    assertFalse(serializerDependencyOption.isPresent());
+  }
+
+  // todo: uncomment after serializer deploy
+  //@Test
+  //public void testAddSerializerDependency() {
+  //  Project project = ProjectBuilder.builder().build();
+  //  project.getPlugins().apply(LibraryPlugin.class);
+  //  StaterPlugin staterPlugin = new StaterPlugin();
+  //  staterPlugin.apply(project);
+  //
+  //  StaterPluginExtension staterExtension = project.getExtensions().getByType(StaterPluginExtension.class);
+  //  staterExtension.setCustomSerializerEnabled(true);
+  //
+  //  assertNotNull(staterExtension);
+  //
+  //  Dependency serializerDependencyOption = project.getConfigurations().getByName("implementation").getAllDependencies().stream()
+  //    .filter(dependency -> {
+  //      return dependency != null && dependency.getGroup().equals("ru.alexpanchenko") && dependency.getName().equals("serializer");
+  //    })
+  //    .findFirst()
+  //    .get();
+  //
+  //  assertNotNull(serializerDependencyOption);
+  //}
 }

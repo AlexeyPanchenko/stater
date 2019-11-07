@@ -3,6 +3,7 @@ package ru.alexpanchenko.stater.plugin.visitors
 import com.android.annotations.NonNull
 import groovy.transform.TypeChecked
 import javassist.ClassPool
+import ru.alexpanchenko.stater.plugin.StateFieldStorage
 import ru.alexpanchenko.stater.plugin.utils.*
 import stater.org.objectweb.asm.*
 
@@ -17,11 +18,18 @@ class StaterClassVisitor extends ClassVisitor implements Opcodes {
 
   private final ClassPool classPool
   private final StateTypeDeterminator typeDeterminator
+  private final StateFieldStorage fieldStorage
 
-  StaterClassVisitor(@NonNull ClassVisitor classVisitor, @NonNull ClassPool classPool) {
+  StaterClassVisitor(
+      @NonNull ClassVisitor classVisitor,
+      @NonNull ClassPool classPool,
+      @NonNull StateTypeDeterminator typeDeterminator,
+      @NonNull StateFieldStorage fieldStorage
+  ) {
     super(Const.ASM_VERSION, classVisitor)
     this.classPool = classPool
-    typeDeterminator = new StateTypeDeterminator(classPool)
+    this.typeDeterminator = typeDeterminator
+    this.fieldStorage = fieldStorage
   }
 
   @Override
@@ -44,7 +52,7 @@ class StaterClassVisitor extends ClassVisitor implements Opcodes {
   FieldVisitor visitField(int access, String name, String descriptor, String signature, Object value) {
     FieldVisitor fv = super.visitField(access, name, descriptor, signature, value)
     if (needTransform) {
-      return new StaterFieldVisitor(fv, name, descriptor, signature, owner, typeDeterminator)
+      return new StaterFieldVisitor(fv, name, descriptor, signature, owner, typeDeterminator, fieldStorage)
     }
     return fv
   }
@@ -54,11 +62,11 @@ class StaterClassVisitor extends ClassVisitor implements Opcodes {
     MethodVisitor mv = super.visitMethod(access, name, descriptor, signature, exceptions)
     if (needTransform && name == Methods.ON_CREATE) {
       hasOnCreate = true
-      return new OnCreateVisitor(mv)
+      return new OnCreateVisitor(mv, fieldStorage)
     }
     if (needTransform && name == Methods.ON_SAVED_INSTANCE_STATE) {
       hasSavedInstanceState = true
-      return new OnSavedInstanceStateVisitor(mv)
+      return new OnSavedInstanceStateVisitor(mv, fieldStorage)
     }
     return mv
   }
@@ -72,7 +80,7 @@ class StaterClassVisitor extends ClassVisitor implements Opcodes {
       visitOnSaveInstanceStateMethod()
     }
     super.visitEnd()
-    Const.stateFields.clear()
+    fieldStorage.clear()
   }
 
   private void visitOnCreateMethod() {
@@ -89,7 +97,7 @@ class StaterClassVisitor extends ClassVisitor implements Opcodes {
     )
     Label l1 = new Label()
     methodVisitor.visitLabel(l1)
-    new OnCreateVisitor(methodVisitor).visitCode()
+    new OnCreateVisitor(methodVisitor, fieldStorage).visitCode()
     Label l2 = new Label()
     methodVisitor.visitLabel(l2)
     methodVisitor.visitInsn(Opcodes.RETURN)
@@ -118,7 +126,7 @@ class StaterClassVisitor extends ClassVisitor implements Opcodes {
     )
     Label l1 = new Label()
     methodVisitor.visitLabel(l1)
-    new OnSavedInstanceStateVisitor(methodVisitor).visitCode()
+    new OnSavedInstanceStateVisitor(methodVisitor, fieldStorage).visitCode()
     Label l2 = new Label()
     methodVisitor.visitLabel(l2)
     methodVisitor.visitInsn(Opcodes.RETURN)

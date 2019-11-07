@@ -163,9 +163,15 @@ public class MainActivityJava extends AppCompatActivity {
   @State
   private SerializableModelKotlin serializableModelKotlin;
 
+  @State
+  private CustomClass customClass = new CustomClass(1, "");
+
   @Override
   protected void onCreate(@Nullable Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
+    //if (savedInstanceState != null) {
+    //  customClass = StaterSerializer.deserialize(savedInstanceState.getString("key"), CustomClass.class);
+    //}
     setContentView(R.layout.activity_main);
     TextView textView = findViewById(R.id.text);
     textView.setText(String.valueOf(dParamO));

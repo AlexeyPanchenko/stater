@@ -2,6 +2,8 @@ package ru.alexpanchenko.stater.plugin.utils;
 
 import org.junit.Test;
 
+import java.util.List;
+
 import ru.alexpanchenko.stater.plugin.model.MethodDescriptor;
 import ru.alexpanchenko.stater.plugin.model.StateType;
 
@@ -356,4 +358,22 @@ public class MethodDescriptorUtilsTest {
     assertTrue(MethodDescriptorUtils.primitiveIsObject(Descriptors.DOUBLE_OBJ_ARRAY));
   }
 
+  @Test
+  public void testSignatureTypes() {
+    List<String> types = MethodDescriptorUtils.getSignatureTypes("Ljava/util/List<Lru/example/CustomClass;>;");
+    assertEquals(types.size(), 2);
+    assertEquals(types.get(0), "java/util/List");
+    assertEquals(types.get(1), "ru/example/CustomClass");
+  }
+
+  @Test
+  public void testDoubleGenericSignatureTypes() {
+    List<String> types = MethodDescriptorUtils.getSignatureTypes(
+      "Ljava/util/List<Ljava/util/List<Lru/example/CustomClass;>;>;"
+    );
+    assertEquals(types.size(), 3);
+    assertEquals(types.get(0), "java/util/List");
+    assertEquals(types.get(1), "java/util/List");
+    assertEquals(types.get(2), "ru/example/CustomClass");
+  }
 }

@@ -1,39 +1,44 @@
 package ru.alexpanchenko.stater.plugin.visitors
 
+import com.android.annotations.NonNull
 import groovy.transform.TypeChecked
+import ru.alexpanchenko.stater.plugin.StateFieldStorage
 import ru.alexpanchenko.stater.plugin.model.MethodDescriptor
-import ru.alexpanchenko.stater.plugin.utils.Const
-import ru.alexpanchenko.stater.plugin.utils.Descriptors
-import ru.alexpanchenko.stater.plugin.utils.MethodDescriptorUtils
-import ru.alexpanchenko.stater.plugin.utils.Types
-import stater.org.objectweb.asm.Label
+import ru.alexpanchenko.stater.plugin.model.StateType
+import ru.alexpanchenko.stater.plugin.utils.*
 import stater.org.objectweb.asm.MethodVisitor
 import stater.org.objectweb.asm.Opcodes
 
 @TypeChecked
 class OnSavedInstanceStateVisitor extends MethodVisitor {
 
-  OnSavedInstanceStateVisitor(MethodVisitor methodVisitor) {
+  private final StateFieldStorage fieldStorage
+
+  OnSavedInstanceStateVisitor(
+      @NonNull MethodVisitor methodVisitor,
+      @NonNull StateFieldStorage fieldStorage
+  ) {
     super(Const.ASM_VERSION, methodVisitor)
+    this.fieldStorage = fieldStorage
   }
 
   @Override
   void visitCode() {
     mv.visitCode()
 
-    Const.stateFields.each { field ->
-      Label label = new Label()
-      mv.visitLabel(label)
-      mv.visitVarInsn(Opcodes.ALOAD, 1)
-      mv.visitLdcInsn(field.key)
-      mv.visitVarInsn(Opcodes.ALOAD, 0)
+    fieldStorage.getFields().each { field ->
       MethodDescriptor methodDescriptor = MethodDescriptorUtils.getDescriptorByType(field.type, false)
       if (methodDescriptor == null || !methodDescriptor.isValid()) {
         throw new IllegalStateException("StateType for ${field.name} in ${field.owner} is unknown!")
       }
+      mv.visitVarInsn(Opcodes.ALOAD, 1)
+      mv.visitLdcInsn(field.key)
+      mv.visitVarInsn(Opcodes.ALOAD, 0)
       mv.visitFieldInsn(Opcodes.GETFIELD, field.owner, field.name, field.descriptor)
-      // cast List to ArrayList :)
-      if (field.descriptor == Descriptors.LIST) {
+      if (field.type == StateType.CUSTOM) {
+        addCustomTypeSerialization()
+      } else if (field.descriptor == Descriptors.LIST) {
+        // cast List to ArrayList :)
         mv.visitTypeInsn(Opcodes.CHECKCAST, Types.ARRAY_LIST)
       }
       mv.visitMethodInsn(
@@ -44,6 +49,16 @@ class OnSavedInstanceStateVisitor extends MethodVisitor {
           false
       )
     }
+  }
+
+  private addCustomTypeSerialization() {
+    mv.visitMethodInsn(
+        Opcodes.INVOKESTATIC,
+        Types.SERIALIZER,
+        Methods.SERIALIZE,
+        Descriptors.SERIALIZER_SERIALIZE,
+        false
+    )
   }
 
 }
