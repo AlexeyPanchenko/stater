@@ -38,7 +38,7 @@ class StaterPlugin implements Plugin<Project> {
     extension.setExtensionChangeListener {
       if (extension.getCustomSerializerEnabled()) {
         // Add serializer library
-        //project.getDependencies().add('implementation', "ru.alexpanchenko:serializer:$VERSION")
+        project.getDependencies().add('implementation', "ru.alexpanchenko:stater-serializer:$VERSION")
       }
     }
   }

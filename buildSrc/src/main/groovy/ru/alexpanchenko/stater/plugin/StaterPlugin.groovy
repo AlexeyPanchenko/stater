@@ -12,7 +12,7 @@ import org.gradle.api.Project
 @CompileStatic
 class StaterPlugin implements Plugin<Project> {
 
-  private static final String VERSION = '1.1'
+  private static final String VERSION = '1.2'
 
   @Override
   void apply(@NonNull Project project) {
@@ -38,7 +38,7 @@ class StaterPlugin implements Plugin<Project> {
     extension.setExtensionChangeListener {
       if (extension.getCustomSerializerEnabled()) {
         // Add serializer library
-        //project.getDependencies().add('implementation', "ru.alexpanchenko:serializer:$VERSION")
+        project.getDependencies().add('implementation', "ru.alexpanchenko:stater-serializer:$VERSION")
       }
     }
   }
