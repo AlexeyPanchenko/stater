@@ -6,8 +6,8 @@ import org.objectweb.asm.FieldVisitor;
 
 import javassist.ClassPool;
 import javassist.NotFoundException;
+import ru.alexpanchenko.stater.plugin.StateFieldStorage;
 import ru.alexpanchenko.stater.plugin.model.StateType;
-import ru.alexpanchenko.stater.plugin.utils.Const;
 import ru.alexpanchenko.stater.plugin.utils.Descriptors;
 import ru.alexpanchenko.stater.plugin.utils.StateTypeDeterminator;
 
@@ -24,6 +24,7 @@ public class StaterFieldVisitorTest {
   private static final String B_PACKAGE = B_CLASS.replace(".class", "").replace("/", ".");
 
   private final ClassPool classPool = ClassPool.getDefault();
+  private final StateFieldStorage fieldStorage = new StateFieldStorage();
   private final FieldVisitor fieldVisitor = mock(FieldVisitor.class);
   private String name = "name";
   private String descriptor = "descriptor";
@@ -32,7 +33,7 @@ public class StaterFieldVisitorTest {
 
   @Before
   public void setUp() {
-    Const.stateFields.clear();
+    fieldStorage.clear();
   }
 
   @Test
@@ -40,7 +41,7 @@ public class StaterFieldVisitorTest {
     StateTypeDeterminator typeDeterminator = mock(StateTypeDeterminator.class);
 
     StaterFieldVisitor visitor = new StaterFieldVisitor(
-      fieldVisitor, name, descriptor, signature, owner, typeDeterminator
+      fieldVisitor, name, descriptor, signature, owner, typeDeterminator, fieldStorage
     );
     visitor.visitAnnotation(Descriptors.STATE, true);
     verify(typeDeterminator).determinate(descriptor, signature);
@@ -51,7 +52,7 @@ public class StaterFieldVisitorTest {
     StateTypeDeterminator typeDeterminator = mock(StateTypeDeterminator.class);
 
     StaterFieldVisitor visitor = new StaterFieldVisitor(
-      fieldVisitor, name, descriptor, signature, owner, typeDeterminator
+      fieldVisitor, name, descriptor, signature, owner, typeDeterminator, fieldStorage
     );
     visitor.visitAnnotation(Descriptors.STATE + "a", true);
     verify(typeDeterminator, never()).determinate(descriptor, signature);
@@ -63,7 +64,7 @@ public class StaterFieldVisitorTest {
     signature = null;
 
     StaterFieldVisitor visitor = new StaterFieldVisitor(
-      fieldVisitor, name, descriptor, signature, owner, new StateTypeDeterminator(classPool)
+      fieldVisitor, name, descriptor, signature, owner, new StateTypeDeterminator(classPool, false), fieldStorage
     );
     visitor.visitAnnotation(Descriptors.STATE, true);
   }
@@ -74,13 +75,13 @@ public class StaterFieldVisitorTest {
     signature = null;
 
     StaterFieldVisitor visitor = new StaterFieldVisitor(
-      fieldVisitor, name, descriptor, signature, owner, new StateTypeDeterminator(classPool)
+      fieldVisitor, name, descriptor, signature, owner, new StateTypeDeterminator(classPool, false), fieldStorage
     );
     visitor.visitAnnotation(Descriptors.STATE, true);
 
-    assertFalse(Const.stateFields.isEmpty());
-    assertEquals(Const.stateFields.size(), 1);
-    assertEquals(Const.stateFields.get(0).type, StateType.BOOLEAN);
+    assertFalse(fieldStorage.getFields().isEmpty());
+    assertEquals(fieldStorage.getFields().size(), 1);
+    assertEquals(fieldStorage.getFields().get(0).type, StateType.BOOLEAN);
   }
 
   @Test
@@ -91,11 +92,11 @@ public class StaterFieldVisitorTest {
     signature = null;
 
     StaterFieldVisitor visitor = new StaterFieldVisitor(
-      fieldVisitor, name, descriptor, signature, owner, new StateTypeDeterminator(classPool)
+      fieldVisitor, name, descriptor, signature, owner, new StateTypeDeterminator(classPool, false), fieldStorage
     );
     visitor.visitAnnotation(Descriptors.STATE, true);
 
-    assertEquals(Const.stateFields.get(0).type, StateType.SERIALIZABLE);
+    assertEquals(fieldStorage.getFields().get(0).type, StateType.SERIALIZABLE);
   }
 
 }

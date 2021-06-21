@@ -1,6 +1,10 @@
 Change Log
 ==========
 
+Version 1.2 *(2019-11-07)*
+-----------------------------
+* Add optional serialization/deserialization for custom types with support typed objects.
+
 Version 1.1 *(2019-10-13)*
 -----------------------------
 * Repackage ASM for avoid version conflicts with other libraries.

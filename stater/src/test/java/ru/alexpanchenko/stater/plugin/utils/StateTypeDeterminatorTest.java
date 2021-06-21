@@ -14,7 +14,7 @@ public class StateTypeDeterminatorTest {
   private static final String A_CLASS = "ru/alexpanchenko/stater/plugin/utils/models/A.class";
   private static final String B_CLASS = "ru/alexpanchenko/stater/plugin/utils/models/B.class";
 
-  private final StateTypeDeterminator typeDeterminator = new StateTypeDeterminator(classPool);
+  private final StateTypeDeterminator typeDeterminator = new StateTypeDeterminator(classPool, false);
 
   @Test
   public void testBoolean() {
@@ -208,5 +208,29 @@ public class StateTypeDeterminatorTest {
   @Test
   public void testIBinder() {
     assertEquals(typeDeterminator.determinate(Descriptors.IBINDER,null), StateType.IBINDER);
+  }
+
+  @Test(expected = IllegalStateException.class)
+  public void testUnsupportedType() {
+    typeDeterminator.determinate(Descriptors.OBJECT, null);
+  }
+
+  @Test(expected = IllegalStateException.class)
+  public void testUnsupportedListType() {
+    typeDeterminator.determinate(Descriptors.LIST, "Ljava/util/List<" + Descriptors.OBJECT + ">;");
+  }
+
+  @Test
+  public void testUnsupportedTypeWithCustomSerialization() {
+    final StateTypeDeterminator typeDeterminator = new StateTypeDeterminator(classPool, true);
+    StateType type = typeDeterminator.determinate(Descriptors.OBJECT, null);
+    assertEquals(type, StateType.CUSTOM);
+  }
+
+  @Test
+  public void testUnsupportedTypedTypeWithCustomSerialization() {
+    final StateTypeDeterminator typeDeterminator = new StateTypeDeterminator(classPool, true);
+    StateType type = typeDeterminator.determinate(Descriptors.OBJECT, "Ljava/util/List<" + Descriptors.OBJECT + ">;");
+    assertEquals(type, StateType.CUSTOM);
   }
 }
