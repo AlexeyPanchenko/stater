@@ -1,2 +1,0 @@
-include ':app', ':stater', ':buildSrc', ':library'
-rootProject.name='Stater'

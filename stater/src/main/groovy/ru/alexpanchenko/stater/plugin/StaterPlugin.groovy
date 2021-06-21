@@ -14,16 +14,17 @@ class StaterPlugin implements Plugin<Project> {
 
   @Override
   void apply(@NonNull Project project) {
-    boolean isAndroidApp = project.plugins.findPlugin('com.android.application') != null
-    boolean isAndroidLib = project.plugins.findPlugin('com.android.library') != null
-    if (!isAndroidApp && !isAndroidLib) {
-      throw new GradleException(
-          "'com.android.application' or 'com.android.library' plugin required."
-      )
+    project.afterEvaluate {
+      boolean isAndroidApp = project.plugins.findPlugin('com.android.application') != null
+      boolean isAndroidLib = project.plugins.findPlugin('com.android.library') != null
+      if (!isAndroidApp && !isAndroidLib) {
+        throw new GradleException(
+            "'com.android.application' or 'com.android.library' plugin required."
+        )
+      }
+      project.getDependencies().add("implementation", "ru.alexpanchenko:stater:1.1")
+      BaseExtension androidExtension = project.extensions.findByType(BaseExtension.class)
+      androidExtension.registerTransform(new StaterTransform(project))
     }
-    // Automatically adds stater library
-    project.getDependencies().add('implementation', "ru.alexpanchenko:stater:1.1")
-    BaseExtension androidExtension = project.extensions.findByType(BaseExtension.class)
-    androidExtension.registerTransform(new StaterTransform(project))
   }
 }

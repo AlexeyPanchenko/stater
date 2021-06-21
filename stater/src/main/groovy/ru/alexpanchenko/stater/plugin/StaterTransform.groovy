@@ -8,9 +8,9 @@ import groovy.transform.TypeChecked
 import javassist.ClassPool
 import org.apache.commons.io.FileUtils
 import org.gradle.api.Project
+import org.objectweb.asm.ClassReader
+import org.objectweb.asm.ClassWriter
 import ru.alexpanchenko.stater.plugin.visitors.StaterClassVisitor
-import stater.org.objectweb.asm.ClassReader
-import stater.org.objectweb.asm.ClassWriter
 
 @TypeChecked
 class StaterTransform extends Transform {

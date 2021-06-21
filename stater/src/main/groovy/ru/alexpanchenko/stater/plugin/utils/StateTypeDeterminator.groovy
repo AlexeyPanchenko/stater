@@ -5,10 +5,10 @@ import com.android.annotations.Nullable
 import groovy.transform.CompileStatic
 import groovy.transform.TypeChecked
 import javassist.ClassPool
+import org.objectweb.asm.Type
+import org.objectweb.asm.signature.SignatureReader
 import ru.alexpanchenko.stater.plugin.model.StateType
 import ru.alexpanchenko.stater.plugin.visitors.TypesSignatureVisitor
-import stater.org.objectweb.asm.Type
-import stater.org.objectweb.asm.signature.SignatureReader
 
 /**
  * Mapper, witch define {@link StateType} by descriptor and signature of field.
