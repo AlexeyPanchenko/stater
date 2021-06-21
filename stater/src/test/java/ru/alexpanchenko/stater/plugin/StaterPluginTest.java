@@ -9,6 +9,7 @@ import org.gradle.api.GradleException;
 import org.gradle.api.Project;
 import org.gradle.api.artifacts.Dependency;
 import org.gradle.testfixtures.ProjectBuilder;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.Optional;
@@ -16,6 +17,7 @@ import java.util.Optional;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 
+@Ignore
 public class StaterPluginTest {
 
   @Test(expected = GradleException.class)

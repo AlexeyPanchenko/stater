@@ -3,9 +3,9 @@ package ru.alexpanchenko.stater.plugin.visitors
 import com.android.annotations.NonNull
 import groovy.transform.TypeChecked
 import javassist.ClassPool
+import org.objectweb.asm.*
 import ru.alexpanchenko.stater.plugin.StateFieldStorage
 import ru.alexpanchenko.stater.plugin.utils.*
-import stater.org.objectweb.asm.*
 
 @TypeChecked
 class StaterClassVisitor extends ClassVisitor implements Opcodes {

@@ -2,12 +2,12 @@ package ru.alexpanchenko.stater.plugin.visitors
 
 import com.android.annotations.NonNull
 import groovy.transform.TypeChecked
+import org.objectweb.asm.MethodVisitor
+import org.objectweb.asm.Opcodes
 import ru.alexpanchenko.stater.plugin.StateFieldStorage
 import ru.alexpanchenko.stater.plugin.model.MethodDescriptor
 import ru.alexpanchenko.stater.plugin.model.StateType
 import ru.alexpanchenko.stater.plugin.utils.*
-import stater.org.objectweb.asm.MethodVisitor
-import stater.org.objectweb.asm.Opcodes
 
 @TypeChecked
 class OnSavedInstanceStateVisitor extends MethodVisitor {

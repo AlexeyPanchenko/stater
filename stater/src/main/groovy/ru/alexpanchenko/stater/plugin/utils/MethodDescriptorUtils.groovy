@@ -2,10 +2,10 @@ package ru.alexpanchenko.stater.plugin.utils
 
 import com.android.annotations.NonNull
 import groovy.transform.TypeChecked
+import org.objectweb.asm.signature.SignatureReader
 import ru.alexpanchenko.stater.plugin.model.MethodDescriptor
 import ru.alexpanchenko.stater.plugin.model.StateType
 import ru.alexpanchenko.stater.plugin.visitors.TypesSignatureVisitor
-import stater.org.objectweb.asm.signature.SignatureReader
 
 @TypeChecked
 class MethodDescriptorUtils {
