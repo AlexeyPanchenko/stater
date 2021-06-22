@@ -5,8 +5,8 @@ import com.android.annotations.Nullable
 import groovy.transform.CompileStatic
 import groovy.transform.TypeChecked
 import javassist.ClassPool
+import org.objectweb.asm.Type
 import ru.alexpanchenko.stater.plugin.model.StateType
-import stater.org.objectweb.asm.Type
 
 /**
  * Mapper, witch define {@link StateType} by descriptor and signature of field.

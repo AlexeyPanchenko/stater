@@ -2,14 +2,14 @@ package ru.alexpanchenko.stater.plugin.visitors
 
 import com.android.annotations.NonNull
 import groovy.transform.TypeChecked
+import org.objectweb.asm.AnnotationVisitor
+import org.objectweb.asm.FieldVisitor
 import ru.alexpanchenko.stater.plugin.StateFieldStorage
 import ru.alexpanchenko.stater.plugin.model.SaverField
 import ru.alexpanchenko.stater.plugin.model.StateType
 import ru.alexpanchenko.stater.plugin.utils.Const
 import ru.alexpanchenko.stater.plugin.utils.Descriptors
 import ru.alexpanchenko.stater.plugin.utils.StateTypeDeterminator
-import stater.org.objectweb.asm.AnnotationVisitor
-import stater.org.objectweb.asm.FieldVisitor
 
 @TypeChecked
 class StaterFieldVisitor extends FieldVisitor {

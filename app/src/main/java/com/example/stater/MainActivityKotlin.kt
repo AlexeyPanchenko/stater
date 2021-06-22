@@ -1,8 +1,9 @@
 package com.example.stater
 
 import android.os.Bundle
+import android.view.View
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import kotlinx.android.synthetic.main.activity_main.*
 import ru.alexpanchenko.stater.State
 
 class MainActivityKotlin : AppCompatActivity() {
@@ -31,10 +32,10 @@ class MainActivityKotlin : AppCompatActivity() {
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     setContentView(R.layout.activity_main)
-    text.setText(customClass.a.toString())
-    button.setOnClickListener {
+    findViewById<TextView>(R.id.text).setText(customClass.a.toString())
+    findViewById<View>(R.id.button).setOnClickListener {
       customClass.a++
-      text.setText(customClass.a.toString())
+      findViewById<TextView>(R.id.text).setText(customClass.a.toString())
     }
   }
 }

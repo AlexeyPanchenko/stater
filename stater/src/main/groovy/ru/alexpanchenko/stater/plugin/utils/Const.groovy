@@ -2,7 +2,7 @@ package ru.alexpanchenko.stater.plugin.utils
 
 import groovy.transform.CompileStatic
 import groovy.transform.TypeChecked
-import stater.org.objectweb.asm.Opcodes
+import org.objectweb.asm.Opcodes
 
 @TypeChecked
 class Const {

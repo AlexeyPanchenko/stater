@@ -1,8 +1,8 @@
 package ru.alexpanchenko.stater.plugin.visitors
 
 import groovy.transform.TypeChecked
+import org.objectweb.asm.signature.SignatureVisitor
 import ru.alexpanchenko.stater.plugin.utils.Const
-import stater.org.objectweb.asm.signature.SignatureVisitor
 
 /**
  * {@link SignatureVisitor} for define hierarchy of types.
