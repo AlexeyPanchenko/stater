@@ -10,6 +10,7 @@ repositories {
 }
 
 dependencies {
+  implementation(kotlin("stdlib-jdk8"))
   implementation("com.android.tools.build:gradle:4.2.1")
   implementation("com.android.tools.build:gradle-api:4.2.1")
   implementation("org.javassist:javassist:3.25.0-GA")

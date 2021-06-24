@@ -1,82 +1,85 @@
-package ru.alexpanchenko.stater.serializer;
+package ru.alexpanchenko.stater.serializer
 
-import org.junit.Test;
+import org.junit.Assert.assertEquals
+import org.junit.Test
+import ru.alexpanchenko.stater.serializer.StaterSerializer.deserialize
+import ru.alexpanchenko.stater.serializer.StaterSerializer.deserializeTyped
+import ru.alexpanchenko.stater.serializer.StaterSerializer.serialize
+import java.util.*
 
-import java.util.ArrayList;
-import java.util.List;
-
-import static org.junit.Assert.assertEquals;
-
-public class SerializerTest {
-
+class SerializerTest {
   @Test
-  public void testSerializeClass() {
-    CustomClass customClass = new CustomClass(1, "text");
-    String serializedClass = StaterSerializer.serialize(customClass);
-    assertEquals("{\"count\":1,\"text\":\"text\"}", serializedClass);
+  fun testSerializeClass() {
+    val customClass = CustomClass(1, "text")
+    val serializedClass: String = serialize(customClass)
+    assertEquals("{\"count\":1,\"text\":\"text\"}", serializedClass)
   }
 
   @Test
-  public void testSerializeListWithClass() {
-    List<CustomClass> list = new ArrayList<>();
-    CustomClass customClass = new CustomClass(1, "text");
-    list.add(customClass);
-    String deserializedClass = StaterSerializer.serialize(list);
-    assertEquals("[{\"count\":1,\"text\":\"text\"}]", deserializedClass);
+  fun testSerializeListWithClass() {
+    val list: MutableList<CustomClass> = ArrayList()
+    val customClass = CustomClass(1, "text")
+    list.add(customClass)
+    val deserializedClass = serialize(list)
+    assertEquals("[{\"count\":1,\"text\":\"text\"}]", deserializedClass)
   }
 
   @Test
-  public void testDeserializeClass() {
-    CustomClass customClass = new CustomClass(1, "text");
-    String customClassString = StaterSerializer.serialize(customClass);
-    CustomClass deserializedClass = StaterSerializer.deserialize(customClassString, CustomClass.class);
-    assertEquals(customClass, deserializedClass);
+  fun testDeserializeClass() {
+    val customClass = CustomClass(1, "text")
+    val customClassString: String = serialize(customClass)
+    val deserializedClass: CustomClass = deserialize(customClassString, CustomClass::class.java)
+    assertEquals(customClass, deserializedClass)
   }
 
   @Test
-  public void testDeserializeListClasses() {
-    List<CustomClass> list = new ArrayList<>();
-    list.add(new CustomClass(1, "text1"));
-    list.add(new CustomClass(2, "text2"));
-    String listString = StaterSerializer.serialize(list);
-    List<CustomClass> deserializedList = StaterSerializer.deserializeTyped(listString, List.class, CustomClass.class);
-    assertEquals(deserializedList.size(), 2);
-    assertEquals(deserializedList, list);
+  fun testDeserializeListClasses() {
+    val list: MutableList<CustomClass> = ArrayList()
+    list.add(CustomClass(1, "text1"))
+    list.add(CustomClass(2, "text2"))
+    val listString: String = serialize(list)
+    val deserializedList: List<CustomClass> = deserializeTyped(listString, MutableList::class.java, CustomClass::class.java)
+    assertEquals(deserializedList.size.toLong(), 2)
+    assertEquals(deserializedList, list)
   }
 
   @Test
-  public void testDeserializeListListClasses() {
-    List<CustomClass> list = new ArrayList<>();
-    list.add(new CustomClass(1, "text1"));
-    list.add(new CustomClass(2, "text2"));
-    List<List<CustomClass>> lists = new ArrayList<>();
-    lists.add(list);
-    String listString = StaterSerializer.serialize(lists);
-    List<List<CustomClass>> deserializedList = StaterSerializer.deserializeTyped(
-      listString, List.class, List.class, CustomClass.class
-    );
-    assertEquals(deserializedList.size(), 1);
-    assertEquals(deserializedList.get(0).size(), 2);
-    assertEquals(deserializedList.get(0), list);
+  fun testDeserializeListListClasses() {
+    val list: MutableList<CustomClass> = ArrayList()
+    list.add(CustomClass(1, "text1"))
+    list.add(CustomClass(2, "text2"))
+    val lists: MutableList<List<CustomClass>> = ArrayList()
+    lists.add(list)
+    val listString: String = serialize(lists)
+    val deserializedList: List<List<CustomClass>> = deserializeTyped(
+      listString, MutableList::class.java, MutableList::class.java, CustomClass::class.java
+    )
+    assertEquals(deserializedList.size.toLong(), 1)
+    assertEquals(deserializedList[0].size.toLong(), 2)
+    assertEquals(deserializedList[0], list)
   }
 
   @Test
-  public void testDeserializeListListListClasses() {
-    List<CustomClass> list = new ArrayList<>();
-    list.add(new CustomClass(1, "text1"));
-    list.add(new CustomClass(2, "text2"));
-    List<List<CustomClass>> lists = new ArrayList<>();
-    lists.add(list);
-    List<List<List<CustomClass>>> lists2 = new ArrayList<>();
-    lists2.add(lists);
-    String listString = StaterSerializer.serialize(lists2);
-    List<List<List<CustomClass>>> deserializedList = StaterSerializer.deserializeTyped(
-      listString, List.class, List.class, List.class, CustomClass.class
-    );
-    assertEquals(deserializedList.size(), 1);
-    assertEquals(deserializedList.get(0).size(), 1);
-    assertEquals(deserializedList.get(0).get(0).size(), 2);
-    CustomClass deserializedClass = deserializedList.get(0).get(0).get(0);
-    assertEquals(deserializedClass, list.get(0));
+  fun testDeserializeListListListClasses() {
+    val list: MutableList<CustomClass> = ArrayList()
+    list.add(CustomClass(1, "text1"))
+    list.add(CustomClass(2, "text2"))
+    val lists: MutableList<List<CustomClass>> = ArrayList()
+    lists.add(list)
+    val lists2: MutableList<List<List<CustomClass>>> = ArrayList()
+    lists2.add(lists)
+    val listString: String = serialize(lists2)
+    val deserializedList: List<List<List<CustomClass>>> = deserializeTyped(
+      listString,
+      MutableList::class.java,
+      MutableList::class.java,
+      MutableList::class.java,
+      CustomClass::class.java
+    )
+    assertEquals(deserializedList.size.toLong(), 1)
+    assertEquals(deserializedList[0].size.toLong(), 1)
+    assertEquals(deserializedList[0][0].size.toLong(), 2)
+    val deserializedClass = deserializedList[0][0][0]
+    assertEquals(deserializedClass, list[0])
   }
 }
