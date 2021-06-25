@@ -2,6 +2,7 @@
 <project version="4">
   <component name="CompilerConfiguration">
     <bytecodeTargetLevel target="1.8">
+      <module name="build-plugins" target="11" />
       <module name="stater" target="11" />
       <module name="Stater.app" target="11" />
     </bytecodeTargetLevel>

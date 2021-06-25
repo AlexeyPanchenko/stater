@@ -12,6 +12,11 @@
                   <project path="$PROJECT_DIR$/stater" />
                 </projects>
               </build>
+              <build path="$PROJECT_DIR$/build-plugins" name="build-plugins">
+                <projects>
+                  <project path="$PROJECT_DIR$/build-plugins" />
+                </projects>
+              </build>
             </builds>
           </compositeBuild>
         </compositeConfiguration>
@@ -23,6 +28,7 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
+            <option value="$PROJECT_DIR$/build-plugins" />
             <option value="$PROJECT_DIR$/library" />
             <option value="$PROJECT_DIR$/serializer" />
             <option value="$PROJECT_DIR$/stater" />
