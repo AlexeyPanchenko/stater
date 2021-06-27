@@ -1,5 +1,5 @@
 plugins {
-  id("kotlin")
+  kotlin("jvm")
   id("base-kotlin-convention")
 }
 

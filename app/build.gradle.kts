@@ -1,5 +1,3 @@
-import ru.alexpanchenko.stater.plugin.StaterPluginExtension
-
 plugins {
   id("android-app-convention")
   id("stater-plugin")
@@ -11,7 +9,7 @@ android {
   }
 }
 
-configure<StaterPluginExtension> {
+stater {
   customSerializerEnabled = true
 }
 
