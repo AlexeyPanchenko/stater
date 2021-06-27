@@ -7,6 +7,7 @@ include("serializer")
 pluginManagement {
 
   includeBuild("stater")
+  includeBuild("build-plugins")
 
   repositories {
     google()
